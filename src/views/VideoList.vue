@@ -1,0 +1,299 @@
+<template>
+  <div class="crumbs">
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item>
+        <i class="el-icon-lx-calendar"></i> 视频资源管理
+      </el-breadcrumb-item>
+      <el-breadcrumb-item>视频列表</el-breadcrumb-item>
+    </el-breadcrumb>
+  </div>
+  <div class="container">
+    <div class="handle-box">
+      <el-row>
+        <el-col :span="24">
+          <el-button type="primary" :icon="Plus" @click="handleAdd()"
+            >新增</el-button
+          >
+        </el-col>
+      </el-row>
+      <el-divider></el-divider>
+      视频分类
+      <el-select
+        v-model="query.params.videoType"
+        clearable
+        placeholder="请选择"
+        class="handle-select mr10"
+      >
+        <el-option
+          v-for="(item, c) in videoTypeList"
+          :key="c"
+          :label="item.code_name"
+          :value="item.code_id"
+        ></el-option>
+      </el-select>
+      年度
+      <el-date-picker
+        v-model="query.params.videoYear"
+        type="year"
+        value-format="YYYY"
+        placeholder="请选择"
+        style="width: 120px"
+      >
+      </el-date-picker>
+      公开分类
+      <el-select
+        v-model="query.params.publicType"
+        clearable
+        placeholder="请选择"
+        class="handle-select mr10"
+      >
+        <el-option
+          v-for="(item, c) in publicTypeList"
+          :key="c"
+          :label="item.code_name"
+          :value="item.code_id"
+        ></el-option>
+      </el-select>
+      视频状态
+      <el-select
+        v-model="query.params.videoState"
+        clearable
+        placeholder="请选择"
+        class="handle-select mr10"
+      >
+        <el-option
+          v-for="(item, c) in stateTypeList"
+          :key="c"
+          :label="item.code_name"
+          :value="item.code_id"
+        ></el-option>
+      </el-select>
+      关键字
+      <el-input
+        v-model="query.params.keyword"
+        placeholder="请输入关键字"
+        class="handle-input mr10"
+      ></el-input>
+      <el-button type="primary" :icon="Search" @click="handleSearch"
+        >搜索</el-button
+      >
+    </div>
+    <el-table :data="tableData" stripe border style="width: 100%" lazy>
+      <el-table-column prop="video_title" label="视频标题" width="350">
+      </el-table-column>
+      <el-table-column prop="video_type" label="视频分类" width="120">
+      </el-table-column>
+      <el-table-column prop="video_school" label="单位" width="250">
+      </el-table-column>
+      <el-table-column prop="teacher" label="教师" width="120">
+      </el-table-column>
+      <el-table-column prop="video_year" label="年度" width="60">
+      </el-table-column>
+      <el-table-column prop="public_type" label="发布分类" width="90">
+      </el-table-column>
+      <el-table-column prop="video_state" label="视频状态" width="90">
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" width="150">
+        <template #default="scope">
+          <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
+          <el-button @click="handleEdit(scope.row)" type="text" size="small"
+            >编辑</el-button
+          >
+          <el-button @click="handleDelete(scope.row)" type="text" size="small"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="pagination">
+      <el-pagination
+        background
+        layout="total, prev, pager, next"
+        :current-page="query.pageIndex"
+        :page-size="query.pageSize"
+        :total="pageTotal"
+        @current-change="handlePageChange"
+      ></el-pagination>
+    </div>
+  </div>
+</template>
+
+<script>
+import { Search, Plus, Cellphone, Delete } from "@element-plus/icons-vue";
+import { ref, reactive, onMounted, getCurrentInstance } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import {
+  getVideoType,
+  getVideoPublicType,
+  getVideoList,
+} from "../api/serviceApi";
+import VideoItem from "../components/VideoItem.vue";
+
+export default {
+  components: { VideoItem },
+  name: "videolist",
+  methods: {
+    //编辑操作
+    handleEdit(row) {
+      debugger;
+      this.$router.replace({
+        path: "/VideoAdd",
+        query: { videoId: row.video_id },
+      });
+    },
+  },
+  setup() {
+    let userId = "";
+    let userRole = "";
+    let userName = "";
+    let realName = ref("");
+    let userSchool = "";
+
+    let query = reactive({
+      params: {
+        videoType: "",
+        videoYear: null,
+        keyword: "",
+        publicType: "",
+        videoState: "",
+        pageIndex: 1,
+        pageSize: 10,
+      },
+    });
+    let videoTypeList = ref([]);
+    let publicTypeList = ref([]);
+    const stateTypeList = [
+      {
+        code_name: "已发布",
+        code_id: "0401",
+      },
+      {
+        code_name: "草稿",
+        code_id: "0402",
+      },
+    ];
+    const tableData = ref([]);
+    const pageTotal = ref(0);
+    onMounted(() => {
+      getSession();
+      getVideoType().then((res) => {
+        // debugger;
+        videoTypeList.value = res.data;
+      });
+      getVideoPublicType().then((res) => {
+        // debugger;
+        publicTypeList.value = res.data;
+      });
+    });
+    const getSession = () => {
+      userId = localStorage.getItem("user_id");
+      userRole = localStorage.getItem("user_role");
+      userName = localStorage.getItem("user_name");
+      realName.value = localStorage.getItem("real_name");
+      userSchool = localStorage.getItem("user_school");
+    };
+    // 获取视频列表
+    const getData = () => {
+      getVideoList(query).then((res) => {
+        tableData.value = JSON.parse(res.data.videoList);
+        pageTotal.value = res.data.pageCount || 50;
+      });
+    };
+    getData();
+    //新增
+    const handleAdd = () => {};
+
+    // 查询操作
+    const handleSearch = () => {
+      query.pageIndex = 1;
+      getData();
+    };
+    // 分页导航
+    const handlePageChange = (val) => {
+      query.pageIndex = val;
+      getData();
+    };
+
+    // 删除操作
+    const handleDelete = (index) => {
+      // 二次确认删除
+      ElMessageBox.confirm("确定要删除吗？", "提示", {
+        confirmButtonText: "删除",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          ElMessage.success("删除成功");
+          // tableData.value.splice(index, 1);
+        })
+        .catch(() => {});
+    };
+
+    return {
+      Search,
+      Plus,
+      Delete,
+      Cellphone,
+      
+      userId,
+      userRole,
+      userName,
+      realName,
+      userSchool,
+
+      getCurrentInstance,
+      userId,
+      userRole,
+      query,
+      videoTypeList,
+      publicTypeList,
+      stateTypeList,
+      tableData,
+      pageTotal,
+      handleAdd,
+      handleSearch,
+      handlePageChange,
+      handleDelete,
+      getSession,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.handle-box {
+  margin-bottom: 10px;
+}
+
+.handle-select {
+  width: 120px;
+}
+
+.handle-input {
+  width: 300px;
+  display: inline-block;
+}
+.table {
+  width: 100%;
+  font-size: 14px;
+}
+.red {
+  color: #ff0000;
+}
+.mr10 {
+  margin-right: 5px;
+}
+.table-td-thumb {
+  display: block;
+  margin: auto;
+  width: 40px;
+  height: 40px;
+}
+.line_file {
+  display: inline-block;
+  /* text-align: center; */
+  width: 20%;
+  height: 20%;
+  /* background-color: #d3d3d3; */
+}
+</style>
