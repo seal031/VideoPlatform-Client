@@ -555,11 +555,12 @@ export default {
   },
   methods: {
     showBrief(row) {
-      const href = this.$router.replace({
+      // const href = this.$router.replace({
+      const href = this.$router.resolve({
         path: "/BriefShow",
         query: { briefId: row.brief_id },
       });
-      window.open(href, "_blank");
+      window.open(href.href, "_blank");
     },
   },
   setup() {

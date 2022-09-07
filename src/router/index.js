@@ -25,6 +25,9 @@ const routes = [
     {
         path: "/BriefShow",
         name: "BriefShow",
+        meta:{
+            title:'通知公告'
+        },
         component: Brief,
     },
     {
@@ -119,7 +122,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    document.title = `${to.meta.title} | vue-manage-system`;
+    document.title = to.meta.title || 'vue-manage-system';
     const role = localStorage.getItem('ms_username');
     if (!role && to.path !== '/login') {
         next('/login');
