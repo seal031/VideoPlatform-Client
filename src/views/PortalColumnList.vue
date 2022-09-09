@@ -1,8 +1,8 @@
 <template>
   <top-tool-bar></top-tool-bar>
   <div class="block">
-    <el-tabs tab-position="left" style="height: 200px">
-      <el-tab-pane label="图片新闻">
+    <el-tabs tab-position="left" style="height: 200px" v-model="activeTab">
+      <el-tab-pane label="图片新闻" name="tpxw">
         <div class="tr mb10">
           <el-pagination
             @current-change="handleCurrentChangeTpxw"
@@ -31,7 +31,7 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="通知公告">
+      <el-tab-pane label="通知公告" name="tzgg">
         <el-table
           :data="tzggList"
           style="width: 100%"
@@ -50,7 +50,7 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="政策法规">
+      <el-tab-pane label="政策法规" name="zcfg">
         <el-table
           :data="zcfgList"
           style="width: 100%"
@@ -80,15 +80,16 @@ import TopToolBar from "../components/TopToolBar.vue";
 import PortalFooter from "../components/PortalFooter.vue";
 import { getBriefList, getBriefBaseList } from "../api/serviceApi";
 import { onMounted, ref, reactive, getCurrentInstance } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   methods: {
     showBrief(row) {
-      const href = this.$router.replace({
+      const href = this.$router.resolve({
         path: "/BriefShow",
         query: { briefId: row.brief_id },
       });
-      window.open(href, "_blank");
+      window.open(href.href, "_blank");
     },
   },
   components: {
@@ -96,11 +97,13 @@ export default {
     PortalFooter,
   },
   setup() {
+    let route = useRoute(); //可以在setup中使用route获取参数
     let userId = "";
     let userRole = "";
     let userName = "";
     let realName = ref("");
     let userSchool = "";
+    let activeTab=ref("");
 
     let tpxwList = ref([]); //图片新闻模型列表
     let tzggList = ref([]); //通知公告模型列表
@@ -137,6 +140,9 @@ export default {
     });
 
     const methods = {
+      getParams(){
+        activeTab.value = route.query.activeTab;
+      },
       getTpxwList() {
         getBriefList(tpxwQuery).then((res) => {
           if (res.resultCode == "200") {
@@ -192,6 +198,7 @@ export default {
 
     onMounted(() => {
       getSession();
+      methods.getParams();
       methods.getTpxwList();
       methods.getTzggList();
       methods.getZcfgList();
@@ -203,6 +210,8 @@ export default {
       userName,
       realName,
       userSchool,
+
+      activeTab,
       
       moment,
       tpxwList,

@@ -80,6 +80,9 @@ export function getVideoList(params){
 export function getVideoById(params){
     return axios.get('/Video/GetVideoById',params);
 }
+export function addVideo(params){
+    return axios.post('/Video/AddVideo',params);
+}
 export function getRelativeVideoList(params){
     return axios.get('/Video/GetRelativeVideoList',params);
 }

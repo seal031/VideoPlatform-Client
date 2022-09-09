@@ -6,7 +6,7 @@
         <h2>{{ briefForm.data.brief_title }}</h2>
         <p>
           所属分类:{{ briefForm.data.brief_type }} 创建时间:{{
-            briefForm.data.create_time
+            methods.dateFormat(briefForm.data.create_time)
           }}
         </p>
       </el-header>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { ref, reactive, onMounted } from "vue";
 import TopToolBar from "../components/TopToolBar.vue";
 import PortalFooter from "../components/PortalFooter.vue";
@@ -67,6 +68,9 @@ export default {
     const methods = {
       getParams() {
         briefId = route.query.briefId;
+      },
+      dateFormat(date) {
+        return moment(date).format("YYYY-MM-DD");
       },
       bindBrief() {
         if (briefId != undefined) {
@@ -119,11 +123,14 @@ export default {
       realName,
       userSchool,
 
+      moment,
+
       briefId,
       briefForm,
       content,
       getBriefById,
       getSession,
+      methods,
     };
   },
 };

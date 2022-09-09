@@ -99,8 +99,8 @@
                   <el-form-item label="视频年度" prop="video_year">
                     <el-date-picker
                       v-model="videoForm.data.video_year"
-                      format="yyyy"
-                      value-format="yyyy"
+                      format='YYYY'
+                      value-format='YYYY'
                       type="year"
                       placeholder="选择年份"
                       style="width: 100%"
@@ -197,6 +197,7 @@ import {
   getSchoolList,
   getVideoType,
   getVideoById,
+  addVideo,
 } from "../api/serviceApi";
 
 export default {
@@ -246,11 +247,13 @@ export default {
     });
     const videoForm = reactive({
       data: {
+        admin_id:"",
+        admin_ip:"",
         video_id: "",
         video_title: "",
         video_brief: "",
         video_type: "",
-        video_year: "",
+        video_year: 0,
         teacher: "",
         award: "",
         public_type: "",
@@ -258,13 +261,14 @@ export default {
         video_school: "",
         video_state: "",
         video_url: "",
-        video_facede: "",
-        create_time: "",
-        edit_time: "",
-        view_count: 0,
+        // create_time: "",
+        // edit_time: "",
+        view_count: 10,
         collection_count: 0,
         appreciate_count: 0,
-        video_facede:"",
+        id_deleted:0,
+        video_facede: "",
+        uploader:"",
       },
     });
     const rules = {
@@ -310,7 +314,6 @@ export default {
     };
     const publicChange = (item) => {
       console.log(item);
-      debugger;
       if (item == "0302" || item == "0304") {
         showPublicObject.value = true;
       } else {
@@ -326,6 +329,27 @@ export default {
       userName = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
+    };
+    const onSubmit=()=>{
+      videoForm.data.video_state = "0401";
+      videoForm.data.admin_id = "0";
+      videoForm.data.admin_ip = "localhost";
+      console.log(videoForm.data);
+      addVideo(videoForm).then((res) => {
+        if ((res.resultCode = "200")) {
+          ElMessage({
+            message: "操作成功.",
+            grouping: true,
+            type: "success",
+          });
+        } else {
+          ElMessage({
+            message: "操作失败：" + res.message,
+            grouping: true,
+            type: "error",
+          });
+        }
+      });
     };
     onMounted(() => {
       getSession();
@@ -363,6 +387,7 @@ export default {
       publicChange,
       perviewVideo,
       getSession,
+      onSubmit,
     };
   },
 };

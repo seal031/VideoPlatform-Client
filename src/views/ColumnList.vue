@@ -107,16 +107,16 @@ export default {
     //预览
     handleShow(row) {
       // 页面跳转
-      const href = this.$router.replace({
+      const href = this.$router.resolve({
         path: "/BriefShow",
         query: { briefId: row.brief_id },
       });
       debugger;
-      window.open(href, "_blank");
+      window.open(href.href, "_blank");
     },
     //编辑
     handleEdit(row) {
-      this.$router.replace({
+      this.$router.resolve({
         path: "/ColumnAdd",
         query: { briefId: row.brief_id, isReadonly: false },
       });

@@ -6,7 +6,7 @@
     <div class="width1200">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>青管赛优秀视频</el-breadcrumb-item>
+        <el-breadcrumb-item>优秀视频</el-breadcrumb-item>
         <el-breadcrumb-item>更多</el-breadcrumb-item>
       </el-breadcrumb>
       <el-divider class="portal-divider"></el-divider>

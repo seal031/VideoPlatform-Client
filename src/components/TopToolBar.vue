@@ -186,18 +186,18 @@ export default {
       console.log(command);
       switch (command) {
         case "myspace":
-          const { hrefMySpace } = router.resolve({
+          const href = router.resolve({
             path: "/MySpace",
-            query: {},
+            query: { },
           });
-          window.open(hrefMySpace, "_blank");
+          window.open(href.href, "_blank");
           break;
         case "manage":
-          const { hrefManage } = router.resolve({
+          const href2 = router.resolve({
             path: "/VideoList",
-            query: {},
+            query: { },
           });
-          window.open(hrefManage, "_blank");
+          window.open(href2.href, "_blank");
           break;
         case "logout":
           ElMessageBox.confirm("确认登出?", "登出", {

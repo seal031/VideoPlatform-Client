@@ -26,6 +26,7 @@
                   <img
                     :src="item.brief_image"
                     style="width: 100%; height: 100%"
+                    @click="openNews('/BriefShow',item)"
                   />
                 </el-carousel-item>
               </el-carousel>
@@ -73,7 +74,7 @@
                 class="video-item"
                 v-for="(hotvideoitem, i) in hotVideoList.slice(0, 6)"
                 :key="i"
-                @click.enter="onClick(v)"
+                @click.enter="showVideo(hotvideoitem)"
               >
                 <video-item
                   :src="hotvideoitem.video_facede"
@@ -385,7 +386,7 @@
                 v-if="i == 3"
                 type="text"
                 class="more-btn"
-                @click.stop="jump('')"
+                @click.stop="jumpVideo('/portalVideoList')"
                 >更多 ></el-button
               >
             </span>
@@ -396,7 +397,7 @@
                 class="video-item"
                 v-for="(ele, i) in item.content.slice(0, 12)"
                 :key="i"
-                @click.enter="onClick(v)"
+                @click.enter="showVideo(ele)"
               >
                 <video-item
                   :src="ele.video_facede"
@@ -453,7 +454,7 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('')"
+              <el-button type="text" class="more-btn" @click="jump('/portalBriefList','tzgg')"
                 >更多 ></el-button
               >
             </div>
@@ -504,7 +505,7 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('')"
+              <el-button type="text" class="more-btn" @click="jump('/portalBriefList','zcfg')"
                 >更多 ></el-button
               >
             </div>
@@ -562,6 +563,13 @@ export default {
       });
       window.open(href.href, "_blank");
     },
+    showVideo(videoItem){
+      const href = this.$router.resolve({
+        path: "/VideoShow",
+        query: { videoId: videoItem.video_id },
+      });
+      window.open(href.href, "_blank");
+    },
   },
   setup() {
     const router = useRouter();
@@ -609,8 +617,26 @@ export default {
     };
 
     // 跳转
-    const jump = (path) => {
-      // TODO
+    const jump = (path,tabname) => {
+      const href = router.resolve({
+        path: path,
+        query: { activeTab:tabname},
+      });
+      window.open(href.href, "_blank");
+    };
+    const jumpVideo=(path)=>{
+      const href = router.resolve({
+        path: path,
+        query: { },
+      });
+      window.open(href.href, "_blank");
+    };
+    const openNews=(path,news)=>{
+      const href = router.resolve({
+        path: path,
+        query: { briefId:news.brief_id},
+      });
+      window.open(href.href, "_blank");
     };
 
     let videoTabActiveName = ref("qjs");
@@ -818,6 +844,8 @@ export default {
       getVideoList,
       getBriefList,
       jump,
+      jumpVideo,
+      openNews,
       tpxwList,
       qjsVideoList,
       qgsVideoList,

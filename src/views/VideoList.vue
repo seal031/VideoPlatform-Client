@@ -136,7 +136,7 @@ export default {
     //编辑操作
     handleEdit(row) {
       debugger;
-      this.$router.replace({
+      this.$router.resolve({
         path: "/VideoAdd",
         query: { videoId: row.video_id },
       });
@@ -201,7 +201,9 @@ export default {
     };
     getData();
     //新增
-    const handleAdd = () => {};
+    const handleAdd = () => {
+      
+    };
 
     // 查询操作
     const handleSearch = () => {

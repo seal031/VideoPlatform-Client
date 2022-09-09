@@ -7,7 +7,7 @@
       <el-breadcrumb separator=">" class="mt20 mb20">
         <!-- TODO 名称传递 -->
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>青管赛优秀视频</el-breadcrumb-item>
+        <el-breadcrumb-item>优秀视频</el-breadcrumb-item>
         <el-breadcrumb-item>更多</el-breadcrumb-item>
       </el-breadcrumb>
 
@@ -75,7 +75,7 @@
                 class="video-item"
                 v-for="(ele, i) in tableData"
                 :key="i"
-                @click.enter="onClick(v)"
+                @click.enter="jump(ele)"
               >
                 <video-item
                   :src="ele.video_facede"
@@ -172,6 +172,15 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
+    // 跳转
+    const jump = (v) => {
+      debugger
+      const href = router.resolve({
+        path: '/VideoShow',
+        query: { videoId:v.video_id},
+      });
+      window.open(href.href, "_blank");
+    };
 
     onMounted(() => {
       getSession();
@@ -231,6 +240,7 @@ export default {
       videoStateChange,
       handleCurrentChange,
       getSession,
+      jump,
     };
   },
 };
