@@ -20,12 +20,12 @@
           class="customer-table"
           @row-click="showBrief"
         >
-          <el-table-column prop="brief_title" label="" width="500">
+          <el-table-column prop="brief_title" label="">
           </el-table-column>
           <el-table-column
             prop="create_time"
             label=""
-            width="100"
+            width="150"
             :formatter="methods.dateFormat"
           >
           </el-table-column>
@@ -49,12 +49,12 @@
           class="customer-table"
           @row-click="showBrief"
         >
-          <el-table-column prop="brief_title" label="" width="500">
+          <el-table-column prop="brief_title" label="">
           </el-table-column>
           <el-table-column
             prop="create_time"
             label=""
-            width="100"
+            width="150"
             :formatter="methods.dateFormat"
           >
           </el-table-column>
@@ -78,12 +78,12 @@
           class="customer-table"
           @row-click="showBrief"
         >
-          <el-table-column prop="brief_title" label="" width="500">
+          <el-table-column prop="brief_title" label="">
           </el-table-column>
           <el-table-column
             prop="create_time"
             label=""
-            width="100"
+            width="150"
             :formatter="methods.dateFormat"
           >
           </el-table-column>
@@ -253,3 +253,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.block {
+  height: calc(100% - 72px);
+}
+</style>

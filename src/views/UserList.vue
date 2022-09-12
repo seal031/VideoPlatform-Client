@@ -9,70 +9,71 @@
   </div>
   <div class="container">
     <div class="handle-box">
-      <el-row>
-        <el-col :span="24">
-          <el-button type="primary" :icon="Plus" @click="handleAdd()"
-            >新增</el-button
-          >
-        </el-col>
-      </el-row>
-      <el-divider></el-divider>
-      <el-row>
-        <el-col :span="4">
-          <el-form-item>
-            学校性质
-            <el-select
-              v-model="query.params.schoolType"
-              clearable
-              placeholder="请选择"
-              class="handle-select mr10"
+      <el-form>
+        <el-row>
+          <el-col :span="24">
+            <el-button type="primary" :icon="Plus" @click="handleAdd()"
+              >新增</el-button
             >
-              <el-option
-                v-for="(item, c) in SchoolTypeList"
-                :key="c"
-                :label="item.code_name"
-                :value="item.code_id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-form-item
-            >学校分类
-            <el-select
-              v-model="query.params.schoolCategoly"
-              clearable
-              placeholder="请选择"
-              class="handle-select mr10"
+          </el-col>
+        </el-row>
+        <el-divider></el-divider>
+        <el-row>
+          <el-col :span="4">
+            <el-form-item>
+              学校性质
+              <el-select
+                v-model="query.params.schoolType"
+                clearable
+                placeholder="请选择"
+                class="handle-select mr10"
+              >
+                <el-option
+                  v-for="(item, c) in SchoolTypeList"
+                  :key="c"
+                  :label="item.code_name"
+                  :value="item.code_id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item
+              >学校分类
+              <el-select
+                v-model="query.params.schoolCategoly"
+                clearable
+                placeholder="请选择"
+                class="handle-select mr10"
+              >
+                <el-option
+                  v-for="(item, c) in SchoolCategoryTypeList"
+                  :key="c"
+                  :label="item.code_name"
+                  :value="item.code_id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item
+              >关键字
+              <el-input
+                v-model="query.params.keyword"
+                placeholder="请输入关键字"
+                clearable
+                class="handle-input mr10"
+                @keyup.enter.native="handleSearch()"
+              ></el-input
+              ><el-button type="primary" :icon="Search" @click="handleSearch()"
+                >搜索</el-button
+              ></el-form-item
             >
-              <el-option
-                v-for="(item, c) in SchoolCategoryTypeList"
-                :key="c"
-                :label="item.code_name"
-                :value="item.code_id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="10">
-          <el-form-item
-            >关键字
-            <el-input
-              v-model="query.params.keyword"
-              placeholder="请输入关键字"
-              clearable
-              class="handle-input mr10"
-              @keyup.enter.native="handleSearch()"
-            ></el-input
-            ><el-button type="primary" :icon="Search" @click="handleSearch()"
-              >搜索</el-button
-            ></el-form-item
-          >
-        </el-col>
-        <el-col :span="6">
-          <el-form-item> </el-form-item>
-        </el-col>
-      </el-row>
+          </el-col>
+          <el-col :span="6">
+          </el-col>
+        </el-row>
+      </el-form>
     </div>
     <el-table
       :data="SchoolList"

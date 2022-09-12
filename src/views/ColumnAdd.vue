@@ -1,4 +1,4 @@
-<template slot-scope="scope">
+﻿<template slot-scope="scope">
   <div>
     <div class="crumbs">
       <el-breadcrumb separator="/">
@@ -55,17 +55,19 @@
                   list-type="picture-card"
                   :auto-upload="true"
                   :multiple= false
+                  v-model:file-list="fileList"
                   :limit="1"
                   :on-success="handleAvatarSuccess"
+                  :on-remove="handleRemove"
                   :before-upload="beforeAvatarUpload"
                   :file-list="filelist"
                 >
                   <template #default>
                     <el-icon>
-                      <!-- <plus /> -->
+                      <Plus />
                     </el-icon>
                   </template>
-                  <template #file="{ file }">
+                  <!-- <template #file="{ file }">
                     <div>
                       <img
                         class="el-upload-list__item-thumbnail"
@@ -99,7 +101,7 @@
                         </span>
                       </span>
                     </div>
-                  </template>
+                  </template> -->
                 </el-upload>
                 <el-dialog v-model="dialogVisible">
                   <img width="100%" src="dialogImageUrl" alt="" />
@@ -193,13 +195,13 @@ export default {
     const dialogVisible = ref(false);
     const disabled = ref(true);
     const imageUrl = ref("");
-    const handleAvatarSuccess = (
-      res,
-      file
-    ) => {
+    const fileList = ref([]);
+    const handleAvatarSuccess = (res, file) => {
+      debugger;
       // imageUrl.value = URL.createObjectURL(file.raw);
       // imageUrl.value = URL.createObjectURL('http://localhost:14474/Images/'+res.data.newFileName);
-      imageUrl.value ='http://47.93.84.178:14474/Images/'+res.data.newFileName;
+      imageUrl.value =
+        "http://47.93.84.178:14474/Images/" + res.data.newFileName;
     };
     const beforeAvatarUpload = (file) => {
       const isJPG = file.type === "image/jpeg";
@@ -213,17 +215,18 @@ export default {
       return isJPG && isLt2M;
     };
     const handleRemove = (file) => {
-      debugger
+      debugger;
       console.log(file);
       file.url=undefined
+      imageUrl.value = "";
     };
     const handlePictureCardPreview = (file) => {
-      debugger
-      dialogImageUrl.value =imageUrl.value ;
+      debugger;
+      dialogImageUrl.value = imageUrl.value;
       dialogVisible.value = true;
     };
     const handleDownload = (file) => {
-      debugger
+      debugger;
       console.log(file);
     };
     const getWangEditorValue = (str) => {
@@ -235,7 +238,7 @@ export default {
       briefForm.data.brief_state = "0401";
       briefForm.data.admin_id = "0";
       briefForm.data.admin_ip = "localhost";
-      briefForm.data.brief_image=imageUrl.value;
+      briefForm.data.brief_image = imageUrl.value;
       console.log(briefForm.data);
       addBrief(briefForm.data).then((res) => {
         if ((res.resultCode = "200")) {
@@ -321,6 +324,8 @@ export default {
       getWangEditorValue,
       handleAvatarSuccess,
       beforeAvatarUpload,
+
+      fileList,
     };
   },
 };

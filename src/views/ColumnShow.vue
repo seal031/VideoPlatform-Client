@@ -5,17 +5,31 @@
       <el-header>
         <h2>{{ briefForm.data.brief_title }}</h2>
         <p>
-          所属分类:{{ briefForm.data.brief_type }} 创建时间:{{
-            methods.dateFormat(briefForm.data.create_time)
-          }}
+          <span> 所属分类:{{ briefForm.data.brief_type }} </span>
+          <el-divider direction="vertical"></el-divider>
+          <span>
+            创建时间:{{ methods.dateFormat(briefForm.data.create_time) }}
+          </span>
         </p>
       </el-header>
       <el-container>
         <el-main>
-          <img :src="briefForm.data.brief_image" style="width:200px; height:150px" class="html-content"/>
+          <img
+            :src="briefForm.data.brief_image"
+            style="width: 200px; height: 150px"
+            class="html-content"
+          />
           <div style="width: 100%; min-height: 1200px">
-            <div style="width: 100%; min-height: 1000px; background: #ffffff" class="html-parent">
-              <div id="content" class="html-content" v-html="content" style="width: 75%"></div>
+            <div
+              style="width: 100%; min-height: 1000px; background: #ffffff"
+              class="html-parent"
+            >
+              <div
+                id="content"
+                class="html-content"
+                v-html="content"
+                style="width: 75%"
+              ></div>
             </div>
           </div>
         </el-main>
@@ -48,7 +62,7 @@ export default {
     let userName = "";
     let realName = ref("");
     let userSchool = "";
-    
+
     let briefId = "";
     let content = ref("content");
     //数据模型
@@ -137,14 +151,25 @@ export default {
 </script>
 
 <style scoped>
+.el-header {
+  text-align: center;
+  margin: 20px 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 12px;
+}
+.el-header h2 {
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 1);
+  font-size: 20px;
+}
 .portal-wrap {
   height: 100%;
   overflow: auto;
 }
-.html-parent{
-  text-align:center;
+.html-parent {
+  text-align: center;
 }
-.html-content{
-  margin:0 auto
+.html-content {
+  margin: 0 auto;
 }
 </style>

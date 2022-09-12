@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="crumbs">
+    <!-- <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-lx-calendar"></i> 视频管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>添加视频</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <el-container>
       <el-aside width="50%">
         <div class="container">
@@ -206,15 +206,21 @@ export default {
   components: {
     videoPlay,
   },
-  setup() {
+  props:{
+    videoId:{
+      type: String ,
+      default:""
+    }
+  },
+  setup(props) {
     let userId = "";
     let userRole = "";
     let userName = "";
     let realName = ref("");
     let userSchool = "";
 
-    let route = useRoute(); //可以在setup中使用route获取参数
-    let videoId = "";
+    // let route = useRoute(); //可以在setup中使用route获取参数
+    let videoId = props.videoId;
     //下拉数据模型列表
     let publicTypeList = ref([]);
     let videoTypeList = ref([]);
@@ -275,9 +281,9 @@ export default {
     const rules = {
       name: [{ required: true, message: "请输入内容", trigger: "blur" }],
     };
-    const getParams = () => {
-      videoId = route.query.videoId;
-    };
+    // const getParams = () => {
+    //   videoId = route.query.videoId;
+    // };
     const bindVideo = () => {
       if (videoId != undefined) {
         let params = {
@@ -364,7 +370,7 @@ export default {
           videoTypeList.value = res.data;
         }
       });
-      getParams();
+      // getParams();
       bindVideo();
     });
     return {
@@ -382,7 +388,7 @@ export default {
       options,
       videoForm,
       rules,
-      getParams,
+      // getParams,
       bindVideo,
       getVideoPic,
       publicChange,
