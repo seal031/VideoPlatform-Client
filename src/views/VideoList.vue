@@ -116,6 +116,15 @@
       ></el-pagination>
     </div>
   </div>
+  <el-dialog
+    v-model="dialogVisible"
+    title="视频详情"
+    width="70%"
+    top="20px"
+    @close="handleClose"
+  >
+    <video-add :videoId="video_id"></video-add>
+  </el-dialog>
 </template>
 
 <script>
@@ -128,20 +137,21 @@ import {
   getVideoList,
 } from "../api/serviceApi";
 import VideoItem from "../components/VideoItem.vue";
+import VideoAdd from ".//VideoAdd.vue";
 
 export default {
-  components: { VideoItem },
   name: "videolist",
-  methods: {
-    //编辑操作
-    handleEdit(row) {
-      debugger;
-      this.$router.resolve({
-        path: "/VideoAdd",
-        query: { videoId: row.video_id },
-      });
-    },
-  },
+  components: { VideoItem, VideoAdd},
+  // methods: {
+  //   //编辑操作
+  //   handleEdit(row) {
+  //     debugger;
+  //     this.$router.resolve({
+  //       path: "/VideoAdd",
+  //       query: { videoId: row.video_id },
+  //     });
+  //   },
+  // },
   setup() {
     let userId = "";
     let userRole = "";
@@ -202,7 +212,8 @@ export default {
     getData();
     //新增
     const handleAdd = () => {
-      
+      // video_id.value = "";
+      // dialogVisible.value = true;
     };
 
     // 查询操作
@@ -231,6 +242,19 @@ export default {
         .catch(() => {});
     };
 
+
+    const dialogVisible = ref(false);
+    const video_id = ref("");
+
+    const handleEdit = (row)=>{
+      video_id.value = row.video_id;
+      dialogVisible.value = true;
+    };
+    
+    const handleClose = ()=>{
+      handleSearch();
+    };
+
     return {
       Search,
       Plus,
@@ -257,6 +281,11 @@ export default {
       handlePageChange,
       handleDelete,
       getSession,
+
+      dialogVisible,
+      video_id,
+      handleEdit,
+      handleClose
     };
   },
 };
