@@ -180,7 +180,8 @@
           点击拍照
         </p>
         <div>
-          <videoPlay id="player" v-bind="options" />
+          <videoPlay id="player" v-bind="options" 
+              :src="videoForm.data.video_url"/>
         </div>
       </el-main>
     </el-container>
@@ -249,20 +250,20 @@ export default {
       data: {
         admin_id:"",
         admin_ip:"",
-        video_id: "",
+        video_id: null,
         video_title: "",
         video_brief: "",
         video_type: "",
-        video_year: 0,
+        video_year: "",
         teacher: "",
         award: "",
         public_type: "",
         public_school: "",
-        video_school: "",
-        video_state: "",
-        video_url: "",
-        // create_time: "",
-        // edit_time: "",
+        video_school: null,
+        video_state: null,
+        video_url: null,
+        create_time: null, //后台DateTime字段一定要用null默认值！！！！！！
+        edit_time: null, //后台DateTime字段一定要用null默认值！！！！！！
         view_count: 10,
         collection_count: 0,
         appreciate_count: 0,
@@ -278,7 +279,7 @@ export default {
       videoId = route.query.videoId;
     };
     const bindVideo = () => {
-      if (videoId != "") {
+      if (videoId != undefined) {
         let params = {
           params: {
             video_id: videoId,
@@ -322,6 +323,7 @@ export default {
     };
     const perviewVideo = (videoUrl) => {
       console.log(videoUrl);
+      options.autoPlay=true;
     };
     const getSession = () => {
       userId = localStorage.getItem("user_id");
@@ -334,8 +336,7 @@ export default {
       videoForm.data.video_state = "0401";
       videoForm.data.admin_id = "0";
       videoForm.data.admin_ip = "localhost";
-      console.log(videoForm.data);
-      addVideo(videoForm).then((res) => {
+      addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
             message: "操作成功.",

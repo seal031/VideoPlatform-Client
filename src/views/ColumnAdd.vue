@@ -54,10 +54,11 @@
                   action="http://47.93.84.178:14474/Upload"
                   list-type="picture-card"
                   :auto-upload="true"
-                  :multiple="false"
+                  :multiple= false
                   :limit="1"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
+                  :file-list="filelist"
                 >
                   <template #default>
                     <el-icon>
@@ -88,7 +89,7 @@
                           <el-icon><download /></el-icon>
                         </span>
                         <span
-                          v-if="!disabled"
+                          v-if="disabled"
                           class="el-upload-list__item-delete"
                           @click="handleRemove(file)"
                         >
@@ -161,6 +162,7 @@ export default {
     let isReadonly = false;
     //下拉模型
     let columnTypeList = ref([]);
+    let filelist=ref([]);
     //数据模型
     let briefForm = reactive({
       data: {
@@ -189,13 +191,12 @@ export default {
     const editor = ref(null);
     let dialogImageUrl = ref("");
     const dialogVisible = ref(false);
-    const disabled = ref(false);
+    const disabled = ref(true);
     const imageUrl = ref("");
     const handleAvatarSuccess = (
       res,
       file
     ) => {
-      debugger
       // imageUrl.value = URL.createObjectURL(file.raw);
       // imageUrl.value = URL.createObjectURL('http://localhost:14474/Images/'+res.data.newFileName);
       imageUrl.value ='http://47.93.84.178:14474/Images/'+res.data.newFileName;
@@ -214,6 +215,7 @@ export default {
     const handleRemove = (file) => {
       debugger
       console.log(file);
+      file.url=undefined
     };
     const handlePictureCardPreview = (file) => {
       debugger
@@ -269,15 +271,18 @@ export default {
         isReadonly = route.query.isReadonly;
       },
       bindBrief() {
-        if (briefId != "") {
+        if (briefId != undefined) {
           let params = {
             params: {
               brief_id: briefId,
             },
           };
           getBriefById(params).then((res) => {
-            debugger;
             briefForm.data = JSON.parse(res.data);
+            filelist.value.push({
+              'name':'temp.jpg',
+              'url':briefForm.data.brief_image
+            })
           });
         }
       },
@@ -287,7 +292,6 @@ export default {
       methods.getParams();
       methods.bindBrief();
       getColumnType().then((res) => {
-        // debugger;
         columnTypeList.value = res.data;
       });
     });
@@ -305,6 +309,7 @@ export default {
       columnTypeList,
       editor,
       briefForm,
+      filelist,
       rules,
       dialogVisible,
       disabled,

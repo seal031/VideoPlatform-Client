@@ -85,7 +85,7 @@ const routes = [
             path: "/UserList",
             name: "UserList",
             meta: {
-                title: '学校用户管理'
+                title: '系统权限管理'
             },
             component: () => import( /* webpackChunkName: "donate" */ "../views/UserList.vue")
         }, {

@@ -1,7 +1,7 @@
 <template>
   <top-tool-bar></top-tool-bar>
   <div class="block">
-    <el-tabs tab-position="left" style="height: 200px" v-model="activeTab">
+    <el-tabs tab-position="left" style="height: 100%" v-model="activeTab">
       <el-tab-pane label="图片新闻" name="tpxw">
         <div class="tr mb10">
           <el-pagination
@@ -32,6 +32,16 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="通知公告" name="tzgg">
+        <div class="tr mb10">
+          <el-pagination
+            @current-change="handleCurrentChangeTzgg"
+            v-model:currentPage="tzggQuery.params.pageIndex"
+            v-model:page-size="tzggQuery.params.pageSize"
+            layout="total, prev, pager, next"
+            :total="tzggTotalCount"
+          >
+          </el-pagination>
+        </div>
         <el-table
           :data="tzggList"
           style="width: 100%"
@@ -51,6 +61,16 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="政策法规" name="zcfg">
+        <div class="tr mb10">
+          <el-pagination
+            @current-change="handleCurrentChangeZcfg"
+            v-model:currentPage="zcfgQuery.params.pageIndex"
+            v-model:page-size="zcfgQuery.params.pageSize"
+            layout="total, prev, pager, next"
+            :total="zcfgTotalCount"
+          >
+          </el-pagination>
+        </div>
         <el-table
           :data="zcfgList"
           style="width: 100%"
@@ -117,7 +137,7 @@ export default {
         briefState: "0401", //已发布
         pageIndex: 1,
         pageSize: 20,
-        topN: 4,
+        topN: 20,
       },
     });
     let tzggQuery = reactive({
@@ -126,7 +146,7 @@ export default {
         briefState: "0401", //已发布
         pageIndex: 1,
         pageSize: 20,
-        topN: 6,
+        topN: 20,
       },
     });
     let zcfgQuery = reactive({
@@ -135,7 +155,7 @@ export default {
         briefState: "0401", //已发布
         pageIndex: 1,
         pageSize: 20,
-        topN: 6,
+        topN: 20,
       },
     });
 
@@ -155,6 +175,7 @@ export default {
         //通知公告
         getBriefList(tzggQuery).then((res) => {
           if (res.resultCode == "200") {
+            debugger
             tzggList.value = JSON.parse(res.data.BriefList);
             tzggTotalCount.value = res.data.totalCount;
           }

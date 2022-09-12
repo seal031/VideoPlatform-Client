@@ -13,7 +13,6 @@
 //   import Vue from 'vue'
   export default {
     name: "RtEditor",
-
     data() {
       return {
         // token: "",
