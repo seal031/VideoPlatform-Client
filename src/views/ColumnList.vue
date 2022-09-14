@@ -89,6 +89,16 @@
       </div>
     </div>
   </div>
+  <el-dialog
+    @dialogclose="handleClose"
+    v-model="dialogVisible"
+    title="内容详情"
+    width="80%"
+    top="20px"
+    @close="handleClose"
+  >
+    <column-add :briefId="brief_id"></column-add>
+  </el-dialog>
 </template>
 
 <script>
@@ -98,12 +108,11 @@ import { ref, reactive, onMounted } from "@vue/runtime-core";
 import { getBriefBaseList, getColumnType, delBrief } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter, useRoute } from "vue-router";
+import ColumnAdd from ".//ColumnAdd.vue";
 
 export default {
+  components: { ColumnAdd },
   methods: {
-    handleSearch() {
-      this.methods.getBriefList();
-    },
     //预览
     handleShow(row) {
       // 页面跳转
@@ -111,16 +120,15 @@ export default {
         path: "/BriefShow",
         query: { briefId: row.brief_id },
       });
-      debugger;
       window.open(href.href, "_blank");
     },
     //编辑
-    handleEdit(row) {
-      this.$router.resolve({
-        path: "/ColumnAdd",
-        query: { briefId: row.brief_id, isReadonly: false },
-      });
-    },
+    // handleEdit(row) {
+    //   this.$router.resolve({
+    //     path: "/ColumnAdd",
+    //     query: { briefId: row.brief_id, isReadonly: false },
+    //   });
+    // },
     //删除
     handleDel(row) {
       ElMessageBox.confirm("确定要删除吗？", "提示", {
@@ -231,11 +239,34 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
+    const handleAdd=()=>{
+      brief_id.value=undefined
+      dialogVisible.value = true;
+    };
+
     onMounted(() => {
       getSession();
       methods.getColumnTypeList();
       methods.getBriefList();
     });
+    const dialogVisible = ref(false);
+    const brief_id = ref("");
+
+    const handleEdit = (row)=>{
+      brief_id.value = row.brief_id;
+      dialogVisible.value = true;
+    };
+    
+    const handleSearch=()=> {
+      methods.getBriefList();
+    };
+    
+    const handleClose = ()=>{
+      debugger
+      dialogVisible.value=false;
+      handleSearch();
+    };
+
     return {
       Search,
       Plus,
@@ -258,6 +289,13 @@ export default {
       briefFormList,
       methods,
       getSession,
+
+      dialogVisible,
+      brief_id,
+      handleAdd,
+      handleEdit,
+      handleClose,
+      handleSearch,
     };
   },
 };

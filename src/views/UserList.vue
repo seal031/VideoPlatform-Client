@@ -167,7 +167,10 @@ export default {
         }
       });
     };
-    const handleAdd = () => {};
+    const handleAdd = () => {
+      SchoolAddVisible.value = true;
+      selectedSchoolId.value ="";
+    };
     const handleSearch = () => {
       bindSchoolList();
     };

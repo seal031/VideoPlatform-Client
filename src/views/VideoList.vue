@@ -212,8 +212,8 @@ export default {
     getData();
     //新增
     const handleAdd = () => {
-      // video_id.value = "";
-      // dialogVisible.value = true;
+      video_id.value = undefined;
+      dialogVisible.value = true;
     };
 
     // 查询操作
@@ -252,6 +252,7 @@ export default {
     };
     
     const handleClose = ()=>{
+      dialogVisible.value=false;
       handleSearch();
     };
 

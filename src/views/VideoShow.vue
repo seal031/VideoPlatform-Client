@@ -471,8 +471,7 @@ export default {
       }
     };
     const starChange = () => {
-      // debugger;
-      if ((userId == null) | (userId == "")) {
+      if ((userId == null) || (userId == "null"||userId==""||userId==undefined)) {
         ElMessage.warning("您还未登陆，无法收藏");
         return;
       }

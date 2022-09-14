@@ -193,6 +193,7 @@ import "vue3-video-play/dist/style.css";
 import { videoPlay } from "vue3-video-play";
 import { ref, onMounted, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 import {
   getVideoPublicType,
   getSchoolList,

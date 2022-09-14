@@ -68,22 +68,29 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { getUserById,addUser } from "../api/serviceApi";
 export default {
   props: {
-    UserId: ref(String),
-    SchoolName: ref(String),
+    UserId: {
+      type: String ,
+      default:""
+    },
+    SchoolId: {
+      type: String ,
+      default:""
+    },
   },
   setup(props) {
       debugger
     const UserId = props.UserId;
-    const SchoolName = props.SchoolName;
+    const SchoolId = props.SchoolId;
     //数据模型
     let UserForm = reactive({
       data: {
-        school_id: null,
-        school_name: "",
-        school_type_code: "",
-        school_category_code: "",
-        administrator: "",
-        operate_admin: null,
+        user_school: null,
+        // school_name: "",
+        // school_type_code: "",
+        // school_category_code: "",
+        // administrator: "",
+        // operate_admin: null,
+        is_deleted:0,
       },
     });
 
@@ -102,15 +109,34 @@ export default {
       }
     };
     const handleAdd=()=>{
-        
-    }
+      debugger
+      UserForm.data.user_school=SchoolId;
+      UserForm.data.admin_id = "0";
+      UserForm.data.admin_ip = "localhost";
+      console.log(UserForm.data)
+      addUser(UserForm.data).then((res)=>{
+        if (res.resultCode == "200") {
+          ElMessage({
+            message: "操作成功.",
+            grouping: true,
+            type: "success",
+          });
+        }else {
+          ElMessage({
+            message: "操作失败：" + res.message,
+            grouping: true,
+            type: "error",
+          });
+        }
+      });
+    };
 
     onMounted(() => {
       bindUser();
     });
     return {
       UserId,
-      SchoolName,
+      SchoolId,
       UserForm,
       bindUser,
       handleAdd,

@@ -1,13 +1,13 @@
 ﻿<template slot-scope="scope">
   <div>
-    <div class="crumbs">
+    <!-- <div class="crumbs"> -->
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-lx-calendar"></i> 内容管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>添加内容</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    <!-- </div> -->
     <!-- <el-container> -->
     <el-aside width="100%">
       <div class="container">
@@ -60,7 +60,6 @@
                   :on-success="handleAvatarSuccess"
                   :on-remove="handleRemove"
                   :before-upload="beforeAvatarUpload"
-                  :file-list="filelist"
                 >
                   <template #default>
                     <el-icon>
@@ -103,7 +102,7 @@
                     </div>
                   </template> -->
                 </el-upload>
-                <el-dialog v-model="dialogVisible">
+                <el-dialog v-model="imageVisible">
                   <img width="100%" src="dialogImageUrl" alt="" />
                 </el-dialog>
               </el-form-item>
@@ -152,7 +151,17 @@ export default {
     Download,
     Delete,
   },
-  setup() {
+  props:{
+    briefId:{
+      type: String ,
+      default:""
+    },
+    dialogVisible:{
+      type:Boolean,
+      default:false
+    }
+  },
+  setup(props,context) {
     let route = useRoute(); //可以在setup中使用route获取参数
     let userId = "";
     let userRole = "";
@@ -160,7 +169,8 @@ export default {
     let realName = ref("");
     let userSchool = "";
 
-    let briefId = "";
+    let briefId = props.briefId;
+    let dialogVisible=props.dialogVisible;
     let isReadonly = false;
     //下拉模型
     let columnTypeList = ref([]);
@@ -192,7 +202,7 @@ export default {
     const formRef = ref(null);
     const editor = ref(null);
     let dialogImageUrl = ref("");
-    const dialogVisible = ref(false);
+    const imageVisible = ref(false);
     const disabled = ref(true);
     const imageUrl = ref("");
     const fileList = ref([]);
@@ -223,7 +233,7 @@ export default {
     const handlePictureCardPreview = (file) => {
       debugger;
       dialogImageUrl.value = imageUrl.value;
-      dialogVisible.value = true;
+      imageVisible.value = true;
     };
     const handleDownload = (file) => {
       debugger;
@@ -258,7 +268,9 @@ export default {
     };
     const onDraft = () => {
       briefForm.data.brief_state = "0402";
-      console.log(briefForm.data);
+      // console.log(briefForm.data);
+      // context.emit('update:dialogVisible.value',false);
+      context.emit('dialogclose');
     };
     const getSession = () => {
       userId = localStorage.getItem("user_id");
@@ -269,10 +281,10 @@ export default {
     };
     // 定义方法
     const methods = {
-      getParams() {
-        briefId = route.query.briefId;
-        isReadonly = route.query.isReadonly;
-      },
+      // getParams() {
+      //   briefId = route.query.briefId;
+      //   isReadonly = route.query.isReadonly;
+      // },
       bindBrief() {
         if (briefId != undefined) {
           let params = {
@@ -292,7 +304,7 @@ export default {
     };
     onMounted(() => {
       getSession();
-      methods.getParams();
+      // methods.getParams();
       methods.bindBrief();
       getColumnType().then((res) => {
         columnTypeList.value = res.data;
@@ -314,7 +326,7 @@ export default {
       briefForm,
       filelist,
       rules,
-      dialogVisible,
+      imageVisible,
       disabled,
       handleRemove,
       handlePictureCardPreview,
@@ -326,6 +338,7 @@ export default {
       beforeAvatarUpload,
 
       fileList,
+      dialogVisible,
     };
   },
 };

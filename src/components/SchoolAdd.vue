@@ -1,13 +1,5 @@
 <template>
   <div class="container">
-    <el-row>
-      <el-col :span="24">
-        <el-button type="primary" :icon="Plus" @click="handleAdd()"
-          >新增</el-button
-        >
-      </el-col>
-    </el-row>
-    <el-divider></el-divider>
     <el-form ref="formRef" :model="SchoolForm.data" label-width="120px">
       <el-row>
         <el-col :span="24">
@@ -75,6 +67,15 @@
       </el-row>
     </el-form>
 
+    <el-row>
+      <el-col :span="24">
+        <el-button type="primary" :icon="Plus" @click="handleAdd()"
+          >新增账号</el-button
+        >
+      </el-col>
+    </el-row>
+    <el-divider></el-divider>
+
     <el-table
       :data="UserList"
       style="width: 100%"
@@ -86,9 +87,9 @@
       </el-table-column>
       <el-table-column prop="user_name" label="账号名称" width="200%">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column fixed="right" label="操作" width="150">
         <template #default="scope">
-          <el-button @click="handleEdit(scope.row)" type="primary " size="small" :icon="Cellphone"
+          <el-button @click="handleEdit(scope.row)" type="text " size="small" :icon="Cellphone"
             >编辑</el-button
           >
           <el-button @click="handleDel(scope.row)" type="text" size="small" :icon="Delete"
@@ -97,10 +98,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-row>
+      <el-col :span="24">
+        <el-button type="primary" :icon="Plus" @click="onSubmit()"
+          >确定</el-button
+        >
+      </el-col>
+    </el-row>
     <el-dialog title="编辑账号" v-model="UserAddVisible">
       <user-add
         :UserId="selectedUserId"
-        :SchoolName="selectedSchoolName"
+        :SchoolId="selectedSchoolId"
         v-if="UserAddVisible"
       ></user-add>
     </el-dialog>
@@ -130,8 +138,8 @@ export default {
   setup(props) {
     const SchoolId = props.SchoolId;
     let UserList = ref([]);
-    let selectedUserId = ref("a");
-    let selectedSchoolName = ref("a");
+    let selectedUserId = ref("");
+    let selectedSchoolId = ref("");
     let UserAddVisible = ref(false);
     //数据模型
     let SchoolForm = reactive({
@@ -159,6 +167,9 @@ export default {
         });
       }
     };
+    const onSubmit=()=>{
+      
+    };
 
     const bindUserList = () => {
       if (SchoolId != "") {
@@ -174,15 +185,15 @@ export default {
         });
       }
     };
-    const handleAdd = () => {
+    const handleAdd = (row) => {
       UserAddVisible.value = true;
-      selectedUserId.value = row.user_id;
-      selectedSchoolName.value = SchoolForm.data.school_name;
+      selectedUserId.value = "";
+      selectedSchoolId.value = SchoolForm.data.school_id;
     };
     const handleEdit = (row) => {
       UserAddVisible.value = true;
       selectedUserId.value = row.user_id;
-      selectedSchoolName.value = SchoolForm.data.school_name;
+      selectedSchoolId.value = SchoolForm.data.school_id;
     };
     const handleDel = (row) => {
       ElMessageBox.confirm("确定要删除吗？", "提示", {
@@ -202,7 +213,7 @@ export default {
             .then((res) => {
               if (res.resultCode == "200") {
                 ElMessage.success("删除成功");
-                bindSchoolList();
+                bindUserList();
               } else {
                 ElMessage({
                   message: "获取数据失败：" + res.message,
@@ -232,7 +243,7 @@ export default {
       SchoolId,
       UserList,
       selectedUserId,
-      selectedSchoolName,
+      selectedSchoolId,
       UserAddVisible,
       SchoolForm,
       bindSchool,
