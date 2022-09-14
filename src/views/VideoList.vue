@@ -123,7 +123,7 @@
     top="20px"
     @close="handleClose"
   >
-    <video-add :videoId="video_id"></video-add>
+    <video-add :video-id="video_id"></video-add>
   </el-dialog>
 </template>
 
@@ -252,6 +252,7 @@ export default {
     };
     
     const handleClose = ()=>{
+      video_id.value = "";
       dialogVisible.value=false;
       handleSearch();
     };

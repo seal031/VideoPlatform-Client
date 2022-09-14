@@ -99,8 +99,8 @@
                   <el-form-item label="视频年度" prop="video_year">
                     <el-date-picker
                       v-model="videoForm.data.video_year"
-                      format='YYYY'
-                      value-format='YYYY'
+                      format="YYYY"
+                      value-format="YYYY"
                       type="year"
                       placeholder="选择年份"
                       style="width: 100%"
@@ -180,8 +180,11 @@
           点击拍照
         </p>
         <div>
-          <videoPlay id="player" v-bind="options" 
-              :src="videoForm.data.video_url"/>
+          <videoPlay
+            id="player"
+            v-bind="options"
+            :src="videoForm.data.video_url"
+          />
         </div>
       </el-main>
     </el-container>
@@ -191,7 +194,7 @@
 <script>
 import "vue3-video-play/dist/style.css";
 import { videoPlay } from "vue3-video-play";
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import {
@@ -207,11 +210,11 @@ export default {
   components: {
     videoPlay,
   },
-  props:{
-    videoId:{
-      type: String ,
-      default:""
-    }
+  props: {
+    videoId: {
+      type: String,
+      default: "",
+    },
   },
   setup(props) {
     let userId = "";
@@ -253,31 +256,32 @@ export default {
         "fullScreen",
       ], //显示所有按钮,
     });
+    const initVideoFormData = {
+      admin_id: "",
+      admin_ip: "",
+      video_id: null,
+      video_title: "",
+      video_brief: "",
+      video_type: "",
+      video_year: "",
+      teacher: "",
+      award: "",
+      public_type: "",
+      public_school: "",
+      video_school: null,
+      video_state: null,
+      video_url: null,
+      create_time: null, //后台DateTime字段一定要用null默认值！！！！！！
+      edit_time: null, //后台DateTime字段一定要用null默认值！！！！！！
+      view_count: 10,
+      collection_count: 0,
+      appreciate_count: 0,
+      id_deleted: 0,
+      video_facede: "",
+      uploader: "",
+    };
     const videoForm = reactive({
-      data: {
-        admin_id:"",
-        admin_ip:"",
-        video_id: null,
-        video_title: "",
-        video_brief: "",
-        video_type: "",
-        video_year: "",
-        teacher: "",
-        award: "",
-        public_type: "",
-        public_school: "",
-        video_school: null,
-        video_state: null,
-        video_url: null,
-        create_time: null, //后台DateTime字段一定要用null默认值！！！！！！
-        edit_time: null, //后台DateTime字段一定要用null默认值！！！！！！
-        view_count: 10,
-        collection_count: 0,
-        appreciate_count: 0,
-        id_deleted:0,
-        video_facede: "",
-        uploader:"",
-      },
+      data: JSON.parse(JSON.stringify(initVideoFormData)),
     });
     const rules = {
       name: [{ required: true, message: "请输入内容", trigger: "blur" }],
@@ -285,7 +289,8 @@ export default {
     // const getParams = () => {
     //   videoId = route.query.videoId;
     // };
-    const bindVideo = () => {
+    
+    const bindVideo = (videoId) => {
       if (videoId != undefined) {
         let params = {
           params: {
@@ -330,7 +335,7 @@ export default {
     };
     const perviewVideo = (videoUrl) => {
       console.log(videoUrl);
-      options.autoPlay=true;
+      options.autoPlay = true;
     };
     const getSession = () => {
       userId = localStorage.getItem("user_id");
@@ -339,7 +344,7 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
-    const onSubmit=()=>{
+    const onSubmit = () => {
       videoForm.data.video_state = "0401";
       videoForm.data.admin_id = "0";
       videoForm.data.admin_ip = "localhost";
@@ -372,8 +377,22 @@ export default {
         }
       });
       // getParams();
-      bindVideo();
+      // bindVideo();
     });
+    
+
+    watch(
+      () => props.videoId,
+      (val) => {
+        if (val) {
+          bindVideo(val);
+        } else {
+          // 清空表单
+          videoForm.data = JSON.parse(JSON.stringify(initVideoFormData));
+        }
+      },
+      { immediate: true }
+    );
     return {
       userId,
       userRole,
