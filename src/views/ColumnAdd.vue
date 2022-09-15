@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted,watch } from "vue";
 import { addBrief, getBriefById, getColumnType } from "../api/serviceApi";
 import rtEditor from "../components/RtEditor.vue";
 import { Plus, ZoomIn, Download, Delete } from "@element-plus/icons-vue";
@@ -176,17 +176,19 @@ export default {
     let columnTypeList = ref([]);
     let filelist=ref([]);
     //数据模型
-    let briefForm = reactive({
-      data: {
-        brief_id: null,
-        brief_title: "",
-        brief_content: "",
-        brief_type: "",
-        brief_state: "",
-        brief_image: "",
-        operate_admin: null,
-      },
+    const initbriefFormData={
+      brief_id: null,
+      brief_title: "",
+      brief_content: "",
+      brief_type: "",
+      brief_state: "",
+      brief_image: "",
+      operate_admin: null,
+    }
+    const briefForm = reactive({
+      data: JSON.parse(JSON.stringify(initbriefFormData)),
     });
+
     //校验规则
     const rules = {
       brief_title: [
@@ -279,14 +281,9 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
-    // 定义方法
-    const methods = {
-      // getParams() {
-      //   briefId = route.query.briefId;
-      //   isReadonly = route.query.isReadonly;
-      // },
-      bindBrief() {
-        if (briefId != undefined) {
+    
+    const bindBrief=(briefId)=>{
+      if (briefId != undefined) {
           let params = {
             params: {
               brief_id: briefId,
@@ -301,16 +298,28 @@ export default {
             })
           });
         }
-      },
     };
     onMounted(() => {
       getSession();
-      // methods.getParams();
-      methods.bindBrief();
+      bindBrief();
       getColumnType().then((res) => {
         columnTypeList.value = res.data;
       });
     });
+
+    watch(
+      () => props.briefId,
+      (val) => {
+        if (val) {
+          bindBrief(val);
+        } else {
+          // 清空表单
+          briefForm.data = JSON.parse(JSON.stringify(initbriefFormData));
+        }
+      },
+      { immediate: true }
+    );
+
     return {
       userId,
       userRole,
@@ -318,7 +327,7 @@ export default {
       realName,
       userSchool,
 
-      methods,
+      bindBrief,
       getSession,
       briefId,
       formRef,
