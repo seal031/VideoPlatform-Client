@@ -123,7 +123,7 @@
     top="20px"
     @close="handleClose"
   >
-    <video-add :video-id="video_id"></video-add>
+    <video-add :video-id="video_id" @dialogclose="handleClose"></video-add>
   </el-dialog>
 </template>
 

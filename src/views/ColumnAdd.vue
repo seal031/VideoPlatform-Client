@@ -257,6 +257,7 @@ export default {
             grouping: true,
             type: "success",
           });
+          context.emit('dialogclose');
         } else {
           ElMessage({
             message: "操作失败：" + res.message,
@@ -267,9 +268,8 @@ export default {
       });
     };
     const onDraft = () => {
+      console.log('onDraft');
       briefForm.data.brief_state = "0402";
-      // console.log(briefForm.data);
-      // context.emit('update:dialogVisible.value',false);
       context.emit('dialogclose');
     };
     const getSession = () => {
@@ -294,6 +294,7 @@ export default {
           };
           getBriefById(params).then((res) => {
             briefForm.data = JSON.parse(res.data);
+            console.log(briefForm.data)
             filelist.value.push({
               'name':'temp.jpg',
               'url':briefForm.data.brief_image

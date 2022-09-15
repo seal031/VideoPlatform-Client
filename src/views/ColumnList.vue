@@ -90,14 +90,13 @@
     </div>
   </div>
   <el-dialog
-    @dialogclose="handleClose"
     v-model="dialogVisible"
     title="内容详情"
     width="80%"
     top="20px"
     @close="handleClose"
   >
-    <column-add :briefId="brief_id"></column-add>
+    <column-add :briefId="brief_id" @dialogclose="handleClose"></column-add>
   </el-dialog>
 </template>
 
@@ -262,7 +261,7 @@ export default {
     };
     
     const handleClose = ()=>{
-      debugger
+      brief_id.value = "";
       dialogVisible.value=false;
       handleSearch();
     };

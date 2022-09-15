@@ -169,7 +169,7 @@
               </el-row>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">发布视频</el-button>
-                <el-button type="primary" @click="onReset">存为草稿</el-button>
+                <el-button type="primary" @click="onDraft">存为草稿</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -355,6 +355,7 @@ export default {
             grouping: true,
             type: "success",
           });
+          context.emit('dialogclose');
         } else {
           ElMessage({
             message: "操作失败：" + res.message,
@@ -363,6 +364,11 @@ export default {
           });
         }
       });
+    };
+    const onDraft = () => {
+      console.log('onDraft');
+      videoForm.data.video_state = "0402";
+      context.emit('dialogclose');
     };
     onMounted(() => {
       getSession();
@@ -415,6 +421,7 @@ export default {
       perviewVideo,
       getSession,
       onSubmit,
+      onDraft,
     };
   },
 };
