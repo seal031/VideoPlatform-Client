@@ -95,6 +95,7 @@
     width="80%"
     top="20px"
     @close="handleClose"
+    :destroy-on-close="true"
   >
     <column-add :briefId="brief_id" @dialogclose="handleClose"></column-add>
   </el-dialog>

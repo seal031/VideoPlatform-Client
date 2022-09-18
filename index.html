@@ -7,6 +7,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>vue-manage-system</title>
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_830376_qzecyukz0s.css">
+  <!-- //（必须）H5模式播放器，需引用此css文件。 -->
+  <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.12.1/skins/default/aliplayer-min.css" />
+  <!-- //（必须）引入H5模式的js文件。 -->
+  <script charset="utf-8" type="text/javascript" src="https://g.alicdn.com/de/prismplayer/2.12.1/aliplayer-h5-min.js"></script> 
 </head>
 
 <body>
@@ -15,6 +19,9 @@
       Please enable it to continue.</strong>
   </noscript>
   <div id="app"></div>
+  <!-- 上传sdk -->
+  <script src="/lib/aliyun-upload-sdk/lib/aliyun-oss-sdk-6.17.1.min.js"></script>
+  <script src="/lib/aliyun-upload-sdk/aliyun-upload-sdk-1.5.3.min.js"></script>
   <script type="module" src="/src/main.js"></script>
   <!-- built files will be auto injected -->
 </body>
