@@ -111,10 +111,9 @@
           <el-row>
             <el-col :span="24">
               <el-form-item label="内容详情" prop="brief_content">
-                <rt-editor
+                <rt-editor2
                   v-model="briefForm.data.brief_content"
-                  v-on:getWangEditorValue="getWangEditorValue"
-                ></rt-editor>
+                ></rt-editor2>
               </el-form-item>
             </el-col>
           </el-row>
@@ -137,7 +136,8 @@
 <script>
 import { ref, reactive, onMounted,watch } from "vue";
 import { addBrief, getBriefById, getColumnType } from "../api/serviceApi";
-import rtEditor from "../components/RtEditor.vue";
+// import rtEditor from "../components/RtEditor.vue";
+import RtEditor2 from "../components/RtEditor2.vue";
 import { Plus, ZoomIn, Download, Delete } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useRoute, useRouter } from "vue-router";
@@ -145,11 +145,12 @@ import {UploadFile, ElUploadProgressEvent, ElFile,} from 'element-plus/es/compon
 
 export default {
   components: {
-    rtEditor,
+    // rtEditor,
     Plus,
     ZoomIn,
     Download,
     Delete,
+    RtEditor2,
   },
   props:{
     briefId:{
