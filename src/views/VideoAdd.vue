@@ -203,6 +203,7 @@ import {
   getVideoType,
   getVideoById,
   addVideo,
+  getVideoUploadInfo,
 } from "../api/serviceApi";
 
 export default {
@@ -343,6 +344,21 @@ export default {
       userName = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
+    };
+    const getVideoUploadInfoFromServer=()=>{
+      let params = {
+        params: {
+          accessKeyId: "c9FjqwmD4XLC5H2M",
+          accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
+          videoFileName:"test1.mp4",
+          videoTitle:"test1",
+        },
+      };
+      getVideoUploadInfo(params).then((res)=>{
+        if(res.resultCode=="200"){
+          
+        }
+      });
     };
     const onSubmit = () => {
       videoForm.data.video_state = "0401";

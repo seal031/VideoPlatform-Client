@@ -270,9 +270,27 @@ export default {
       });
     };
     const onDraft = () => {
-      console.log('onDraft');
       briefForm.data.brief_state = "0402";
-      context.emit('dialogclose');
+      briefForm.data.admin_id = "0";
+      briefForm.data.admin_ip = "localhost";
+      briefForm.data.brief_image = imageUrl.value;
+      console.log(briefForm.data);
+      addBrief(briefForm.data).then((res) => {
+        if ((res.resultCode = "200")) {
+          ElMessage({
+            message: "操作成功.",
+            grouping: true,
+            type: "success",
+          });
+          context.emit('dialogclose');
+        } else {
+          ElMessage({
+            message: "操作失败：" + res.message,
+            grouping: true,
+            type: "error",
+          });
+        }
+      });
     };
     const getSession = () => {
       userId = localStorage.getItem("user_id");

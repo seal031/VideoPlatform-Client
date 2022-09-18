@@ -89,6 +89,9 @@ export function getRelativeVideoList(params){
 export function getCollectVideoList(params){
     return axios.get('/Video/GetCollectVideoList',params);
 }
+export function getVideoUploadInfo(params){
+    return axios.get('/Video/GetVideoUploadInfo',params);
+}
 ///////////////////////视频 END///////////////////
 
 export function getBriefList(params){
@@ -104,7 +107,7 @@ export function addBrief(params){
     return axios.post('/Brief/AddBrief',params);
 }
 export function delBrief(params){
-    return axios.post('/Brief/delBrief',{},params);
+    return axios.post('/Brief/DelBrief',{},params);
 }
 //////////////////////内容管理 END/////////////////
 export function login(params){
