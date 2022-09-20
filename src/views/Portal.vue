@@ -86,8 +86,8 @@
                 <div>
                   <!-- TODO 替换title -->
                   <div>{{hotvideoitem.video_title}}</div>
-                  <span class="mr5">大学物理</span>
-                  <span class="mr2">波力</span>
+                  <span class="mr5">{{hotvideoitem.video_brief}}</span>
+                  <!-- <span class="mr2">波力</span> -->
                   <span class="mr2">｜</span>
                   <span>{{hotvideoitem.teacher}}</span>
                 </div>
@@ -409,13 +409,11 @@
                   <!-- TODO 替换title -->
                   <div>第十一届</div>
                   <div>
-                    <span class="mr5">大学物理</span>
-                    <span>波粒二象性</span>
+                    <span class="mr5">{{ele.video_title}}</span>
                   </div>
                   <div class="redColor">
-                    <span class="mr5">理科类</span>
-                    <span class="mr5">一等奖</span>
-                    <span>张三</span>
+                    <span class="mr5">{{ele.award}}</span>
+                    <span>{{ele.teacher}}</span>
                   </div>
                 </div>
               </div>

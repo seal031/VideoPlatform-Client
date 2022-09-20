@@ -54,7 +54,7 @@
             <el-button
             type="primary"
             icon="el-icon-search"
-            @click="handleAdd()"
+            @click="handleAdd"
             >确定</el-button
           >
         </el-col>
@@ -77,7 +77,7 @@ export default {
       default:""
     },
   },
-  setup(props) {
+  setup(props,context) {
       debugger
     const UserId = props.UserId;
     const SchoolId = props.SchoolId;
@@ -109,7 +109,7 @@ export default {
       }
     };
     const handleAdd=()=>{
-      debugger
+      // debugger
       UserForm.data.user_school=SchoolId;
       UserForm.data.admin_id = "0";
       UserForm.data.admin_ip = "localhost";
@@ -121,6 +121,7 @@ export default {
             grouping: true,
             type: "success",
           });
+          context.emit('closeUserAdd');
         }else {
           ElMessage({
             message: "操作失败：" + res.message,

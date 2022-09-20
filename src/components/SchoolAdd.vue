@@ -100,13 +100,14 @@
     </el-table>
     <el-row>
       <el-col :span="24">
-        <el-button type="primary" :icon="Plus" @click="onSubmit()"
+        <el-button type="primary" :icon="Plus" @click="onSubmit"
           >确定</el-button
         >
       </el-col>
     </el-row>
     <el-dialog title="编辑账号" v-model="UserAddVisible">
       <user-add
+        @closeUserAdd="handleClose"
         :UserId="selectedUserId"
         :SchoolId="selectedSchoolId"
         v-if="UserAddVisible"
@@ -135,7 +136,7 @@ export default {
     SchoolTypeList: ref([]),
     SchoolCategoryTypeList: ref([]),
   },
-  setup(props) {
+  setup(props,context) {
     const SchoolId = props.SchoolId;
     let UserList = ref([]);
     let selectedUserId = ref("");
@@ -168,7 +169,8 @@ export default {
       }
     };
     const onSubmit=()=>{
-      
+      console.log('onSubmit')
+      context.emit('closeSchoolAdd');
     };
 
     const bindUserList = () => {
@@ -194,6 +196,11 @@ export default {
       UserAddVisible.value = true;
       selectedUserId.value = row.user_id;
       selectedSchoolId.value = SchoolForm.data.school_id;
+    };
+    const handleClose=()=>{
+      UserAddVisible.value = false;
+      selectedUserId.value = "";
+      bindUserList();
     };
     const handleDel = (row) => {
       ElMessageBox.confirm("确定要删除吗？", "提示", {
@@ -251,6 +258,9 @@ export default {
       handleAdd,
       handleEdit,
       handleDel,
+      handleClose,
+
+      onSubmit,
     };
   },
 };

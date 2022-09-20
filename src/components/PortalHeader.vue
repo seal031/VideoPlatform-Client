@@ -12,7 +12,7 @@
 export default {
   setup() {
     const getImageUrl = (name) => {
-      return new URL(`../assets/top/${name}`, import.meta.url).href;
+      return new URL(`http://47.93.84.178:8080/assets/top/${name}`, import.meta.url).href;
     };
     const imgList = [
       {

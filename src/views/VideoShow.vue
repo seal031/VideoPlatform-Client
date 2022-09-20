@@ -185,13 +185,13 @@
                   <div>{{ ele.video_title }}</div>
                   <!-- <span class="mr2">大学物理</span> -->
                   <!-- <span class="mr1">波粒二象性</span> -->
-                  <span class="mr1">｜</span>
-                  <span>{{ ele.teacher }}</span>
                   <div class="redColor mt15">
                     <span class="mr5">{{ ele.award }}</span>
                     <!-- <span class="mr5">理科类：</span> -->
                     <!-- <span class="mr5">一等奖</span> -->
                   </div>
+                    <span class="mr1">｜</span>
+                    <span>{{ ele.teacher }}</span>
                   <el-divider
                     class="portal-divider"
                     style="margin: 8px 0"
@@ -369,6 +369,7 @@ export default {
         };
         getVideoById(query).then((res) => {
           if (res.resultCode == "200") {
+            debugger
             videoForm.data = JSON.parse(res.data);
           }
         });

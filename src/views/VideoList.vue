@@ -109,8 +109,8 @@
       <el-pagination
         background
         layout="total, prev, pager, next"
-        :current-page="query.pageIndex"
-        :page-size="query.pageSize"
+        :current-page="query.params.pageIndex"
+        :page-size="query.params.pageSize"
         :total="pageTotal"
         @current-change="handlePageChange"
       ></el-pagination>
@@ -206,7 +206,7 @@ export default {
     const getData = () => {
       getVideoList(query).then((res) => {
         tableData.value = JSON.parse(res.data.videoList);
-        pageTotal.value = res.data.pageCount || 50;
+        pageTotal.value = res.data.totalCount || 50;
       });
     };
     getData();
@@ -218,12 +218,13 @@ export default {
 
     // 查询操作
     const handleSearch = () => {
-      query.pageIndex = 1;
+      query.params.pageIndex = 1;
       getData();
     };
     // 分页导航
     const handlePageChange = (val) => {
-      query.pageIndex = val;
+      debugger
+      query.params.pageIndex = val;
       getData();
     };
 
@@ -252,6 +253,7 @@ export default {
     };
     
     const handleClose = ()=>{
+      debugger
       video_id.value = "";
       dialogVisible.value=false;
       handleSearch();

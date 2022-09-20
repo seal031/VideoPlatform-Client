@@ -42,8 +42,8 @@
                   <div>
                     <!-- TODO 替换title -->
                     <div>{{ ele.video_title }}</div>
-                    <span class="mr2">大学物理</span>
-                    <span class="mr1">波粒二象性</span>
+                    <!-- <span class="mr2">大学物理</span> -->
+                    <span class="mr1">{{ ele.video_brief }}</span>
                     <span class="mr1">｜</span>
                     <span>{{ ele.teacher }}</span>
                     <div class="redColor mt5">
@@ -96,8 +96,8 @@
                 <div>
                   <!-- TODO 替换title -->
                   <div>{{ ele.video_title }}</div>
-                  <span class="mr2">大学物理</span>
-                  <span class="mr1">波粒二象性</span>
+                  <!-- <span class="mr2">大学物理</span> -->
+                  <span class="mr1">{{ ele.video_brief }}</span>
                   <span class="mr1">｜</span>
                   <span>{{ ele.teacher }}</span>
                   <div class="redColor mt5">
@@ -149,8 +149,8 @@
                 <div>
                   <!-- TODO 替换title -->
                   <div>{{ ele.video_title }}</div>
-                  <span class="mr2">大学物理</span>
-                  <span class="mr1">波粒二象性</span>
+                  <!-- <span class="mr2">大学物理</span> -->
+                  <span class="mr1">{{ ele.video_brief }}</span>
                   <span class="mr1">｜</span>
                   <span>{{ ele.teacher }}</span>
                   <div class="redColor mt5">

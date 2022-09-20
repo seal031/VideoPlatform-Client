@@ -86,6 +86,16 @@
             </template>
           </el-table-column>
         </el-table>
+        <div class="pagination">
+          <el-pagination
+            background
+            layout="total, prev, pager, next"
+            :current-page="query.params.pageIndex"
+            :page-size="query.params.pageSize"
+            :total="pageTotal"
+            @current-change="handlePageChange"
+          ></el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -194,6 +204,7 @@ export default {
     let briefTypeList = ref([]);
     //table模型
     let briefFormList = ref([]);
+    const pageTotal = ref(0);
     //数据模型
     const briefForm = reactive({
       brief_id: "",
@@ -209,6 +220,7 @@ export default {
           console.log(res);
           if (res.resultCode == "200") {
             briefFormList.value = JSON.parse(res.data.BriefList);
+            pageTotal.value = res.data.totalCount || 50;
           } else {
             ElMessage({
               message: "获取数据失败：" + res.message,
@@ -261,6 +273,12 @@ export default {
       methods.getBriefList();
     };
     
+    // 分页导航
+    const handlePageChange = (val) => {
+      query.params.pageIndex = val;
+      methods.getBriefList();
+    };
+    
     const handleClose = ()=>{
       brief_id.value = "";
       dialogVisible.value=false;
@@ -282,6 +300,7 @@ export default {
       getCurrentInstance,
       userId,
       userRole,
+      pageTotal,
       query,
       briefTypeList,
       stateTypeList,
@@ -296,6 +315,7 @@ export default {
       handleEdit,
       handleClose,
       handleSearch,
+      handlePageChange,
     };
   },
 };

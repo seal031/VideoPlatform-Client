@@ -103,8 +103,19 @@
         </template>
       </el-table-column>
     </el-table>
+        <div class="pagination">
+          <el-pagination
+            background
+            layout="total, prev, pager, next"
+            :current-page="query.params.pageIndex"
+            :page-size="query.params.pageSize"
+            :total="pageTotal"
+            @current-change="handlePageChange"
+          ></el-pagination>
+        </div>
     <el-dialog title="编辑学校" v-model="SchoolAddVisible">
       <school-add
+        @closeSchoolAdd="handleClose"
         :SchoolId="selectedSchoolId"
         :SchoolTypeList="SchoolTypeList"
         :SchoolCategoryTypeList="SchoolCategoryTypeList"
@@ -131,10 +142,11 @@ export default {
   components: { SchoolAdd },
   setup() {
     let SchoolAddVisible = ref(false);
-    let selectedSchoolId = ref("sss");
+    let selectedSchoolId = ref("");
     //下拉列表模型
     let SchoolTypeList = ref([]);
     let SchoolCategoryTypeList = ref([]);
+    const pageTotal = ref(0);
     //学校模型
     let SchoolList = ref([]);
     let query = reactive({
@@ -164,6 +176,7 @@ export default {
       getSchoolList(query).then((res) => {
         if (res.resultCode == "200") {
           SchoolList.value = JSON.parse(res.data.School_list);
+          pageTotal.value = res.data.totalCount || 50;
         }
       });
     };
@@ -172,6 +185,16 @@ export default {
       selectedSchoolId.value ="";
     };
     const handleSearch = () => {
+      bindSchoolList();
+    };
+    const handleClose=()=>{
+      selectedSchoolId.value = "";
+      SchoolAddVisible.value=false;
+      bindSchoolList();
+    };
+    // 分页导航
+    const handlePageChange = (val) => {
+      query.params.pageIndex = val;
       bindSchoolList();
     };
     const handleEdit = (row) => {
@@ -223,11 +246,14 @@ export default {
       SchoolList,
       SchoolTypeList,
       SchoolCategoryTypeList,
+      pageTotal,
       query,
       bindSchoolList,
       bindSchoolTypeList,
       bindSchoolCategoryList,
+      handlePageChange,
       handleAdd,
+      handleClose,
       handleSearch,
       handleEdit,
       handleDel,

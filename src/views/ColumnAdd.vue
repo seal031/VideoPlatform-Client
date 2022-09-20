@@ -103,7 +103,7 @@
                   </template> -->
                 </el-upload>
                 <el-dialog v-model="imageVisible">
-                  <img width="100%" src="dialogImageUrl" alt="" />
+                  <img width="100%" :src="dialogImageUrl" alt="" />
                 </el-dialog>
               </el-form-item>
             </el-col>
