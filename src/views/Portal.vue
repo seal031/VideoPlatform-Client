@@ -866,7 +866,7 @@ export default {
 }
 
 .portal-hot {
-  width: 1200px;
+  width: 1000px;
   margin: 20px auto;
 }
 .portal-hot .title-icon {
@@ -907,12 +907,12 @@ export default {
 }
 
 .portal-divider {
-  width: 1280px;
+  width: 1080px;
   margin: 22px auto;
 }
 
 .portal-system {
-  width: 1200px;
+  width: 1000px;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
@@ -957,7 +957,7 @@ export default {
   margin-bottom: 5px;
 }
 .portal-videos :deep .el-tabs--card > .el-tabs__header .el-tabs__nav {
-  min-width: 1262px;
+  min-width: 1080px;
   left: 50%;
   transform: translateX(-50%) !important;
   border: none;
@@ -980,11 +980,11 @@ export default {
 }
 .portal-videos .more-btn {
   position: absolute;
-  right: -244px;
+  right: -70px;
   top: 32px;
 }
 .portal-videos :deep .el-tabs__content {
-  width: 1262px;
+  width: 1080px;
   margin: 0 auto;
   position: relative;
   background: #fff;
@@ -1011,7 +1011,7 @@ export default {
   margin-bottom: 30px;
 }
 .portal-notice-content {
-  width: 1200px;
+  width: 1000px;
   margin: 0 auto;
 }
 .portal-notice-content .more-btn {

@@ -93,7 +93,7 @@
       </el-table-column>
       <el-table-column prop="video_state" label="视频状态" width="90">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150">
+      <el-table-column fixed="right" label="操作" width="100">
         <template #default="scope">
           <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
           <el-button @click="handleEdit(scope.row)" type="text" size="small"

@@ -647,6 +647,9 @@ export default {
   width: 100%;
   --el-card-border-color: transparent;
   --el-card-padding: 0;
+  height: 765px;
+  display: flex;
+  flex-direction: column;
 }
 .video-show-wrap .more-btn {
   color: #5f6061;
@@ -655,6 +658,7 @@ export default {
   background-color: #faf8f9;
   margin-top: 36px;
   padding-top: 10px;
+  overflow: auto;
 }
 .video-show-wrap .video-item {
   /* 视频比是16:9 */
