@@ -18,15 +18,16 @@
             <span class="video_title redColor mr20">{{
               videoForm.data.award
             }}</span>
-            <span>{{ videoForm.data.create_time }}</span>
+            <span>{{ dateFormat(videoForm.data.create_time) }}</span>
           </div>
           <div class="videoBg pr20">
-            <vue3VideoPlay
+            <!-- <vue3VideoPlay
               id="player"
               v-bind="options"
               :src="videoForm.data.video_url"
-            />
+            /> -->
           </div>
+            <div id="aliyunVideoPlayer"></div>
           <el-row class="video_btns videoBg mt10" align="middle">
             <span class="mr20 poi">
               <el-icon>
@@ -249,6 +250,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import "vue3-video-play/dist/style.css";
 import { Star, StarFilled, Share } from "@element-plus/icons-vue";
 import vue3VideoPlay from "vue3-video-play";
@@ -272,6 +274,7 @@ import {
   addAppreciate,
   cancelAppreciate,
   getCollectionAppreciateState,
+  getVideoPlayAuth,
 } from "../api/serviceApi";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import { VideoPlay } from "@element-plus/icons-vue";
@@ -329,24 +332,25 @@ export default {
     const videoForm = reactive({
       data: {
         video_id: "",
-        video_title: "asdasd",
-        video_brief: "asdasd",
-        video_type: "asdasd",
+        video_title: "",
+        video_brief: "",
+        video_type: "",
         video_year: "",
         teacher: "",
-        award: "理科类一等奖",
+        award: "",
         public_type: "",
         public_school: "",
         video_school: "",
         video_state: "",
         video_url: "",
         video_facede: "",
-        create_time: "2012-01-01",
-        edit_time: "",
+        create_time: null,
+        edit_time: null,
         view_count: 0,
         collection_count: 0,
         appreciate_count: 0,
         video_facede: "",
+        aliyun_videoId:"",
       },
     });
     const getSession = () => {
@@ -369,12 +373,20 @@ export default {
         };
         getVideoById(query).then((res) => {
           if (res.resultCode == "200") {
-            debugger
             videoForm.data = JSON.parse(res.data);
+            if(videoForm.data.aliyun_videoId!=null){
+              getAliyunVideoAuth();
+            }
+            else{
+              playVideo();
+            }
           }
         });
       }
     };
+    const dateFormat=(date) =>{
+        return moment(date).format("YYYY-MM-DD");
+      };
     const getCollectionAppreciate=()=>{
       if(videoId!=""){
         let query={
@@ -385,7 +397,7 @@ export default {
         };
         getCollectionAppreciateState(query).then((res)=>{
           if(res.resultCode=="200"){
-            debugger
+            // debugger
             isStar.value=!res.data.Collection
             isAppreciate.value=!res.data.Appreciate
           }
@@ -417,8 +429,6 @@ export default {
         path: "/VideoShow",
         query: { videoId: videoId },
       });
-      //   debugger
-      //   window.open(href, "_blank");
     };
     let isShowAll = ref(false); // 是否展开文章，默认是false
     const showOrHide = () => {
@@ -432,7 +442,6 @@ export default {
       return isShowAll.value ? "收起" : "展开";
     });
     const addView = () => {
-      // debugger;
       //观看量
       let params = {
         params: {
@@ -441,7 +450,6 @@ export default {
       };
       addViewHistory(params).then((res) => {
         if (res.resultCode == "200") {
-          //什么都不用做
         }
       });
     };
@@ -459,6 +467,7 @@ export default {
           if (res.resultCode == "200") {
             isAppreciate.value = !isAppreciate.value;
             ElMessage.success("点赞成功");
+            videoForm.data.appreciate_count+=1;
           }
         });
       } else {
@@ -467,6 +476,7 @@ export default {
           if (res.resultCode == "200") {
             isAppreciate.value = !isAppreciate.value;
             ElMessage.success("已取消点赞");
+            videoForm.data.appreciate_count-=1;
           }
         });
       }
@@ -500,6 +510,56 @@ export default {
         });
       }
     };
+    /////////阿里云视频相关///////
+    var aliyunPlayAuth="";//阿里云播放授权
+
+    const getAliyunVideoAuth=()=>{
+      debugger
+      let query = {
+          params: {
+            accessKeyId: "c9FjqwmD4XLC5H2M",
+            accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
+            videoId:videoForm.data.aliyun_videoId,
+          },
+        };
+        getVideoPlayAuth(query).then((res)=>{
+          if(res.resultCode=="200"&&res.data.ErrorMessage==""){
+            aliyunPlayAuth=res.data.PlayAuth;
+            // aliyunVideoId=res.data.VideoId;
+            // CoverUrl=res.data.CoverUrl;
+            playVideo();
+          }
+          else{
+            ElMessage({
+              message: "获取视频播放信息失败."+res.data.ErrorMessage,
+              grouping: true,
+              type: "error",
+            });
+          }
+        });
+    }
+    const playVideo=()=>{
+      if(videoForm.data.aliyun_videoId!=null)
+      {
+        var player = new Aliplayer({
+           id: 'aliyunVideoPlayer',
+           width: '100%',
+           vid : videoForm.data.aliyun_videoId,
+           playauth : aliyunPlayAuth,
+         },function(player){
+        });
+      }
+      else{
+        var player = new Aliplayer({
+           id: 'aliyunVideoPlayer',
+           width: '100%',
+           source:videoForm.data.video_url
+         },function(player){
+        });
+      }
+    }
+
+    /////////阿里云视频相关end/////
     onMounted(() => {
       getSession();
       getParams();
@@ -514,6 +574,7 @@ export default {
       getRLVideoList();
     });
     return {
+      moment,
       Star,
       StarFilled,
       Share,
@@ -534,6 +595,7 @@ export default {
       getSession,
       getParams,
       bindVideo,
+      dateFormat,
       getCollectionAppreciate,
       getRLVideoList,
       relativeVideoList,
@@ -544,6 +606,10 @@ export default {
       addView,
       starChange,
       appreciateChange,
+
+      aliyunPlayAuth,
+      getAliyunVideoAuth,
+      playVideo,
     };
   },
 };

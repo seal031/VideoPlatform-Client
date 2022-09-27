@@ -139,7 +139,7 @@ export default {
       },
     });
     const getImageUrl = (name) => {
-      return new URL(`../assets/img/${name}`, import.meta.url).href;
+      return new URL(`http://47.93.84.178:8080/assets/img/${name}`, import.meta.url).href;
     };
     const searchHandle = () => {};
     const submitLogin = () => {
@@ -233,7 +233,7 @@ export default {
       userName = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
-      loginBtnVisible.value = userId == null || userId == "";
+      loginBtnVisible.value = userId == null || userId == ""||userId==undefined||userId=="null";
     });
 
     return {

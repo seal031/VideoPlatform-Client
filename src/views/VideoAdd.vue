@@ -21,17 +21,29 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="视频地址" prop="video_url">
+                    <input type="file" name="file" id="fileSelector" ref="uploader" @change="videoFileChange"/>
                     <el-input
                       v-model="videoForm.data.video_url"
                       style="weight: 70%"
                     ></el-input>
                     <el-button
                       type="primary"
-                      @click="perviewVideo(videoForm.data.video_url)"
-                      >预览</el-button
+                      @click="uploadVideo()"
+                      >上传</el-button
+                    ><el-button
+                      type="primary"
+                      @click="perviewVideo('aliyun')"
+                      >预览阿里云</el-button
+                    ><el-button
+                      type="primary"
+                      @click="perviewVideo('web')"
+                      >预览在线视频</el-button
                     >
                   </el-form-item>
                 </el-col>
+              </el-row>
+              <el-row>
+                <div><el-progress :percentage=uploadPercent></el-progress></div>
               </el-row>
               <el-row>
                 <el-col :span="24">
@@ -176,15 +188,15 @@
         </div>
       </el-aside>
       <el-main>
-        <p @click="getVideoPic" style="text-align: center; margin: 10px auto">
+        <!-- <p @click="getVideoPic" style="text-align: center; margin: 10px auto">
           点击拍照
-        </p>
-        <div>
-          <videoPlay
+        </p> -->
+        <div id="aliyunVideoPlayer">
+          <!-- <videoPlay
             id="player"
             v-bind="options"
             :src="videoForm.data.video_url"
-          />
+          /> -->
         </div>
       </el-main>
     </el-container>
@@ -204,6 +216,7 @@ import {
   getVideoById,
   addVideo,
   getVideoUploadInfo,
+  getVideoPlayAuth,
 } from "../api/serviceApi";
 
 export default {
@@ -223,6 +236,7 @@ export default {
     let userName = "";
     let realName = ref("");
     let userSchool = "";
+    let uploadPercent=ref(0);
 
     // let route = useRoute(); //可以在setup中使用route获取参数
     let videoId = props.videoId;
@@ -274,12 +288,13 @@ export default {
       video_url: null,
       create_time: null, //后台DateTime字段一定要用null默认值！！！！！！
       edit_time: null, //后台DateTime字段一定要用null默认值！！！！！！
-      view_count: 10,
+      view_count: 0,
       collection_count: 0,
       appreciate_count: 0,
-      id_deleted: 0,
+      is_deleted: 0,
       video_facede: "",
       uploader: "",
+      aliyun_videoId:"",
     };
     const videoForm = reactive({
       data: JSON.parse(JSON.stringify(initVideoFormData)),
@@ -287,6 +302,138 @@ export default {
     const rules = {
       name: [{ required: true, message: "请输入内容", trigger: "blur" }],
     };
+    //////////////阿里云视频相关////////////
+    var aliyunVideoId=""; //阿里云视频id
+    var aliyunPlayAuth="";//阿里云播放授权
+    var CoverUrl="";//视频封面图片地址
+    var videoFile=null; //待上传的本地视频文件
+    var uploaderAliyun = new AliyunUpload.Vod({
+       //userID，必填，您可以使用阿里云账号访问账号中心（https://account.console.aliyun.com/），即可查看账号ID
+       userId:"1363466435075707",
+     region:"cn-beijing",  //上传到视频点播的地域，默认值为'cn-shanghai'，
+       partSize: 1048576,//分片大小默认1 MB，不能小于100 KB（100*1024）
+       parallel: 5, //并行上传分片个数，默认5
+     retryCount: 3,//网络原因失败时，重新上传次数，默认为3
+     retryDuration: 2, //网络原因失败时，重新上传间隔时间，默认为2秒
+      //开始上传
+      'onUploadstarted': function (uploadInfo) {
+        debugger
+        // var uploadAuth = data.UploadAuth;
+        // var uploadAddress = data.UploadAddress;
+        // var videoId = data.VideoId;
+        getVideoUploadInfoFromServer(uploadInfo);
+      },
+      //文件上传成功
+      'onUploadSucceed': function (uploadInfo) {
+        ElMessage({
+            message: "上传成功.",
+            grouping: true,
+            type: "success",
+          });
+        ///上传成功后马上获取播放凭证（主要为了获取封面图片）
+        //tood 延时一小会儿
+        let query = {
+          params: {
+            accessKeyId: "c9FjqwmD4XLC5H2M",
+            accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
+            videoId:aliyunVideoId,//"d64940f4279d40ed877f05c7dfcc0f28",
+          },
+        };
+        getVideoPlayAuth(query).then((res)=>{
+          if(res.resultCode=="200"&&res.data.ErrorMessage==""){
+            aliyunPlayAuth=res.data.PlayAuth;
+            aliyunVideoId=res.data.VideoId;
+            CoverUrl=res.data.CoverUrl;
+            console.log (CoverUrl)
+          }
+          else{
+            ElMessage({
+              message: "获取视频播放信息失败."+res.data.ErrorMessage,
+              grouping: true,
+              type: "error",
+            });
+          }
+        });
+      },
+      //文件上传失败
+      'onUploadFailed': function (uploadInfo, code, message) {
+        ElMessage({
+            message: "上传失败.("+code+")"+message,
+            grouping: true,
+            type: "error",
+          });
+      },
+      //文件上传进度，单位：字节
+      'onUploadProgress': function (uploadInfo, totalSize, loadedPercent) {
+        console.log(loadedPercent);
+        uploadPercent.value=loadedPercent*100;
+        //todo 展示进度条   
+      },
+      //上传凭证或STS token超时
+      'onUploadTokenExpired': function (uploadInfo) {
+        //todo 调用后台刷新凭证接口
+
+      },
+      //全部文件上传结束
+      'onUploadEnd':function(uploadInfo){}
+  });
+
+  const getVideoUploadInfoFromServer=(uploadInfo)=>{
+      let query = {
+        params: {
+          accessKeyId: "c9FjqwmD4XLC5H2M",
+          accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
+          videoFileName:videoFile.name,
+          videoTitle:videoFile.name,
+        },
+      };
+      getVideoUploadInfo(query).then((res)=>{
+        if(res.resultCode=="200"&&res.data.ErrorMessage==""){
+          debugger;
+          var uploadAuth=res.data.OriginalUploadAuth;
+          var uploadAddress=res.data.OriginalUploadAddress;
+          var videoId =res.data.VideoId;
+          aliyunVideoId=res.data.VideoId;
+          uploaderAliyun.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress,videoId);
+        }
+        else{
+          ElMessage({
+            message: "获取视频上传凭证失败."+res.data.ErrorMessage,
+            grouping: true,
+            type: "error",
+          });
+        }
+      });
+    };
+
+    const uploadVideo = () => {
+      var userData = '{"Vod":{}}';
+      uploaderAliyun.addFile(videoFile, null, null, null, userData);
+      uploaderAliyun.startUpload();
+    };
+    const perviewVideo=(videoSource)=>{
+      if(videoSource=='aliyun')
+      {
+        var player = new Aliplayer({
+           id: 'aliyunVideoPlayer',
+           width: '100%',
+           vid : aliyunVideoId,//必选参数。音视频ID。示例：1e067a2831b641db90d570b6480f****。
+           playauth : aliyunPlayAuth,//必选参数。音视频播放凭证。
+         },function(player){
+           console.log('The player is created.')
+        });
+      }
+      else{
+        var player = new Aliplayer({
+           id: 'aliyunVideoPlayer',
+           width: '100%',
+           source:videoForm.data.video_url
+         },function(player){
+           console.log('The player is created.')
+        });
+      }
+    };
+    /////////////阿里云视频相关ENd////////////
     // const getParams = () => {
     //   videoId = route.query.videoId;
     // };
@@ -299,32 +446,14 @@ export default {
           },
         };
         getVideoById(params).then((res) => {
-          debugger;
           if (res.resultCode == "200") {
             videoForm.data = JSON.parse(res.data);
           }
         });
       }
     };
-    const getVideoPic = () => {
-      {
-        debugger;
-        let video = document.getElementById("player");
-        console.log(video);
-        let canvas = document.createElement("canvas");
-        let w = window.innerWidth;
-
-        let h = (window.innerWidth / 16) * 9;
-        canvas.width = w;
-        canvas.height = h;
-        console.log(canvas);
-        const ctx = canvas.getContext("2d");
-
-        ctx.drawImage(video, 0, 0, w, h);
-        ctx.drawImage(video, 0, 0, w, h);
-        this.previewImg = canvas.toDataURL("image/png");
-        console.log(this.previewImg);
-      }
+    const handleAvatarSuccess=(res)=>{
+      videoForm.data.video_facede="http://47.93.84.178:14474/Images/"+res.data.newFileName;
     };
     const publicChange = (item) => {
       console.log(item);
@@ -334,10 +463,6 @@ export default {
         showPublicObject.value = false;
       }
     };
-    const perviewVideo = (videoUrl) => {
-      console.log(videoUrl);
-      options.autoPlay = true;
-    };
     const getSession = () => {
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
@@ -345,25 +470,15 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
-    const getVideoUploadInfoFromServer=()=>{
-      let params = {
-        params: {
-          accessKeyId: "c9FjqwmD4XLC5H2M",
-          accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
-          videoFileName:"test1.mp4",
-          videoTitle:"test1",
-        },
-      };
-      getVideoUploadInfo(params).then((res)=>{
-        if(res.resultCode=="200"){
-          
-        }
-      });
-    };
+    
     const onSubmit = () => {
       videoForm.data.video_state = "0401";
       videoForm.data.admin_id = "0";
       videoForm.data.admin_ip = "localhost";
+      //todo 判断是阿里云视频还是网络视频
+      videoForm.data.aliyun_videoId=aliyunVideoId;
+      debugger
+      videoForm.data.video_facede=CoverUrl;
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
@@ -382,9 +497,28 @@ export default {
       });
     };
     const onDraft = () => {
-      console.log('onDraft');
       videoForm.data.video_state = "0402";
-      context.emit('dialogclose');
+      videoForm.data.admin_id = "0";
+      videoForm.data.admin_ip = "localhost";
+      //todo 判断是阿里云视频还是网络视频
+      videoForm.data.aliyun_videoId=aliyunVideoId;
+      videoForm.data.video_facede=CoverUrl;
+      addVideo(videoForm.data).then((res) => {
+        if ((res.resultCode = "200")) {
+          ElMessage({
+            message: "操作成功.",
+            grouping: true,
+            type: "success",
+          });
+          context.emit('dialogclose');
+        } else {
+          ElMessage({
+            message: "操作失败：" + res.message,
+            grouping: true,
+            type: "error",
+          });
+        }
+      });
     };
     onMounted(() => {
       getSession();
@@ -402,6 +536,19 @@ export default {
       // bindVideo();
     });
     
+    const videoFileChange=(event)=>{
+      debugger
+      const filePath=event.target.value;
+      const fileName=event.target.files[0];
+      videoFile=fileName;
+      // var oFReader = new FileReader();
+      // oFReader.readAsDataURL(filePath);
+      // oFReader.onloadend = function(oFRevent){
+      //   var src = oFRevent.target.result;
+      //   $('.content').attr('src',src);
+      //   alert(src);
+      // }
+    }
 
     watch(
       () => props.videoId,
@@ -421,6 +568,7 @@ export default {
       userName,
       realName,
       userSchool,
+      uploadPercent,
 
       videoId,
       publicTypeList,
@@ -432,12 +580,20 @@ export default {
       rules,
       // getParams,
       bindVideo,
-      getVideoPic,
+      handleAvatarSuccess,
       publicChange,
-      perviewVideo,
       getSession,
       onSubmit,
       onDraft,
+
+      aliyunVideoId,
+      aliyunPlayAuth,
+      CoverUrl,
+      videoFileChange,
+      getVideoUploadInfoFromServer,
+      videoFile,
+      uploadVideo,
+      perviewVideo,
     };
   },
 };

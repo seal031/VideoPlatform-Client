@@ -90,7 +90,16 @@ export function getCollectVideoList(params){
     return axios.get('/Video/GetCollectVideoList',params);
 }
 export function getVideoUploadInfo(params){
-    return axios.get('/Video/GetVideoUploadInfo',params);
+    return axios.get('/Upload/GetVideoUploadInfo',params);
+}
+export function getVideoPlayAuth(params){
+    return axios.get('/Video/GetVideoPlayAuth',params);
+}
+export function deleteAliyunVideo(params){
+    return axios.get('/Video/DeleteAliyunVideo',params);
+}
+export function deleteVideo(params){
+    return axios.get('/Video/DeleteVideo',params);
 }
 ///////////////////////视频 END///////////////////
 

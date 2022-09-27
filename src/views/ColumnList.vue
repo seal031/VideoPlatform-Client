@@ -71,6 +71,7 @@
             prop="create_time"
             label="编辑时间"
             width="200"
+            :formatter="dateFormat"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
@@ -112,6 +113,7 @@
 </template>
 
 <script>
+  import moment from "moment";
 import { Search, Plus, Cellphone, Delete } from "@element-plus/icons-vue";
 import { getCurrentInstance } from "vue";
 import { ref, reactive, onMounted } from "@vue/runtime-core";
@@ -213,6 +215,10 @@ export default {
       brief_type: "",
       brief_state: "",
     });
+    const dateFormat=(date) =>{
+      debugger
+        return moment(date.create_time).format("YYYY-MM-DD");
+      };
     const methods = {
       //加载列表
       getBriefList() {
@@ -297,6 +303,8 @@ export default {
       realName,
       userSchool,
 
+      moment,
+      dateFormat,
       getCurrentInstance,
       userId,
       userRole,

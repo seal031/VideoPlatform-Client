@@ -135,6 +135,8 @@ import {
   getVideoType,
   getVideoPublicType,
   getVideoList,
+  deleteVideo,
+  deleteAliyunVideo,
 } from "../api/serviceApi";
 import VideoItem from "../components/VideoItem.vue";
 import VideoAdd from ".//VideoAdd.vue";
@@ -228,16 +230,58 @@ export default {
       getData();
     };
 
+    var videoToDelete;
     // 删除操作
-    const handleDelete = (index) => {
+    const handleDelete = (video) => {
+      videoToDelete=video;
       // 二次确认删除
       ElMessageBox.confirm("确定要删除吗？", "提示", {
         confirmButtonText: "删除",
         cancelButtonText: "取消",
         type: "warning",
-      })
-        .then(() => {
-          ElMessage.success("删除成功");
+      }).then(() => {
+          //判断是否阿里云视频
+          debugger;
+          if(videoToDelete.aliyun_videoId!=null){
+            let queryDeleteAliyun = {
+              params: {
+                accessKeyId: "c9FjqwmD4XLC5H2M",
+                accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
+                videoId:videoToDelete.aliyun_videoId,
+              },
+            };
+            deleteAliyunVideo(queryDeleteAliyun).then((res)=>{
+              if(res.resultCode=="200"&&res.data.ErrorMessage==""){
+              }else{
+                ElMessage({
+                  message: "删除云视频失败."+res.data.ErrorMessage,
+                  grouping: true,
+                  type: "error",
+                });
+              }
+            });
+          }
+          let query = {
+              params: {
+                video_id: videoToDelete.video_id,
+                video_title:videoToDelete.video_title,
+                admin_id: "admin",
+                admin_ip: "127.0.0.1",
+              },
+            };
+          deleteVideo(query).then((res)=>{
+            debugger
+            if(res.resultCode=="200"&&res.data=="success"){
+                ElMessage.success("删除成功");
+                handleSearch();
+              }else{
+                ElMessage({
+                  message: "删除视频失败."+res.data.message,
+                  grouping: true,
+                  type: "error",
+                });
+              }
+          });
           // tableData.value.splice(index, 1);
         })
         .catch(() => {});
@@ -253,7 +297,6 @@ export default {
     };
     
     const handleClose = ()=>{
-      debugger
       video_id.value = "";
       dialogVisible.value=false;
       handleSearch();
@@ -283,6 +326,7 @@ export default {
       handleAdd,
       handleSearch,
       handlePageChange,
+      videoToDelete,
       handleDelete,
       getSession,
 
