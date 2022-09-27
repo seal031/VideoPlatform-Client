@@ -5,7 +5,7 @@
       <el-header>
         <h2>{{ briefForm.data.brief_title }}</h2>
         <p>
-          <span> 所属分类:{{ briefForm.data.brief_type }} </span>
+          <span> 所属分类:{{ briefForm.data.brief_type_name }} </span>
           <el-divider direction="vertical"></el-divider>
           <span>
             创建时间:{{ methods.dateFormat(briefForm.data.create_time) }}
@@ -14,11 +14,11 @@
       </el-header>
       <el-container>
         <el-main>
-          <img
+          <!-- <img
             :src="briefForm.data.brief_image"
             style="width: 200px; height: 150px"
             class="html-content"
-          />
+          /> -->
           <div style="width: 100%; min-height: 1200px">
             <div
               style="width: 100%; min-height: 1000px; background: #ffffff"
