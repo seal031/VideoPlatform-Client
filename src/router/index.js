@@ -11,6 +11,9 @@ const routes = [
     {
         path: '/portal',
         name: 'portal',
+        meta:{
+            title:'首页-教育集团工会'
+        },
         component: Portal,
     },
     // {
@@ -122,7 +125,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title || 'vue-manage-system';
+    document.title = to.meta.title || '教育集团工会网站';
     const role = localStorage.getItem('ms_username');
     if (!role && to.path !== '/login') {
         next('/login');

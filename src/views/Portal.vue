@@ -608,7 +608,7 @@ export default {
       }
     };
 
-    let hotCarouselTitle = ref("热门轮播的title"); // 热门轮播的title
+    let hotCarouselTitle = ref(""); // 热门轮播的title
     // 轮播change回调
     const handleChangeCarousel = (index) => {
       hotCarouselTitle.value = tpxwList.value[index].brief_title;
@@ -754,6 +754,7 @@ export default {
         });
         getBriefList(query).then((res) => {
           if (res.resultCode == "200") {
+            debugger;
             tzggList.value = JSON.parse(res.data.BriefList);
           }
         });
@@ -775,7 +776,7 @@ export default {
       },
       getVideoList() {},
       dateFormat(date) {
-        return moment(date).format("YYYY-MM-DD");
+        return moment(date.create_time).format("YYYY-MM-DD");
       },
     };
     const videoTabs = ref([

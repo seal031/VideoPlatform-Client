@@ -191,7 +191,7 @@ export default {
         });
       },
       dateFormat(date) {
-        return moment(date).format("YYYY-MM-DD");
+        return moment(date.create_time).format("YYYY-MM-DD");
       },
     };
     const handleCurrentChangeTpxw = (val) => {

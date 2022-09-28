@@ -4,7 +4,7 @@
     <div class="mb10">
       <span class="mr5">Copyright &copy;</span>
       <span class="mr5">2018</span>
-      <span class="mr5">北京教育工会</span>
+      <span class="mr5">教育集团工会</span>
       <span class="mr5">All Rights Reserved</span>
     </div>
     <div>
