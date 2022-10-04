@@ -8,34 +8,8 @@
             :fit="contain"
             class="top-logo"
           ></el-image>
+          
           <el-form-item class="m0">
-            <!-- TODO 绑定model，并搜索 -->
-            <el-input
-              clearable
-              class="top-input"
-              size="large"
-              placeholder="请输入查找内容"
-            >
-              <template #append>
-                <el-button type="primary" :icon="Search" @click="searchHandle"
-                  >搜索</el-button
-                >
-              </template>
-            </el-input>
-          </el-form-item>
-          <el-form-item class="m0">
-            <div
-              class="top-login-btn poi"
-              @click="dialogFormVisible = true"
-              v-if="loginBtnVisible"
-            >
-              <el-button type="text" class="text-info-color">登录</el-button>
-              <el-avatar
-                :icon="Avatar"
-                :size="40"
-                style="--el-avatar-bg-color: #0c9b91"
-              ></el-avatar>
-            </div>
             <div v-if="!loginBtnVisible">
               <el-dropdown
                 split-button
@@ -46,24 +20,52 @@
                 当前用户：{{ realName }}
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item command="myspace"
+                    <!-- <el-dropdown-item command="myspace"
                       >我的空间</el-dropdown-item
                     >
                     <el-dropdown-item command="manage"
                       >后台管理</el-dropdown-item
-                    >
+                    > -->
                     <el-dropdown-item command="logout">登出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
             </div>
+            <div
+              class="top-login-btn poi"
+              @click="dialogFormVisible = true"
+              v-if="loginBtnVisible"
+            >
+              <el-button type="text" class="text-info-color">登录</el-button>
+              <el-avatar
+                :icon="Avatar"
+                :size="30"
+                style="--el-avatar-bg-color: #0c9b91"
+              ></el-avatar>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="top-login-btn poi"  v-if="!loginBtnVisible" @click="JumpToMySpace">
+              <el-button type="text" class="text-info-color">我的</el-button>
+              <el-avatar
+                :icon="HomeFilled"
+                :size="30"
+                style="--el-avatar-bg-color: #0c9b91"
+              ></el-avatar>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="top-login-btn poi"  v-if="!loginBtnVisible" @click="JumpToManage">
+              <el-button type="text" class="text-info-color">管理</el-button>
+              <el-avatar
+                :icon="Setting"
+                :size="30"
+                style="--el-avatar-bg-color: #0c9b91"
+              ></el-avatar>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
             <el-dialog
               title="用户登录"
               v-model="dialogFormVisible"
               width="30%"
               center
-              :modal-append-to-body="false"
+              :modal-append-to-body="true"
               append-to-body
             >
               <div class="ms-title">登录系统</div>
@@ -112,7 +114,7 @@
 </template>
 
 <script>
-import { Search, Avatar, Lock } from "@element-plus/icons-vue";
+import { Search, Avatar, Lock,HomeFilled,Setting } from "@element-plus/icons-vue";
 import { ref, reactive, inject, onMounted, onBeforeUpdate } from "vue";
 import { login } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -140,6 +142,20 @@ export default {
     });
     const getImageUrl = (name) => {
       return new URL(`http://47.93.84.178:8080/assets/img/${name}`, import.meta.url).href;
+    };
+    const JumpToMySpace=()=>{
+      const href = router.resolve({
+        path: '/MySpace',
+        query: { },
+      });
+      window.open(href.href, "_blank");
+    };
+    const JumpToManage=()=>{
+      const href = router.resolve({
+        path: '/VideoList',
+        query: { },
+      });
+      window.open(href.href, "_blank");
     };
     const searchHandle = () => {};
     const submitLogin = () => {
@@ -246,12 +262,16 @@ export default {
       dialogFormVisible,
       loginBtnVisible,
       getImageUrl,
+      JumpToMySpace,
+      JumpToManage,
       searchHandle,
       submitLogin,
       handleDropdown,
       loginModel,
       Search,
       Avatar,
+      HomeFilled,
+      Setting,
       Lock,
 
       methods,

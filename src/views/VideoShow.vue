@@ -543,7 +543,8 @@ export default {
       {
         var player = new Aliplayer({
            id: 'aliyunVideoPlayer',
-           width: '100%',
+           width: '90%',
+           height: '500px',
            vid : videoForm.data.aliyun_videoId,
            playauth : aliyunPlayAuth,
          },function(player){
