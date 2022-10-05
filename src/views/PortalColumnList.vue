@@ -1,93 +1,54 @@
 <template>
   <top-tool-bar></top-tool-bar>
   <div class="block">
+    <el-breadcrumb separator=">" class="mt20 mb20">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>{{breadcrumb}}</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-divider class="portal-divider"></el-divider>
+
     <el-tabs tab-position="left" style="height: 100%" v-model="activeTab">
       <el-tab-pane label="图片新闻" name="tpxw">
-        <div class="tr mb10">
-          <el-pagination
-            @current-change="handleCurrentChangeTpxw"
-            v-model:currentPage="tpxwQuery.params.pageIndex"
-            v-model:page-size="tpxwQuery.params.pageSize"
-            layout="total, prev, pager, next"
-            :total="tpxwTotalCount"
-          >
-          </el-pagination>
-        </div>
-        <el-table
-          :data="tpxwList"
-          style="width: 100%"
-          :show-header="false"
-          class="customer-table"
-          @row-click="showBrief"
-        >
-          <el-table-column prop="brief_title" label="">
-          </el-table-column>
-          <el-table-column
-            prop="create_time"
-            label=""
-            width="150"
-            :formatter="methods.dateFormat"
-          >
-          </el-table-column>
-        </el-table>
+        <el-table :data="tpxwList" style="width: 100%" :show-header="false" class="customer-table"
+        @row-click="showBrief">
+        <el-table-column prop="brief_title" label="">
+        </el-table-column>
+        <el-table-column prop="create_time" label="" width="150" :formatter="methods.dateFormat">
+        </el-table-column>
+      </el-table>
+      <div class="tr mt10">
+        <el-pagination @current-change="handleCurrentChangeTpxw" v-model:currentPage="tpxwQuery.params.pageIndex"
+          v-model:page-size="tpxwQuery.params.pageSize" layout="total, prev, pager, next" :total="tpxwTotalCount">
+        </el-pagination>
+      </div>
       </el-tab-pane>
       <el-tab-pane label="通知公告" name="tzgg">
-        <div class="tr mb10">
-          <el-pagination
-            @current-change="handleCurrentChangeTzgg"
-            v-model:currentPage="tzggQuery.params.pageIndex"
-            v-model:page-size="tzggQuery.params.pageSize"
-            layout="total, prev, pager, next"
-            :total="tzggTotalCount"
-          >
-          </el-pagination>
-        </div>
-        <el-table
-          :data="tzggList"
-          style="width: 100%"
-          :show-header="false"
-          class="customer-table"
-          @row-click="showBrief"
-        >
-          <el-table-column prop="brief_title" label="">
-          </el-table-column>
-          <el-table-column
-            prop="create_time"
-            label=""
-            width="150"
-            :formatter="methods.dateFormat"
-          >
-          </el-table-column>
-        </el-table>
+        <el-table :data="tzggList" style="width: 100%" :show-header="false" class="customer-table"
+        @row-click="showBrief">
+        <el-table-column prop="brief_title" label="">
+        </el-table-column>
+        <el-table-column prop="create_time" label="" width="150" :formatter="methods.dateFormat">
+        </el-table-column>
+      </el-table>
+      <div class="tr mt10">
+        <el-pagination @current-change="handleCurrentChangeTzgg" v-model:currentPage="tzggQuery.params.pageIndex"
+          v-model:page-size="tzggQuery.params.pageSize" layout="total, prev, pager, next" :total="tzggTotalCount">
+        </el-pagination>
+      </div>
       </el-tab-pane>
       <el-tab-pane label="政策法规" name="zcfg">
-        <div class="tr mb10">
-          <el-pagination
-            @current-change="handleCurrentChangeZcfg"
-            v-model:currentPage="zcfgQuery.params.pageIndex"
-            v-model:page-size="zcfgQuery.params.pageSize"
-            layout="total, prev, pager, next"
-            :total="zcfgTotalCount"
-          >
-          </el-pagination>
-        </div>
-        <el-table
-          :data="zcfgList"
-          style="width: 100%"
-          :show-header="false"
-          class="customer-table"
-          @row-click="showBrief"
-        >
-          <el-table-column prop="brief_title" label="">
-          </el-table-column>
-          <el-table-column
-            prop="create_time"
-            label=""
-            width="150"
-            :formatter="methods.dateFormat"
-          >
-          </el-table-column>
-        </el-table>
+        <el-table :data="zcfgList" style="width: 100%" :show-header="false" class="customer-table"
+        @row-click="showBrief">
+        <el-table-column prop="brief_title" label="">
+        </el-table-column>
+        <el-table-column prop="create_time" label="" width="150" :formatter="methods.dateFormat">
+        </el-table-column>
+      </el-table>
+      <div class="tr mt10">
+        <el-pagination @current-change="handleCurrentChangeZcfg" v-model:currentPage="zcfgQuery.params.pageIndex"
+          v-model:page-size="zcfgQuery.params.pageSize" layout="total, prev, pager, next" :total="zcfgTotalCount">
+        </el-pagination>
+      </div>
       </el-tab-pane>
     </el-tabs>
     <portal-footer></portal-footer>
@@ -123,7 +84,7 @@ export default {
     let userName = "";
     let realName = ref("");
     let userSchool = "";
-    let activeTab=ref("");
+    let activeTab = ref("");
 
     let tpxwList = ref([]); //图片新闻模型列表
     let tzggList = ref([]); //通知公告模型列表
@@ -158,10 +119,22 @@ export default {
         topN: 20,
       },
     });
+    let breadcrumb = ref(""); // 面包屑
 
     const methods = {
-      getParams(){
+      getParams() {
         activeTab.value = route.query.activeTab;
+        switch (activeTab.value) {
+          case "tpxw":
+            breadcrumb.value = "图片新闻";
+            break;
+          case "tzgg":
+            breadcrumb.value = "通知公告";
+            break;
+          case "zcfg":
+            breadcrumb.value = "政策法规";
+            break;
+        }
       },
       getTpxwList() {
         getBriefList(tpxwQuery).then((res) => {
@@ -233,7 +206,8 @@ export default {
       userSchool,
 
       activeTab,
-      
+      breadcrumb,
+
       moment,
       tpxwList,
       tzggList,
@@ -256,6 +230,12 @@ export default {
 
 <style scoped>
 .block {
+  width: 1200px;
+  margin: 0 auto;
   height: calc(100% - 72px);
+}
+
+:deep .el-tabs__header{
+  display: none;
 }
 </style>

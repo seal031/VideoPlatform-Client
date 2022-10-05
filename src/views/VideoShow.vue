@@ -28,7 +28,7 @@
             /> -->
           </div>
             <div id="aliyunVideoPlayer"></div>
-          <el-row class="video_btns videoBg mt10" align="middle">
+          <el-row class="video_btns videoBg" align="middle">
             <span class="mr20 poi">
               <el-icon>
                 <video-play />
@@ -157,7 +157,7 @@
           </el-row>
         </el-col>
         <el-col :span="7" class="rel">
-          <el-card :body-style="{ padding: '0px' }" shadow="never">
+          <el-card shadow="never">
             <template #header>
               <el-row justify="space-between" align="middle">
                 <span class="f20">相关视频</span>
@@ -168,6 +168,7 @@
 
             <div v-if="relativeVideoList && relativeVideoList.length > 0">
               <el-row
+                style="flex-wrap: nowrap"
                 class="poi"
                 v-for="(ele, i) in relativeVideoList.slice(0, 8)"
                 :key="i"
@@ -181,18 +182,22 @@
                   :appreciateCount="ele.appreciate_count"
                   :isShowCount="false"
                 />
-                <div class="f12">
+                <div class="f12 des">
                   <!-- TODO 替换title -->
                   <div>{{ ele.video_title }}</div>
                   <!-- <span class="mr2">大学物理</span> -->
                   <!-- <span class="mr1">波粒二象性</span> -->
+                  <div class="sub-title">
+                    <span class="mr5 truncate-text">{{ele.video_brief}}</span>
+                    <span class="mr2">｜</span>
+                    <span class="author">{{ ele.teacher }}</span>
+                  </div>
+
                   <div class="redColor mt15">
                     <span class="mr5">{{ ele.award }}</span>
                     <!-- <span class="mr5">理科类：</span> -->
                     <!-- <span class="mr5">一等奖</span> -->
                   </div>
-                    <span class="mr1">｜</span>
-                    <span>{{ ele.teacher }}</span>
                   <el-divider
                     class="portal-divider"
                     style="margin: 8px 0"
@@ -543,8 +548,8 @@ export default {
       {
         var player = new Aliplayer({
            id: 'aliyunVideoPlayer',
-           width: '90%',
-           height: '500px',
+           width: '100%',
+           height: '580px',
            vid : videoForm.data.aliyun_videoId,
            playauth : aliyunPlayAuth,
          },function(player){
@@ -554,6 +559,7 @@ export default {
         var player = new Aliplayer({
            id: 'aliyunVideoPlayer',
            width: '100%',
+           height: '580px',
            source:videoForm.data.video_url
          },function(player){
         });
@@ -637,7 +643,8 @@ export default {
   background-color: #faf8f9;
 }
 .video_btns {
-  height: 30px;
+  height: 48px;
+  padding: 0 20px;
   color: var(--el-text-color-primary);
 }
 .video_btns .el-button {
@@ -648,23 +655,42 @@ export default {
   width: 100%;
   --el-card-border-color: transparent;
   --el-card-padding: 0;
-  height: 765px;
+  height: 1050px;
   display: flex;
   flex-direction: column;
 }
 .video-show-wrap .more-btn {
   color: #5f6061;
 }
+.video-show-wrap .el-card .el-card__header{
+  margin-left: 20px;
+}
 .video-show-wrap .el-card__body {
   background-color: #faf8f9;
   margin-top: 36px;
   padding-top: 10px;
   overflow: auto;
+  padding: 20px 20px 0;
 }
+
+.sub-title{
+  display: flex;
+}
+
+.sub-title .author{
+  white-space: nowrap;
+}
+
 .video-show-wrap .video-item {
   /* 视频比是16:9 */
   width: 176px;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.video-show-wrap .des {
+  flex: 1 1 0%;
+  width: 0;
 }
 .article-wrap {
   min-height: 230px;
@@ -685,4 +711,11 @@ export default {
   font-size: 13px;
   color: #999;
 }
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 </style>
