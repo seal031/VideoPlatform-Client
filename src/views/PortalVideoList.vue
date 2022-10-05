@@ -3,7 +3,7 @@
     <top-tool-bar></top-tool-bar>
     <!-- <portal-header></portal-header> -->
 
-    <div class="width1200">
+    <div class="width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <!-- TODO 名称传递 -->
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -12,7 +12,7 @@
       </el-breadcrumb>
 
       <el-form class="query-subjects">
-        <div class="width1200">
+        <div class="width1000">
           <el-form-item>
             <span class="label">年度</span>
             <!-- TODO videoYear 动态渲染 -->
@@ -251,8 +251,8 @@ export default {
   height: 100%;
   overflow: auto;
 }
-.width1200 {
-  width: 1200px;
+.width1000 {
+  width: 1000px;
   margin: 0 auto;
 }
 .query-subjects {
@@ -303,7 +303,7 @@ export default {
   /* 视频比是16:9 */
   width: 176px;
   margin-bottom: 35px;
-  margin-right: 80px;
+  margin-right: 30px;
 }
 .video-result .video-item:nth-child(5n) {
   margin-right: 0;

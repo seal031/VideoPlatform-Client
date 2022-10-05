@@ -3,7 +3,7 @@
     <top-tool-bar
     v-on:getSession="getSession"
     ></top-tool-bar>
-    <div class="width1200">
+    <div class="width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>优秀视频</el-breadcrumb-item>
@@ -12,7 +12,7 @@
       <el-divider class="portal-divider"></el-divider>
 
       <el-row>
-        <el-col :span="17">
+        <el-col :span="16">
           <div class="video_title">{{ videoForm.data.video_title }}</div>
           <div class="mb10">
             <span class="video_title redColor mr20">{{
@@ -156,7 +156,7 @@
             <el-button class="mr20" type="text" :icon="Share">转发</el-button>
           </el-row>
         </el-col>
-        <el-col :span="7" class="rel">
+        <el-col :span="8" class="rel">
           <el-card shadow="never">
             <template #header>
               <el-row justify="space-between" align="middle">
@@ -237,7 +237,7 @@
       </el-row>
     </div>
     <div class="article-wrap">
-      <div class="width1200">
+      <div class="width1000">
         <el-col :span="17" class="pr20 article">
           <div :class="articleStyle">
             <!-- 如果你看到一件事物却没有触动，那么诗歌就无法从你这里产生。从某种意义上来说，所有诗歌都是外部事物对一颗“诗心”的回应。我们写诗是为了实现自己与他人与世界与自然之间的联系。就像罗伯特·弗罗斯特在一首短诗里说的，“我们围成一个圆圈跳舞，猜测秘密坐在其中，通晓一切”。我们对于诗歌的认识，正是如此。“诗，只能在精神领域深处寻求那异样的东西。当诗人直面其所处的时代和精神，挖掘并整理它们，他会意识到，这事儿，的确不能交给其他人来处理。”胡弦在他的文章《随笔五则》中不无自信地说。
@@ -628,8 +628,8 @@ export default {
   min-height: 800px;
   overflow: auto;
 }
-.width1200 {
-  width: 1200px;
+.width1000 {
+  width: 1000px;
   margin: 0 auto;
 }
 .video_title {
@@ -655,7 +655,7 @@ export default {
   width: 100%;
   --el-card-border-color: transparent;
   --el-card-padding: 0;
-  height: 1050px;
+  max-height: 1050px;
   display: flex;
   flex-direction: column;
 }

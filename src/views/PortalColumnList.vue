@@ -230,7 +230,7 @@ export default {
 
 <style scoped>
 .block {
-  width: 1200px;
+  width: 1000px;
   margin: 0 auto;
   height: calc(100% - 72px);
 }
