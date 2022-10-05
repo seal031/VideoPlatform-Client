@@ -7,6 +7,7 @@ import installElementPlus from './plugins/element'
 import './assets/css/icon.css'
 import '@element-plus/icons-vue'
 import { ElMessage } from "element-plus";
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const app = createApp(App)
 //防止重复点击
@@ -25,6 +26,9 @@ app.directive('preventReClick', (el, binding) => {
         el.removeEventListener('click', () => preventReClickFun(el, binding))
     }
 });
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}
 //全局变量
 app.provide('$cookies', VueCookies);//全局挂载 同vue2.x Vue.prototype.$cookies
 app.config.globalProperties.$userId = ""

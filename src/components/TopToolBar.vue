@@ -3,20 +3,11 @@
     <div class="top-content">
       <el-form class="pcth100">
         <el-row align="middle" justify="space-between" class="pcth100">
-          <el-image
-            :src="getImageUrl('logo.png')"
-            :fit="contain"
-            class="top-logo"
-          ></el-image>
-          
+          <el-image :src="getImageUrl('logo.png')" :fit="contain" class="top-logo"></el-image>
+
           <el-form-item class="m0">
             <div v-if="!loginBtnVisible">
-              <el-dropdown
-                split-button
-                type="primary"
-                size="small"
-                @command="handleDropdown"
-              >
+              <el-dropdown split-button type="primary" size="small" @command="handleDropdown">
                 当前用户：{{ realName }}
                 <template #dropdown>
                   <el-dropdown-menu>
@@ -31,77 +22,48 @@
                 </template>
               </el-dropdown>
             </div>
-            <div
-              class="top-login-btn poi"
-              @click="dialogFormVisible = true"
-              v-if="loginBtnVisible"
-            >
-              <el-button type="text" class="text-info-color">登录</el-button>
-              <el-avatar
-                :icon="Avatar"
-                :size="30"
-                style="--el-avatar-bg-color: #0c9b91"
-              ></el-avatar>
+            <div class="top-login-btn poi" @click="dialogFormVisible = true" v-if="loginBtnVisible">
+              <!-- <el-button type="text" class="text-info-color">登录</el-button>
+              <el-avatar :icon="Avatar" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
+              <el-icon><Avatar /></el-icon>
+              <span>登录</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="top-login-btn poi"  v-if="!loginBtnVisible" @click="JumpToMySpace">
-              <el-button type="text" class="text-info-color">我的</el-button>
-              <el-avatar
-                :icon="HomeFilled"
-                :size="30"
-                style="--el-avatar-bg-color: #0c9b91"
-              ></el-avatar>
+            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToMySpace">
+              <!-- <el-button type="text" class="text-info-color">我的</el-button>
+              <el-avatar :icon="HomeFilled" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
+              <el-icon><User /></el-icon>
+              <span>我的</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="top-login-btn poi"  v-if="!loginBtnVisible" @click="JumpToManage">
-              <el-button type="text" class="text-info-color">管理</el-button>
-              <el-avatar
-                :icon="Setting"
-                :size="30"
-                style="--el-avatar-bg-color: #0c9b91"
-              ></el-avatar>
+            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToManage">
+              <!-- <el-button type="text" class="text-info-color"></el-button> -->
+              <el-icon>
+                <Setting />
+              </el-icon>
+              <span>管理</span>
+
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
-            <el-dialog
-              title="用户登录"
-              v-model="dialogFormVisible"
-              width="30%"
-              center
-              :modal-append-to-body="true"
-              append-to-body
-            >
+            <el-dialog title="用户登录" v-model="dialogFormVisible" width="30%" center :modal-append-to-body="true"
+              append-to-body>
               <div class="ms-title">登录系统</div>
-              <el-form
-                :model="loginModel.data"
-                label-width="0px"
-                class="ms-content"
-              >
+              <el-form :model="loginModel.data" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
-                  <el-input
-                    v-model="loginModel.data.user_name"
-                    placeholder="请输入账号"
-                    tabindex="1"
-                  >
+                  <el-input v-model="loginModel.data.user_name" placeholder="请输入账号" tabindex="1">
                     <template #prepend>
                       <el-button :icon="Avatar"></el-button>
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input
-                    type="password"
-                    placeholder="请输入密码"
-                    v-model="loginModel.data.user_pwd"
-                    @keyup.enter="submitLogin()"
-                    tabindex="2"
-                  >
+                  <el-input type="password" placeholder="请输入密码" v-model="loginModel.data.user_pwd"
+                    @keyup.enter="submitLogin()" tabindex="2">
                     <template #prepend>
                       <el-button :icon="Lock"></el-button>
                     </template>
                   </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                  <el-button type="primary" @click="submitLogin()"
-                    >登录</el-button
-                  >
+                  <el-button type="primary" @click="submitLogin()">登录</el-button>
                 </div>
                 <p class="login-tips">Tips : 用户名和密码随便填。</p>
               </el-form>
@@ -114,14 +76,14 @@
 </template>
 
 <script>
-import { Search, Avatar, Lock,HomeFilled,Setting } from "@element-plus/icons-vue";
+import { Search, Avatar, Lock, HomeFilled, Setting } from "@element-plus/icons-vue";
 import { ref, reactive, inject, onMounted, onBeforeUpdate } from "vue";
 import { login } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 
 export default {
-  setup(props,ctx) {
+  setup(props, ctx) {
     const router = useRouter();
     const route = useRoute();
 
@@ -143,21 +105,21 @@ export default {
     const getImageUrl = (name) => {
       return new URL(`http://47.93.84.178:8080/assets/img/${name}`, import.meta.url).href;
     };
-    const JumpToMySpace=()=>{
+    const JumpToMySpace = () => {
       const href = router.resolve({
         path: '/MySpace',
-        query: { },
+        query: {},
       });
       window.open(href.href, "_blank");
     };
-    const JumpToManage=()=>{
+    const JumpToManage = () => {
       const href = router.resolve({
         path: '/VideoList',
-        query: { },
+        query: {},
       });
       window.open(href.href, "_blank");
     };
-    const searchHandle = () => {};
+    const searchHandle = () => { };
     const submitLogin = () => {
       login(loginModel.data)
         .then((res) => {
@@ -204,14 +166,14 @@ export default {
         case "myspace":
           const href = router.resolve({
             path: "/MySpace",
-            query: { },
+            query: {},
           });
           window.open(href.href, "_blank");
           break;
         case "manage":
           const href2 = router.resolve({
             path: "/VideoList",
-            query: { },
+            query: {},
           });
           window.open(href2.href, "_blank");
           break;
@@ -241,7 +203,7 @@ export default {
       },
     };
 
-    onBeforeUpdate(() => {});
+    onBeforeUpdate(() => { });
 
     onMounted(() => {
       userId = localStorage.getItem("user_id");
@@ -249,7 +211,7 @@ export default {
       userName = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
-      loginBtnVisible.value = userId == null || userId == ""||userId==undefined||userId=="null";
+      loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
     });
 
     return {
@@ -287,34 +249,58 @@ export default {
   z-index: 1;
   position: relative;
 }
+
 .top-content {
-  width: 1200px;
+  width: 1000px;
   margin: 0 auto;
   height: 100%;
 }
+
 .top-content .top-logo {
   min-width: 195px;
 }
+
 .top-content .top-input {
   width: 410px;
   --el-input-border-radius: 16px;
   --el-input-border: none;
   --el-input-bg-color: rgba(255, 255, 255, 0.7);
 }
+
 .top-content .top-input :deep .el-input-group__append {
   background-color: #026bc6;
   border: 1px solid #026bc6;
   color: #fff;
   padding: 0 29px;
 }
+
 .top-content .top-login-btn {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  color: rgba(96,96,96,0.6);
+  transition: color 0.1s linear;
 }
-.top-content .top-login-btn .el-button {
+
+.top-content .top-login-btn .el-icon{
+  font-size: 22px;
+}
+
+
+.top-content .top-login-btn span{
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 6px;
+}
+.top-content .top-login-btn:hover{
+  color: #fff !important;
+}
+
+/* .top-content .top-login-btn .el-button {
   position: relative;
   margin-right: 8px;
 }
+
 .top-content .top-login-btn .el-button::after {
   content: "";
   width: 100%;
@@ -322,7 +308,7 @@ export default {
   background: var(--portal-text-color);
   position: absolute;
   bottom: 2px;
-}
+} */
 
 .login-wrap {
   position: relative;
@@ -331,6 +317,7 @@ export default {
   background-image: url(../assets/img/login-bg.jpg);
   background-size: 100%;
 }
+
 .ms-title {
   width: 100%;
   line-height: 50px;
@@ -339,6 +326,7 @@ export default {
   color: #fff;
   border-bottom: 1px solid #ddd;
 }
+
 .ms-login {
   position: absolute;
   left: 50%;
@@ -349,17 +337,21 @@ export default {
   background: rgba(255, 255, 255, 0.3);
   overflow: hidden;
 }
+
 .ms-content {
   padding: 30px 30px;
 }
+
 .login-btn {
   text-align: center;
 }
+
 .login-btn button {
   width: 100%;
   height: 36px;
   margin-bottom: 10px;
 }
+
 .login-tips {
   font-size: 12px;
   line-height: 30px;
