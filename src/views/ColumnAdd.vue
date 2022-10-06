@@ -19,16 +19,6 @@
           label-width="120px"
         >
           <el-row>
-            <el-col :span="18">
-              <el-form-item label="内容标题" prop="brief_title">
-                <el-input
-                  v-model="briefForm.data.brief_title"
-                  placeholder="请输入内容标题"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
             <el-col :span="6">
               <el-form-item label="内容分类" prop="brief_type">
                 <el-select
@@ -49,7 +39,17 @@
           </el-row>
           <el-row>
             <el-col :span="18">
-              <el-form-item label="内容图片">
+              <el-form-item label="内容标题" prop="brief_title">
+                <el-input
+                  v-model="briefForm.data.brief_title"
+                  placeholder="请输入内容标题"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="18">
+              <el-form-item label="封面图片">
                 <el-upload
                   action="http://47.93.84.178:14474/Upload"
                   list-type="picture-card"

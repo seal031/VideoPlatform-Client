@@ -6,32 +6,38 @@
           <el-image :src="getImageUrl('logo.png')" :fit="contain" class="top-logo"></el-image>
 
           <el-form-item class="m0">
-            <div v-if="!loginBtnVisible">
+            <!--<div v-if="!loginBtnVisible">
               <el-dropdown split-button type="primary" size="small" @command="handleDropdown">
                 当前用户：{{ realName }}
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <!-- <el-dropdown-item command="myspace"
+                     <el-dropdown-item command="myspace"
                       >我的空间</el-dropdown-item
                     >
                     <el-dropdown-item command="manage"
                       >后台管理</el-dropdown-item
-                    > -->
+                    > 
                     <el-dropdown-item command="logout">登出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
-            </div>
+            </div>-->
             <div class="top-login-btn poi" @click="dialogFormVisible = true" v-if="loginBtnVisible">
               <!-- <el-button type="text" class="text-info-color">登录</el-button>
               <el-avatar :icon="Avatar" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
               <el-icon><Avatar /></el-icon>
               <span>登录</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToMySpace">
+            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="logout">
               <!-- <el-button type="text" class="text-info-color">我的</el-button>
               <el-avatar :icon="HomeFilled" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
               <el-icon><User /></el-icon>
+              <span>{{realName}}</span>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToMySpace">
+              <!-- <el-button type="text" class="text-info-color">我的</el-button>
+              <el-avatar :icon="HomeFilled" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
+              <el-icon><HomeFilled /></el-icon>
               <span>我的</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToManage">
@@ -178,18 +184,7 @@ export default {
           window.open(href2.href, "_blank");
           break;
         case "logout":
-          ElMessageBox.confirm("确认登出?", "登出", {
-            confirmButtonText: "登出",
-            cancelButtonText: "取消",
-            type: "warning",
-          }).then(() => {
-            localStorage.setItem("user_id", null);
-            localStorage.setItem("user_role", null);
-            localStorage.setItem("user_name", null);
-            localStorage.setItem("real_name", null);
-            localStorage.setItem("user_school", null);
-            loginBtnVisible.value = true;
-          });
+          logout();
           break;
         default:
           break;
@@ -214,6 +209,21 @@ export default {
       loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
     });
 
+    const logout=()=>{
+      ElMessageBox.confirm("确认登出?", "登出", {
+            confirmButtonText: "登出",
+            cancelButtonText: "取消",
+            type: "warning",
+          }).then(() => {
+            localStorage.setItem("user_id", null);
+            localStorage.setItem("user_role", null);
+            localStorage.setItem("user_name", null);
+            localStorage.setItem("real_name", null);
+            localStorage.setItem("user_school", null);
+            loginBtnVisible.value = true;
+          });
+    };
+
     return {
       userId,
       userRole,
@@ -237,13 +247,14 @@ export default {
       Lock,
 
       methods,
+      logout,
     };
   },
 };
 </script>
 <style scoped>
 .top-wrap {
-  height: 72px;
+  height: 50px;
   background: rgba(204, 239, 234, 0.5);
   color: var(--portal-text-color);
   z-index: 1;

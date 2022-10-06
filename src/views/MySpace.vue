@@ -1,4 +1,5 @@
 <template>
+  <div class="videoList-wrap rel">
   <top-tool-bar></top-tool-bar>
   <div class="portal-wrap">
     <el-tabs
@@ -11,7 +12,7 @@
         <template #label>
           <span><i class="el-icon-date"></i> 我的收藏</span>
         </template>
-        <div class="videoList-wrap rel">
+        <div class="video-result">
           <div class="tr mb10">
             <el-pagination
               @current-change="handleCurrentChange"
@@ -30,7 +31,7 @@
                   class="video-item"
                   v-for="(ele, i) in wdscList"
                   :key="i"
-                  @click.enter="onClick(v)"
+                  @click.enter="jump(ele)"
                 >
                   <video-item
                     :src="ele.video_facede"
@@ -40,15 +41,14 @@
                     :collectionCount="ele.collection_count"
                   />
                   <div>
-                    <!-- TODO 替换title -->
-                    <div>{{ ele.video_title }}</div>
-                    <!-- <span class="mr2">大学物理</span> -->
-                    <span class="mr1">{{ ele.video_brief }}</span>
-                    <span class="mr1">｜</span>
-                    <span>{{ ele.teacher }}</span>
-                    <div class="redColor mt5">
+                    <div><span class="mr5">{{ele.video_title}}</span></div>
+                    <div class="redColor">
                       <span class="mr5">{{ ele.award }}</span>
-                      <!-- <span class="mr5">一等奖</span> -->
+                      <span class="mr2">｜</span>
+                      <span>{{ ele.teacher }}</span>
+                    </div>
+                    <div>
+                      {{ ele.video_year }}
                     </div>
                   </div>
                 </div>
@@ -66,6 +66,7 @@
             >&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;我的视频</span
           >
         </template>
+        <div class="video-result">
         <div class="tr mb10">
           <el-pagination
             @current-change="handleCurrentChange"
@@ -84,7 +85,7 @@
                 class="video-item"
                 v-for="(ele, i) in wdspList"
                 :key="i"
-                @click.enter="onClick(v)"
+                @click.enter="jump(ele)"
               >
                 <video-item
                   :src="ele.video_facede"
@@ -94,15 +95,14 @@
                   :collectionCount="ele.collection_count"
                 />
                 <div>
-                  <!-- TODO 替换title -->
-                  <div>{{ ele.video_title }}</div>
-                  <!-- <span class="mr2">大学物理</span> -->
-                  <span class="mr1">{{ ele.video_brief }}</span>
-                  <span class="mr1">｜</span>
-                  <span>{{ ele.teacher }}</span>
-                  <div class="redColor mt5">
+                  <div><span class="mr5">{{ele.video_title}}</span></div>
+                  <div class="redColor">
                     <span class="mr5">{{ ele.award }}</span>
-                    <!-- <span class="mr5">一等奖</span> -->
+                    <span class="mr2">｜</span>
+                    <span>{{ ele.teacher }}</span>
+                  </div>
+                  <div>
+                    {{ ele.video_year }}
                   </div>
                 </div>
               </div>
@@ -110,6 +110,7 @@
           </template>
           <template v-else-if="wdspList">暂无视频</template>
           <template v-else>视频列表加载中...</template>
+        </div>
         </div>
       </el-tab-pane>
       <el-tab-pane>
@@ -119,6 +120,7 @@
             >&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;本校视频</span
           >
         </template>
+        <div class="video-result">
         <div class="tr mb10">
           <el-pagination
             @current-change="handleCurrentChange"
@@ -137,7 +139,7 @@
                 class="video-item"
                 v-for="(ele, i) in bxspList"
                 :key="i"
-                @click.enter="onClick(v)"
+                @click.enter="jump(ele)"
               >
                 <video-item
                   :src="ele.video_facede"
@@ -147,15 +149,14 @@
                   :collectionCount="ele.collection_count"
                 />
                 <div>
-                  <!-- TODO 替换title -->
-                  <div>{{ ele.video_title }}</div>
-                  <!-- <span class="mr2">大学物理</span> -->
-                  <span class="mr1">{{ ele.video_brief }}</span>
-                  <span class="mr1">｜</span>
-                  <span>{{ ele.teacher }}</span>
-                  <div class="redColor mt5">
+                  <div><span class="mr5">{{ele.video_title}}</span></div>
+                  <div class="redColor">
                     <span class="mr5">{{ ele.award }}</span>
-                    <!-- <span class="mr5">一等奖</span> -->
+                    <span class="mr2">｜</span>
+                    <span>{{ ele.teacher }}</span>
+                  </div>
+                  <div>
+                    {{ ele.video_year }}
                   </div>
                 </div>
               </div>
@@ -164,10 +165,12 @@
           <template v-else-if="bxspList">暂无视频</template>
           <template v-else>视频列表加载中...</template>
         </div>
+        </div>
       </el-tab-pane>
     </el-tabs>
 
     <portal-footer></portal-footer>
+  </div>
   </div>
 </template>
 
@@ -180,6 +183,7 @@ import VideoItem from "../components/VideoItem.vue";
 import { getVideoList, getCollectVideoList } from "../api/serviceApi";
 import { onMounted, ref, reactive } from "vue";
 import { getCurrentInstance, inject } from "@vue/runtime-core";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 
 export default {
   components: {
@@ -188,6 +192,7 @@ export default {
     PortalFooter,
   },
   setup() {
+    const router = useRouter();
     let userId = "";
     let userRole = "";
     let userName = "";
@@ -263,6 +268,16 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
+    
+    // 跳转
+    const jump = (v) => {
+      debugger
+      const href = router.resolve({
+        path: '/VideoShow',
+        query: { videoId:v.video_id},
+      });
+      window.open(href.href, "_blank");
+    };
 
     onMounted(() => {
       getSession();
@@ -299,6 +314,7 @@ export default {
       bindBxspList,
       showVideo,
       getSession,
+      jump,
     };
   },
 };
@@ -313,8 +329,8 @@ export default {
   height: 100%;
   overflow: auto;
 }
-.width1200 {
-  width: 1200px;
+.width100 {
+  width: 1000px;
   margin: 0 auto;
 }
 .query-subjects {
@@ -349,7 +365,7 @@ export default {
   font-size: 16px;
 }
 .video-result {
-  margin-top: 174px;
+  margin-top: 0px;
 }
 .video-result .el-radio-button {
   --el-radio-button-checked-bg-color: white;
@@ -363,9 +379,9 @@ export default {
 }
 .video-result .video-item {
   /* 视频比是16:9 */
-  width: 176px;
-  margin-bottom: 35px;
-  margin-right: 80px;
+  width: 180px;
+  margin-bottom: 10px;
+  margin-right: 50px;
 }
 .video-result .video-item:nth-child(5n) {
   margin-right: 0;

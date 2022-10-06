@@ -8,8 +8,8 @@
         <el-col :span="12">
           <div>
             <div class="mt20 mb20">
-              <span class="f24">图片新闻</span>
-              <sup class="f24">
+              <span class="f20">图片新闻</span>
+              <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <document />
                 </el-icon>
@@ -30,8 +30,8 @@
         <el-col :span="12">
           <div>
             <div class="mt20 mb20">
-              <span class="f24">热门视频</span>
-              <sup class="f24">
+              <span class="f20">热门视频</span>
+              <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <svg t="1645865782381" class="icon" viewBox="0 0 1024 1024" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" p-id="2042" width="24" height="24">
@@ -55,11 +55,12 @@
                   <!-- TODO 替换title -->
                   <div class="truncate-text">{{hotvideoitem.video_title}}</div>
                   <div class="sub-title">
-                    <span class="mr5 truncate-text">{{hotvideoitem.video_brief}}</span>
+                    <span class="mr5 truncate-text">{{hotvideoitem.award}}</span>
                     <!-- <span class="mr2">波力</span> -->
                     <span class="mr2">｜</span>
                     <span class="author">{{hotvideoitem.teacher}}</span>
                   </div>
+                  <div class="truncate-text">{{hotvideoitem.video_year}}</div>
                 </div>
               </div>
             </div>
@@ -242,14 +243,15 @@
                   :appreciateCount="ele.appreciate_count" />
                 <div>
                   <!-- TODO 替换title -->
-                  <div>第十一届</div>
                   <div>
                     <span class="mr5">{{ele.video_title}}</span>
                   </div>
                   <div class="redColor">
                     <span class="mr5">{{ele.award}}</span>
+                    <span class="mr2">｜</span>
                     <span>{{ele.teacher}}</span>
                   </div>
+                  <div>{{ele.video_year}}</div>
                 </div>
               </div>
             </el-row>
@@ -265,8 +267,8 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="mt20 mb20 rel">
-              <span class="f24">通知公告</span>
-              <sup class="f24">
+              <span class="f20">通知公告</span>
+              <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <svg t="1645936733359" class="icon" viewBox="0 0 1024 1024" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" p-id="42752" width="24" height="24">
@@ -293,8 +295,8 @@
 
           <el-col :span="12">
             <div class="mt20 mb20 rel">
-              <span class="f24">政策法规</span>
-              <sup class="f24">
+              <span class="f20">政策法规</span>
+              <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <svg t="1645936798330" class="icon" viewBox="0 0 1024 1024" version="1.1"
                     xmlns="http://www.w3.org/2000/svg" p-id="43887" width="24" height="24">
@@ -377,8 +379,10 @@ export default {
     let hotVideoList = ref([]); //热门视频模型列表
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
+    let selectedVideoTab=ref("qjs")
     const handleTabClick = (tab, event) => {
       console.log(tab, event);
+      selectedVideoTab.value=tab.paneName;
       switch (tab.paneName) {
         case "qjs":
           methods.getQjsVideoList();
@@ -414,8 +418,9 @@ export default {
     const jumpVideo = (path) => {
       const href = router.resolve({
         path: path,
-        query: {},
+        query: {activeTab: selectedVideoTab.value},
       });
+      debugger
       window.open(href.href, "_blank");
     };
     const openNews = (path, news) => {
@@ -467,7 +472,7 @@ export default {
             videoSchool: userSchool,
             videoType: "0201", //青教赛视频
             videoState: "0401", //已发布
-            topN: 12,
+            topN: 10,
           },
         });
         getVideoList(query).then((res) => {
@@ -538,7 +543,7 @@ export default {
           params: {
             briefType: "0501", //通知公告
             briefState: "0401", //已发布
-            topN: 4,
+            topN: 3,
           },
         });
         getBriefList(query).then((res) => {
@@ -639,6 +644,7 @@ export default {
       sdbyVideoList,
       yktVideoList,
       hotVideoList,
+      selectedVideoTab,
       methods,
       getSession,
       tzggList,
@@ -696,12 +702,12 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: -15px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .portal-hot .video-item {
   /* 视频比是16:9 */
-  width: 160px;
+  width: 150px;
   margin-bottom: 35px;
 }
 .portal-hot .video-item .sub-title{
@@ -766,7 +772,7 @@ export default {
 
 .portal-videos {
   background: #08a991;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .portal-videos :deep .el-tabs__header {
@@ -824,6 +830,7 @@ export default {
   width: 200px;
   margin-bottom: 35px;
   margin-right: 10px;
+  font-size: 13px;
 }
 
 .portal-videos .video-item:nth-child(5n) {
@@ -904,6 +911,7 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 13px;
 }
 
 /* .line_file {

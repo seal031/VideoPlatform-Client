@@ -9,9 +9,9 @@
       </el-breadcrumb>
     </div> -->
     <el-container>
-      <el-aside width="50%">
+      <el-aside width="100%">
         <div class="container">
-          <div class="form-box">
+          <div >
             <el-form
               ref="formRef"
               :rules="rules"
@@ -20,12 +20,12 @@
             >
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="视频地址" prop="video_url">
+                  <el-form-item label="本地视频" prop="video_url">
                     <input type="file" name="file" id="fileSelector" ref="uploader" @change="videoFileChange"/>
-                    <el-input
+                    <!-- <el-input
                       v-model="videoForm.data.video_url"
                       style="weight: 70%"
-                    ></el-input>
+                    ></el-input> -->
                     <el-button
                       type="primary"
                       @click="uploadVideo()"
@@ -33,21 +33,23 @@
                     ><el-button
                       type="primary"
                       @click="perviewVideo('aliyun')"
-                      >预览阿里云</el-button
-                    ><el-button
+                      >预览</el-button
+                    >
+                    <!-- <el-button
                       type="primary"
                       @click="perviewVideo('web')"
                       >预览在线视频</el-button
-                    >
+                    > -->
+                    <div><el-progress :percentage=uploadPercent></el-progress></div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <div><el-progress :percentage=uploadPercent></el-progress></div>
+                
               </el-row>
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="内容图片">
+                  <el-form-item label="封面图片">
                     <el-upload
                       action="http://47.93.84.178:14474/Upload"
                       list-type="picture-card"
@@ -121,6 +123,13 @@
                 </el-col>
               </el-row>
               <el-row>
+                <el-col :span="24">
+                  <el-form-item label="获奖情况" prop="award">
+                    <el-input v-model="videoForm.data.award"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
                 <el-col :span="12">
                   <el-form-item label="教师" prop="teacher">
                     <el-input v-model="videoForm.data.teacher"></el-input>
@@ -132,9 +141,6 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-form-item label="获奖情况" prop="award">
-                <el-input v-model="videoForm.data.award"></el-input>
-              </el-form-item>
               <el-form-item label="视频简介" prop="video_brief">
                 <el-input
                   type="textarea"
@@ -187,18 +193,6 @@
           </div>
         </div>
       </el-aside>
-      <el-main>
-        <!-- <p @click="getVideoPic" style="text-align: center; margin: 10px auto">
-          点击拍照
-        </p> -->
-        <div id="aliyunVideoPlayer">
-          <!-- <videoPlay
-            id="player"
-            v-bind="options"
-            :src="videoForm.data.video_url"
-          /> -->
-        </div>
-      </el-main>
     </el-container>
   </div>
 </template>

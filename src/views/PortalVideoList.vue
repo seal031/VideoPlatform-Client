@@ -2,13 +2,12 @@
   <div class="videoList-wrap rel">
     <top-tool-bar></top-tool-bar>
     <!-- <portal-header></portal-header> -->
-
     <div class="width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <!-- TODO 名称传递 -->
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>优秀视频</el-breadcrumb-item>
-        <el-breadcrumb-item>更多</el-breadcrumb-item>
+        <el-breadcrumb-item>{{tabText}}</el-breadcrumb-item>
       </el-breadcrumb>
 
       <el-form class="query-subjects">
@@ -28,7 +27,7 @@
             <span class="label">学科</span>
             <!-- TODO videoTypeName 动态渲染 -->
             <el-radio-group
-              v-model="query.params.videoTypeName"
+              v-model="tabText"
               @change="videoTypeChange"
             >
               <el-radio-button label="青教赛"></el-radio-button>
@@ -84,15 +83,16 @@
                   :appreciateCount="ele.appreciate_count"
                 />
                 <div>
-                  <!-- TODO 替换title -->
-                  <div>{{ele.video_title}}</div>
-                  <span class="mr2">{{ele.video_brief}}</span>
-                  <!-- <span class="mr1">波粒二象性</span> -->
-                  <span class="mr1">｜</span>
-                  <span>{{ele.teacher}}</span>
-                  <div class="redColor mt5">
+                  <div>
+                    <span class="mr5">{{ele.video_title}}</span>
+                  </div>
+                  <div class="redColor">
                     <span class="mr5">{{ele.award}}</span>
-                    <!-- <span class="mr5">一等奖</span> -->
+                    <span class="mr2">｜</span>
+                    <span>{{ele.teacher}}</span>
+                  </div>
+                  <div>
+                    {{ele.video_year}}
                   </div>
                 </div>
               </div>
@@ -128,6 +128,8 @@ export default {
     const router = useRouter();
     const route = useRoute();
 
+    let activeTab=ref("");
+    let tabText=ref("");
     let userId = "";
     let userRole = "";
     let userName = "";
@@ -159,7 +161,6 @@ export default {
     const getVideo = () => {
       getVideoList(query).then((res) => {
         if (res.resultCode == "200") {
-          debugger;
           tableData.value = JSON.parse(res.data.videoList);
           totalCount.value = res.data.totalCount;
         }
@@ -183,6 +184,7 @@ export default {
     };
 
     onMounted(() => {
+      methods.getParams();
       getSession();
       getVideo();
     });
@@ -219,7 +221,32 @@ export default {
         query.params.pageIndex=val;
         getVideo();
       };
+    const methods = {
+      getParams() {
+        activeTab.value = route.query.activeTab;
+        switch (activeTab.value) {
+          case "qjs":
+            tabText.value = "青教赛";
+            query.params.videoType = "0201";
+            break;
+          case "qgs":
+            tabText.value = "青管赛";
+            query.params.videoType = "0202";
+            break;
+          case "sdby":
+            tabText.value = "师德榜样";
+            query.params.videoType = "0203";
+            break;
+          case "ykt":
+            tabText.value = "云课堂";
+            query.params.videoType = "0204";
+            break;
+        }
+      },
+    }
     return {
+      activeTab,
+      tabText,
       userId,
       userRole,
       userName,
@@ -240,6 +267,7 @@ export default {
       videoStateChange,
       handleCurrentChange,
       getSession,
+      methods,
       jump,
     };
   },

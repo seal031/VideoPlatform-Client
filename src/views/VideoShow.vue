@@ -415,11 +415,12 @@ export default {
         let query = reactive({
           params: {
             videoId: videoId, //后台参数是类，加reactive
-            topN: 6,
+            topN: 7,
           },
         });
         getRelativeVideoList(query).then((res) => {
           if (res.resultCode == "200") {
+            debugger
             relativeVideoList.value = JSON.parse(res.data.videoList);
             console.log(relativeVideoList);
           }
@@ -549,7 +550,7 @@ export default {
         var player = new Aliplayer({
            id: 'aliyunVideoPlayer',
            width: '100%',
-           height: '580px',
+           height: '500px',
            vid : videoForm.data.aliyun_videoId,
            playauth : aliyunPlayAuth,
          },function(player){
