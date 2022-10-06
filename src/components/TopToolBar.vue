@@ -54,7 +54,7 @@
 
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
-            <el-dialog title="用户登录" v-model="dialogFormVisible" :show-close="false" width="30%" center :modal-append-to-body="true"
+            <el-dialog title="用户登录" v-model="dialogFormVisible" :show-close="false" width="30%" center :modal-append-to-body="true" :close-on-click-modal="false" :close-on-press-escape="false"
               append-to-body>
               <div class="ms-title">登录系统</div>
               <el-form :model="loginModel.data" label-width="0px" class="ms-content">
