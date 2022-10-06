@@ -51,7 +51,7 @@
         <el-col :span="12">
           <el-form-item label="管理员姓名" prop="SchoolCategoryTypeList">
             <el-input
-              v-model="SchoolForm.data.administrator"
+              v-model="AdminForm.data.user_name"
               placeholder="请输入"
             ></el-input>
           </el-form-item>
@@ -59,7 +59,7 @@
         <el-col :span="12">
           <el-form-item label="管理员账号" prop="SchoolCategoryTypeList">
             <el-input
-              v-model="SchoolForm.data.administrator"
+              v-model="AdminForm.data.real_name"
               placeholder="请输入"
             ></el-input>
           </el-form-item>
@@ -83,12 +83,15 @@
       border
       lazy
     >
-      <el-table-column prop="real_name" label="人员姓名" width="200%">
+      <el-table-column prop="real_name" label="人员姓名">
       </el-table-column>
-      <el-table-column prop="user_name" label="账号名称" width="200%">
+      <el-table-column prop="user_name" label="账号名称">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150">
+      <el-table-column fixed="right" label="操作" width="200">
         <template #default="scope">
+          <el-button @click="ResetPwd(scope.row)" type="text " size="small" :icon="EditPen"
+            >重置密码</el-button
+          >
           <el-button @click="handleEdit(scope.row)" type="text " size="small" :icon="Cellphone"
             >编辑</el-button
           >
@@ -98,13 +101,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row>
-      <el-col :span="24">
-        <el-button type="primary" :icon="Plus" @click="onSubmit"
-          >确定</el-button
-        >
-      </el-col>
-    </el-row>
     <el-dialog title="编辑账号" v-model="UserAddVisible">
       <user-add
         @closeUserAdd="handleClose"
@@ -114,17 +110,29 @@
       ></user-add>
     </el-dialog>
   </div>
+    <el-row>
+      <el-col :span="10"></el-col>
+      <el-col :span="4">
+        <el-button type="primary" :icon="Check" @click="onSubmit"
+          >保存</el-button
+        >
+      </el-col>
+      <el-col :span="10"></el-col>
+    </el-row>
 </template>
 
 <script>
-import { Search, Plus,Cellphone,Delete } from "@element-plus/icons-vue";
+import { Search, Plus,Cellphone,Delete,Check,EditPen } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted, onBeforeUpdate } from "@vue/runtime-core";
 import { ElMessage, ElMessageBox } from "element-plus";
 import {
   getSchoolById,
   getUserBySchoolId,
+  getUserById,
   addSchool,
   delUser,
+  setSchoolAdmin,
+  resetPwd,
 } from "../api/serviceApi";
 import UserAdd from "../components/UserAdd.vue";
 export default {
@@ -137,12 +145,12 @@ export default {
     SchoolCategoryTypeList: ref([]),
   },
   setup(props,context) {
-    const SchoolId = props.SchoolId;
+    let SchoolId = props.SchoolId;
     let UserList = ref([]);
     let selectedUserId = ref("");
     let selectedSchoolId = ref("");
     let UserAddVisible = ref(false);
-    //数据模型
+    //学校数据模型
     let SchoolForm = reactive({
       data: {
         school_id: null,
@@ -152,6 +160,14 @@ export default {
         administrator: "",
         operate_admin: null,
       },
+    });
+    //管理员数据模型
+    let AdminForm=reactive({
+      data:{
+        user_id:null,
+        user_name:"",
+        real_name:"",
+      }
     });
 
     const bindSchool = () => {
@@ -164,13 +180,61 @@ export default {
         getSchoolById(params).then((res) => {
           if (res.resultCode == "200") {
             SchoolForm.data = JSON.parse(res.data);
+            debugger
+            if(SchoolForm.data.administrator!=undefined){
+              //获取管理员模型
+              let paramsAdmin = {
+                params: {
+                  user_id: SchoolForm.data.administrator,
+                },
+              };
+              getUserById(paramsAdmin).then((res)=>{
+                debugger
+                if (res.resultCode == "200") {
+                  AdminForm.data=JSON.parse(res.data);
+                }
+              });
+            }
           }
         });
       }
     };
     const onSubmit=()=>{
       console.log('onSubmit')
-      context.emit('closeSchoolAdd');
+      addSchool(SchoolForm.data).then((res)=>{
+        if(res.resultCode=="200"){
+          SchoolId=res.data;//此处data返回学校id
+          if(AdminForm.data.user_name!=""){
+            let params={
+              params:{
+                school_id:SchoolId,
+                admin_name:AdminForm.data.user_name,
+                admin_realname:AdminForm.data.real_name,
+              }
+            }
+            setSchoolAdmin(params).then((resAdmin)=>{
+              if(resAdmin.resultCode=="200"){
+                ElMessage("保存成功");
+                context.emit('closeSchoolAdd');
+              }
+              else{
+                ElMessage({
+                  message: "设置高校管理员失败：" + res.message,
+                  grouping: true,
+                  type: "error",
+                });
+              }
+            })
+          }
+        }
+        else{
+          ElMessage({
+                  message: "保存数据失败：" + res.message,
+                  grouping: true,
+                  type: "error",
+                });
+        }
+      });
     };
 
     const bindUserList = () => {
@@ -191,6 +255,9 @@ export default {
       UserAddVisible.value = true;
       selectedUserId.value = "";
       selectedSchoolId.value = SchoolForm.data.school_id;
+    };
+    const ResetPwd=(row)=>{
+
     };
     const handleEdit = (row) => {
       UserAddVisible.value = true;
@@ -246,6 +313,8 @@ export default {
       Plus,
       Delete,
       Cellphone,
+      Check,
+      EditPen,
 
       SchoolId,
       UserList,
@@ -253,9 +322,11 @@ export default {
       selectedSchoolId,
       UserAddVisible,
       SchoolForm,
+      AdminForm,
       bindSchool,
       bindUserList,
       handleAdd,
+      ResetPwd,
       handleEdit,
       handleDel,
       handleClose,

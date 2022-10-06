@@ -141,16 +141,24 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-form-item>
+              <!-- <el-form-item>
                 <el-button type="primary" @click="onSubmit">发布视频</el-button>
                 <el-button type="primary" @click="onDraft">存为草稿</el-button>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
           </div>
         </div>
       </el-aside>
     </el-container>
   </div>
+  <el-row>
+    <el-col :span="9"></el-col>
+    <el-col :span="6">
+      <el-button type="primary" @click="onSubmit">发布内容</el-button>
+      <el-button type="primary" @click="onDraft">存为草稿</el-button>
+    </el-col>
+    <el-col :span="9"></el-col>
+  </el-row>
 </template>
 
 <script>

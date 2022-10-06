@@ -84,13 +84,13 @@
       lazy
     >
       <el-table-column prop="school_name" label="学校名称"> </el-table-column>
-      <el-table-column prop="name" label="学校性质" width="120">
+      <el-table-column prop="school_type_name" label="学校性质" width="120">
       </el-table-column>
-      <el-table-column prop="name" label="学校分类" width="120">
+      <el-table-column prop="school_category_name" label="学校分类" width="120">
       </el-table-column>
-      <el-table-column prop="administrator" label="管理员账号" width="150">
+      <el-table-column prop="administrator_name" label="管理员账号" width="150">
       </el-table-column>
-      <el-table-column prop="name" label="子账号数量" width="120">
+      <el-table-column prop="countUser" label="子账号数量" width="120">
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="150">
         <template #default="scope">
@@ -175,6 +175,7 @@ export default {
     const bindSchoolList = () => {
       getSchoolList(query).then((res) => {
         if (res.resultCode == "200") {
+          debugger
           SchoolList.value = JSON.parse(res.data.School_list);
           pageTotal.value = res.data.totalCount || 50;
         }
@@ -234,6 +235,7 @@ export default {
     };
 
     onMounted(() => {
+      debugger
       bindSchoolTypeList();
       bindSchoolCategoryList();
       bindSchoolList();

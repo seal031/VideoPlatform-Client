@@ -118,7 +118,7 @@
   </div>
   <el-dialog
     v-model="dialogVisible"
-    title="视频详情"
+    title="编辑视频"
     width="70%"
     top="20px"
     @close="handleClose"

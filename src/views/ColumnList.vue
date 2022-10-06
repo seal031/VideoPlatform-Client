@@ -102,7 +102,7 @@
   </div>
   <el-dialog
     v-model="dialogVisible"
-    title="内容详情"
+    title="编辑内容"
     width="80%"
     top="20px"
     @close="handleClose"

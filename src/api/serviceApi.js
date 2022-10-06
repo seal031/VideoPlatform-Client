@@ -13,6 +13,10 @@ export function delUser(params){
     return axios.post('/GlobalCode/DelUser',{},params);
 }
 
+export function resetPwd(params){
+    return axios.post('/GlobalCode/ResetPwd',{},params);
+}
+
 export function getVideoType(params){
     return axios.get('/GlobalCode/GetVideoType',params);
 }
@@ -53,6 +57,9 @@ export function addSchool(params){
 }
 export function delSchool(params){
     return axios.post('/School/DelSchool',{},params);
+}
+export function setSchoolAdmin(params){
+    return axios.post('/School/SetSchoolAdmin',{},params);
 }
 ////////////////////////学校 END/////////////////
 

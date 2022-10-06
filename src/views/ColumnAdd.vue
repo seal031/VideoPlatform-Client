@@ -1,12 +1,12 @@
 ﻿<template slot-scope="scope">
   <div>
     <!-- <div class="crumbs"> -->
-      <el-breadcrumb separator="/">
+      <!-- <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-lx-calendar"></i> 内容管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>添加内容</el-breadcrumb-item>
-      </el-breadcrumb>
+      </el-breadcrumb> -->
     <!-- </div> -->
     <!-- <el-container> -->
     <el-aside width="100%">
@@ -99,20 +99,28 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">发布内容</el-button>
                 <el-button type="primary" @click="onDraft">存为草稿</el-button>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
         </el-form>
         <!-- </div> -->
       </div>
     </el-aside>
     <!-- </el-container> -->
   </div>
+  <el-row>
+    <el-col :span="10"></el-col>
+    <el-col :span="4">
+      <el-button type="primary" @click="onSubmit">发布内容</el-button>
+      <el-button type="primary" @click="onDraft">存为草稿</el-button>
+    </el-col>
+    <el-col :span="10"></el-col>
+  </el-row>
 </template>
 
 <script>

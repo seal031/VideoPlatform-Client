@@ -17,37 +17,36 @@
                     <el-dropdown-item command="manage"
                       >后台管理</el-dropdown-item
                     > 
-                    <el-dropdown-item command="logout">登出</el-dropdown-item>
+                    <el-dropdown-item command="logout">退出</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
             </div>-->
             <div class="top-login-btn poi" @click="dialogFormVisible = true" v-if="loginBtnVisible">
-              <!-- <el-button type="text" class="text-info-color">登录</el-button>
-              <el-avatar :icon="Avatar" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
               <el-icon>
                 <Avatar />
               </el-icon>
               <span>登录</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="logout">
-              <!-- <el-button type="text" class="text-info-color">我的</el-button>
-              <el-avatar :icon="HomeFilled" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
               <el-icon>
                 <User />
               </el-icon>
               <span>{{realName}}</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="dialogChangePwdVisible=true">
+              <el-icon>
+                <Edit />
+              </el-icon>
+              <span>修改密码</span>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToMySpace">
-              <!-- <el-button type="text" class="text-info-color">我的</el-button>
-              <el-avatar :icon="HomeFilled" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
               <el-icon>
                 <HomeFilled />
               </el-icon>
               <span>我的</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToManage">
-              <!-- <el-button type="text" class="text-info-color"></el-button> -->
               <el-icon>
                 <Setting />
               </el-icon>
@@ -80,6 +79,32 @@
                 <p class="login-tips">Tips : 用户名和密码随便填。</p>
               </el-form>
             </el-dialog>
+            <el-dialog title="修改密码" v-model="dialogChangePwdVisible" :show-close="false" width="30%" center :modal-append-to-body="true"
+              append-to-body>
+              <div class="ms-title">修改密码</div>
+              <el-form  label-width="0px" class="ms-content">
+                <el-form-item>当前账号 : {{userName}}</el-form-item>
+                <el-form-item>用户名称 : {{realName}}</el-form-item>
+                <el-form-item prop="username">
+                  <el-input v-model="newPwd" placeholder="新密码" tabindex="1">
+                    <template #prepend>
+                      <el-button :icon="Lock"></el-button>
+                    </template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item prop="password">
+                  <el-input v-model="newPwdCheck" placeholder="重复密码" 
+                    @keyup.enter="submitChangePwd()" tabindex="2">
+                    <template #prepend>
+                      <el-button :icon="Lock"></el-button>
+                    </template>
+                  </el-input>
+                </el-form-item>
+                <div class="login-btn">
+                  <el-button type="primary" @click="submitChangePwd()">修改</el-button>
+                </div>
+              </el-form>
+            </el-dialog>
           </el-form-item>
         </el-row>
       </el-form>
@@ -90,7 +115,7 @@
 <script>
 import { Search, Avatar, Lock, HomeFilled, Setting } from "@element-plus/icons-vue";
 import { ref, reactive, inject, onMounted, onBeforeUpdate, watch } from "vue";
-import { login } from "../api/serviceApi";
+import { login,resetPwd } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 
@@ -101,11 +126,14 @@ export default {
 
     let userId = "";
     let userRole = "";
-    let userName = "";
+    let userName = ref("");
     let realName = ref("");
     let userSchool = "";
 
     let dialogFormVisible = ref(false);
+    let dialogChangePwdVisible=ref(false);
+    let newPwd=ref("");
+    let newPwdCheck=ref("");
     let loginBtnVisible = ref(true);
     //登录模型
     let loginModel = reactive({
@@ -143,7 +171,7 @@ export default {
             var user = JSON.parse(res.data);
             userId = user.user_id;
             userRole = user.user_role;
-            userName = user.user_name;
+            userName.value = user.user_name;
             realName.value = user.real_name;
             userSchool = user.user_school;
             localStorage.setItem("user_id", user.user_id);
@@ -152,6 +180,7 @@ export default {
             localStorage.setItem("real_name", user.real_name);
             localStorage.setItem("user_school", user.user_school);
             dialogFormVisible.value = false;
+            dialogChangePwdVisible.value=false;
             loginBtnVisible.value = false;
             // methods.callFather();
             debugger
@@ -171,6 +200,40 @@ export default {
         .catch((err) => {
           debugger;
         });
+    };
+    const submitChangePwd=()=>{
+      if(newPwd.value!=newPwdCheck.value)
+      {
+        ElMessage({
+          message: "两次输入的密码不一致",
+          grouping: true,
+          type: "error",
+        });
+        return;
+      }
+      let params = {
+            params: {
+              user_id: userId,
+              newPwd:newPwd.value,
+            }
+          };
+          resetPwd(params).then((res)=>{
+            if(res.resultCode=="200"){
+              ElMessage.success("修改密码成功");
+              dialogFormVisible.value = false;
+              dialogChangePwdVisible.value=false;
+              loginBtnVisible.value = false;
+              newPwd.value="";
+              newPwdCheck.value="";
+            }
+            else{
+              ElMessage({
+                message: "修改密码失败：" + res.message,
+                grouping: true,
+                type: "error",
+              });
+            }
+          });
     };
     const handleDropdown = (command) => {
       console.log(command);
@@ -214,7 +277,7 @@ export default {
     const init = () => {
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
-      userName = localStorage.getItem("user_name");
+      userName.value = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
       loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
@@ -227,8 +290,8 @@ export default {
     }, { immediate: true })
 
     const logout = () => {
-      ElMessageBox.confirm("确认登出?", "登出", {
-        confirmButtonText: "登出",
+      ElMessageBox.confirm("确认退出?", "退出", {
+        confirmButtonText: "退出",
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
@@ -250,12 +313,16 @@ export default {
       userSchool,
 
       dialogFormVisible,
+      dialogChangePwdVisible,
+      newPwd,
+      newPwdCheck,
       loginBtnVisible,
       getImageUrl,
       JumpToMySpace,
       JumpToManage,
       searchHandle,
       submitLogin,
+      submitChangePwd,
       handleDropdown,
       loginModel,
       Search,
