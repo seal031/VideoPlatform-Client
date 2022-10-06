@@ -55,55 +55,37 @@
                   list-type="picture-card"
                   :auto-upload="true"
                   :multiple= false
-                  v-model:file-list="fileList"
+                  :show-file-list="false"
                   :limit="1"
                   :on-success="handleAvatarSuccess"
-                  :on-remove="handleRemove"
                   :before-upload="beforeAvatarUpload"
                 >
-                  <template #default>
-                    <el-icon>
-                      <Plus />
-                    </el-icon>
+                  <template v-if="briefForm.data.brief_image">
+                    <ul class="el-upload-list el-upload-list--picture-card">
+                      <li class="el-upload-list__item is-success" tabindex="0">
+                        <img class="el-upload-list__item-thumbnail" :src="briefForm.data.brief_image" alt="">
+                        <span class="el-upload-list__item-actions">
+                          <span
+                            class="el-upload-list__item-preview"
+                            @click.stop="handlePictureCardPreview"
+                          >
+                            <el-icon><zoom-in /></el-icon>
+                          </span>
+                          <span class="el-upload-list__item-delete" @click.stop="handleRemove">
+                            <el-icon>
+                              <delete />
+                            </el-icon>
+                          </span>
+                        </span>
+                      </li>
+                    </ul>
                   </template>
-                  <!-- <template #file="{ file }">
-                    <div>
-                      <img
-                        class="el-upload-list__item-thumbnail"
-                        :src="file.url"
-                        alt=""
-                      />
-                      <span class="el-upload-list__item-actions">
-                        <span
-                          class="el-upload-list__item-preview"
-                          @click="handlePictureCardPreview(file)"
-                        >
-                          <el-icon>
-                            <zoom-in />
-                          </el-icon>
-                        </span>
-                        <span
-                          v-if="!disabled"
-                          class="el-upload-list__item-delete"
-                          @click="handleDownload(file)"
-                        >
-                          <el-icon><download /></el-icon>
-                        </span>
-                        <span
-                          v-if="disabled"
-                          class="el-upload-list__item-delete"
-                          @click="handleRemove(file)"
-                        >
-                          <el-icon>
-                            <delete />
-                          </el-icon>
-                        </span>
-                      </span>
-                    </div>
-                  </template> -->
+                  <el-icon v-else class="avatar-uploader-icon">
+                    <Plus />
+                  </el-icon>
                 </el-upload>
-                <el-dialog v-model="imageVisible">
-                  <img width="100%" :src="dialogImageUrl" alt="" />
+                <el-dialog v-model="imageVisible" custom-class="center">
+                  <img :src="dialogImageUrl" alt="" style="max-width: 100%; max-height: 400px;" />
                 </el-dialog>
               </el-form-item>
             </el-col>
@@ -204,16 +186,13 @@ export default {
     };
     const formRef = ref(null);
     const editor = ref(null);
-    let dialogImageUrl = ref("");
+    const dialogImageUrl = ref("");
     const imageVisible = ref(false);
     const disabled = ref(true);
     const imageUrl = ref("");
-    const fileList = ref([]);
     const handleAvatarSuccess = (res, file) => {
       debugger;
-      // imageUrl.value = URL.createObjectURL(file.raw);
-      // imageUrl.value = URL.createObjectURL('http://localhost:14474/Images/'+res.data.newFileName);
-      imageUrl.value =
+      briefForm.data.brief_image =
         "http://47.93.84.178:14474/Images/" + res.data.newFileName;
     };
     const beforeAvatarUpload = (file) => {
@@ -227,21 +206,17 @@ export default {
       }
       return isJPG && isLt2M;
     };
-    const handleRemove = (file) => {
-      debugger;
-      console.log(file);
-      file.url=undefined
-      imageUrl.value = "";
+    const handleRemove = () => {
+      briefForm.data.brief_image = "";
     };
-    const handlePictureCardPreview = (file) => {
-      debugger;
-      dialogImageUrl.value = imageUrl.value;
+    const handlePictureCardPreview = () => {
+      dialogImageUrl.value = briefForm.data.brief_image;
       imageVisible.value = true;
     };
-    const handleDownload = (file) => {
-      debugger;
-      console.log(file);
-    };
+    // const handleDownload = (file) => {
+    //   debugger;
+    //   console.log(file);
+    // };
     const getWangEditorValue = (str) => {
       briefForm.data.brief_content = str;
     };
@@ -251,7 +226,7 @@ export default {
       briefForm.data.brief_state = "0401";
       briefForm.data.admin_id = "0";
       briefForm.data.admin_ip = "localhost";
-      briefForm.data.brief_image = imageUrl.value;
+      // briefForm.data.brief_image = imageUrl.value;
       console.log(briefForm.data);
       addBrief(briefForm.data).then((res) => {
         if ((res.resultCode = "200")) {
@@ -274,7 +249,7 @@ export default {
       briefForm.data.brief_state = "0402";
       briefForm.data.admin_id = "0";
       briefForm.data.admin_ip = "localhost";
-      briefForm.data.brief_image = imageUrl.value;
+      // briefForm.data.brief_image = imageUrl.value;
       console.log(briefForm.data);
       addBrief(briefForm.data).then((res) => {
         if ((res.resultCode = "200")) {
@@ -359,16 +334,21 @@ export default {
       disabled,
       handleRemove,
       handlePictureCardPreview,
-      handleDownload,
+      // handleDownload,
       onSubmit,
       onDraft,
       getWangEditorValue,
       handleAvatarSuccess,
       beforeAvatarUpload,
 
-      fileList,
       dialogVisible,
+      dialogImageUrl,
     };
   },
 };
 </script>
+<style scope>
+.center .el-dialog__body{
+  text-align: center;
+}
+</style>

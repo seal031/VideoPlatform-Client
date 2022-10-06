@@ -16,7 +16,7 @@
                   v-for="item in relativeVideoList"
                   class="image"
                   :src="item.video_facede"
-                  :title="item.video_title"
+                  :tip="item.video_title"
                   :videoId="item.video_id"
                   :key="item"
                   @click="rlVideoClick(item.video_id)"

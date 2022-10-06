@@ -11,77 +11,70 @@
     <el-container>
       <el-aside width="100%">
         <div class="container">
-          <div >
-            <el-form
-              ref="formRef"
-              :rules="rules"
-              :model="videoForm.data"
-              label-width="80px"
-            >
+          <div>
+            <el-form ref="formRef" :rules="rules" :model="videoForm.data" label-width="80px">
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="本地视频" prop="video_url">
-                    <input type="file" name="file" id="fileSelector" ref="uploader" @change="videoFileChange"/>
+                    <input type="file" name="file" id="fileSelector" ref="uploader" @change="videoFileChange" />
                     <!-- <el-input
                       v-model="videoForm.data.video_url"
                       style="weight: 70%"
                     ></el-input> -->
-                    <el-button
-                      type="primary"
-                      @click="uploadVideo()"
-                      >上传</el-button
-                    ><el-button
-                      type="primary"
-                      @click="perviewVideo('aliyun')"
-                      >预览</el-button
-                    >
+                    <el-button type="primary" @click="uploadVideo()">上传</el-button>
+                    <el-button type="primary" @click="perviewVideo('aliyun')">预览</el-button>
                     <!-- <el-button
                       type="primary"
                       @click="perviewVideo('web')"
                       >预览在线视频</el-button
                     > -->
-                    <div><el-progress :percentage=uploadPercent></el-progress></div>
+                    <div style="width: 200px;" v-if="uploadPercent>0">
+                      <el-progress :percentage="uploadPercent"></el-progress>
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                
+
               </el-row>
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="封面图片">
-                    <el-upload
-                      action="http://47.93.84.178:14474/Upload"
-                      list-type="picture-card"
-                      :auto-upload="true"
-                      :limit="1"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                    >
-                      <template #default>
+                    <el-upload action="http://47.93.84.178:14474/Upload" list-type="picture-card" :auto-upload="true"
+                      :limit="1" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload"
+                      :show-file-list="false">
+                      <!-- <template #default>
                         <el-icon>
-                          <!-- <plus /> -->
+                          <Plus />
                         </el-icon>
+                      </template> -->
+                      <template v-if="videoForm.data.video_facede">
+                        <ul class="el-upload-list el-upload-list--picture-card">
+                          <li class="el-upload-list__item is-success" tabindex="0">
+                            <img class="el-upload-list__item-thumbnail" :src="videoForm.data.video_facede" alt="">
+                            <span class="el-upload-list__item-actions">
+                              <span class="el-upload-list__item-preview" @click.stop="handlePictureCardPreview">
+                                <el-icon>
+                                  <zoom-in />
+                                </el-icon>
+                              </span>
+                              <span class="el-upload-list__item-delete" @click.stop="handleAvatarRemove">
+                                <el-icon>
+                                  <delete />
+                                </el-icon>
+                              </span>
+                            </span>
+                          </li>
+                        </ul>
                       </template>
-                      <template #file="{ file }">
-                        <div>
-                          <img
-                            class="el-upload-list__item-thumbnail"
-                            :src="file.url"
-                            alt=""
-                          />
-                          <span
-                            v-if="!disabled"
-                            class="el-upload-list__item-delete"
-                            @click="handleRemove(file)"
-                          >
-                            <el-icon>
-                              <delete />
-                            </el-icon>
-                          </span>
-                        </div>
-                      </template>
+                      <el-icon v-else class="avatar-uploader-icon">
+                        <Plus />
+                      </el-icon>
                     </el-upload>
+
+                    <el-dialog v-model="imageVisible" custom-class="center">
+                      <img :src="dialogImageUrl" alt="" style="max-width: 100%; max-height: 400px;" />
+                    </el-dialog>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -95,30 +88,16 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="视频分类" prop="video_type">
-                    <el-select
-                      v-model="videoForm.data.video_type"
-                      placeholder="请选择"
-                      clearable
-                    >
-                      <el-option
-                        v-for="(item, c) in videoTypeList"
-                        :key="c"
-                        :label="item.code_name"
-                        :value="item.code_id"
-                      ></el-option>
+                    <el-select v-model="videoForm.data.video_type" placeholder="请选择" clearable>
+                      <el-option v-for="(item, c) in videoTypeList" :key="c" :label="item.code_name"
+                        :value="item.code_id"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="视频年度" prop="video_year">
-                    <el-date-picker
-                      v-model="videoForm.data.video_year"
-                      format="YYYY"
-                      value-format="YYYY"
-                      type="year"
-                      placeholder="选择年份"
-                      style="width: 100%"
-                    ></el-date-picker>
+                    <el-date-picker v-model="videoForm.data.video_year" format="YYYY" value-format="YYYY" type="year"
+                      placeholder="选择年份" style="width: 100%"></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -142,45 +121,22 @@
                 </el-col>
               </el-row>
               <el-form-item label="视频简介" prop="video_brief">
-                <el-input
-                  type="textarea"
-                  rows="3"
-                  v-model="videoForm.data.video_brief"
-                ></el-input>
+                <el-input type="textarea" rows="3" v-model="videoForm.data.video_brief"></el-input>
               </el-form-item>
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="视频开放" prop="public_type">
-                    <el-select
-                      v-model="videoForm.data.public_type"
-                      placeholder="请选择"
-                      @change="publicChange"
-                    >
-                      <el-option
-                        v-for="(item, c) in publicTypeList"
-                        :key="c"
-                        :label="item.code_name"
-                        :value="item.code_id"
-                      ></el-option>
+                    <el-select v-model="videoForm.data.public_type" placeholder="请选择" @change="publicChange">
+                      <el-option v-for="(item, c) in publicTypeList" :key="c" :label="item.code_name"
+                        :value="item.code_id"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item
-                    label="开放对象"
-                    prop="public_type"
-                    v-show="showPublicObject"
-                  >
-                    <el-select
-                      v-model="videoForm.data.public_type"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        v-for="(item, c) in publicTypeList"
-                        :key="c"
-                        :label="item.code_name"
-                        :value="item.code_id"
-                      ></el-option>
+                  <el-form-item label="开放对象" prop="public_type" v-show="showPublicObject">
+                    <el-select v-model="videoForm.data.public_type" placeholder="请选择">
+                      <el-option v-for="(item, c) in publicTypeList" :key="c" :label="item.code_name"
+                        :value="item.code_id"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -224,13 +180,13 @@ export default {
       default: "",
     },
   },
-  setup(props,context) {
+  setup(props, context) {
     let userId = "";
     let userRole = "";
     let userName = "";
     let realName = ref("");
     let userSchool = "";
-    let uploadPercent=ref(0);
+    let uploadPercent = ref(0);
 
     // let route = useRoute(); //可以在setup中使用route获取参数
     let videoId = props.videoId;
@@ -288,7 +244,7 @@ export default {
       is_deleted: 0,
       video_facede: "",
       uploader: "",
-      aliyun_videoId:"",
+      aliyun_videoId: "",
     };
     const videoForm = reactive({
       data: JSON.parse(JSON.stringify(initVideoFormData)),
@@ -297,18 +253,18 @@ export default {
       name: [{ required: true, message: "请输入内容", trigger: "blur" }],
     };
     //////////////阿里云视频相关////////////
-    var aliyunVideoId=""; //阿里云视频id
-    var aliyunPlayAuth="";//阿里云播放授权
-    var CoverUrl="";//视频封面图片地址
-    var videoFile=null; //待上传的本地视频文件
+    var aliyunVideoId = ""; //阿里云视频id
+    var aliyunPlayAuth = "";//阿里云播放授权
+    var CoverUrl = "";//视频封面图片地址
+    var videoFile = null; //待上传的本地视频文件
     var uploaderAliyun = new AliyunUpload.Vod({
-       //userID，必填，您可以使用阿里云账号访问账号中心（https://account.console.aliyun.com/），即可查看账号ID
-       userId:"1363466435075707",
-     region:"cn-beijing",  //上传到视频点播的地域，默认值为'cn-shanghai'，
-       partSize: 1048576,//分片大小默认1 MB，不能小于100 KB（100*1024）
-       parallel: 5, //并行上传分片个数，默认5
-     retryCount: 3,//网络原因失败时，重新上传次数，默认为3
-     retryDuration: 2, //网络原因失败时，重新上传间隔时间，默认为2秒
+      //userID，必填，您可以使用阿里云账号访问账号中心（https://account.console.aliyun.com/），即可查看账号ID
+      userId: "1363466435075707",
+      region: "cn-beijing",  //上传到视频点播的地域，默认值为'cn-shanghai'，
+      partSize: 1048576,//分片大小默认1 MB，不能小于100 KB（100*1024）
+      parallel: 5, //并行上传分片个数，默认5
+      retryCount: 3,//网络原因失败时，重新上传次数，默认为3
+      retryDuration: 2, //网络原因失败时，重新上传间隔时间，默认为2秒
       //开始上传
       'onUploadstarted': function (uploadInfo) {
         debugger
@@ -320,29 +276,29 @@ export default {
       //文件上传成功
       'onUploadSucceed': function (uploadInfo) {
         ElMessage({
-            message: "上传成功.",
-            grouping: true,
-            type: "success",
-          });
+          message: "上传成功.",
+          grouping: true,
+          type: "success",
+        });
         ///上传成功后马上获取播放凭证（主要为了获取封面图片）
         //tood 延时一小会儿
         let query = {
           params: {
             accessKeyId: "c9FjqwmD4XLC5H2M",
-            accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
-            videoId:aliyunVideoId,//"d64940f4279d40ed877f05c7dfcc0f28",
+            accessKeySecret: "V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
+            videoId: aliyunVideoId,//"d64940f4279d40ed877f05c7dfcc0f28",
           },
         };
-        getVideoPlayAuth(query).then((res)=>{
-          if(res.resultCode=="200"&&res.data.ErrorMessage==""){
-            aliyunPlayAuth=res.data.PlayAuth;
-            aliyunVideoId=res.data.VideoId;
-            CoverUrl=res.data.CoverUrl;
-            console.log (CoverUrl)
+        getVideoPlayAuth(query).then((res) => {
+          if (res.resultCode == "200" && res.data.ErrorMessage == "") {
+            aliyunPlayAuth = res.data.PlayAuth;
+            aliyunVideoId = res.data.VideoId;
+            CoverUrl = res.data.CoverUrl;
+            console.log(CoverUrl)
           }
-          else{
+          else {
             ElMessage({
-              message: "获取视频播放信息失败."+res.data.ErrorMessage,
+              message: "获取视频播放信息失败." + res.data.ErrorMessage,
               grouping: true,
               type: "error",
             });
@@ -352,15 +308,15 @@ export default {
       //文件上传失败
       'onUploadFailed': function (uploadInfo, code, message) {
         ElMessage({
-            message: "上传失败.("+code+")"+message,
-            grouping: true,
-            type: "error",
-          });
+          message: "上传失败.(" + code + ")" + message,
+          grouping: true,
+          type: "error",
+        });
       },
       //文件上传进度，单位：字节
       'onUploadProgress': function (uploadInfo, totalSize, loadedPercent) {
         console.log(loadedPercent);
-        uploadPercent.value=loadedPercent*100;
+        uploadPercent.value = loadedPercent * 100;
         //todo 展示进度条   
       },
       //上传凭证或STS token超时
@@ -369,30 +325,30 @@ export default {
 
       },
       //全部文件上传结束
-      'onUploadEnd':function(uploadInfo){}
-  });
+      'onUploadEnd': function (uploadInfo) { }
+    });
 
-  const getVideoUploadInfoFromServer=(uploadInfo)=>{
+    const getVideoUploadInfoFromServer = (uploadInfo) => {
       let query = {
         params: {
           accessKeyId: "c9FjqwmD4XLC5H2M",
-          accessKeySecret:"V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
-          videoFileName:videoFile.name,
-          videoTitle:videoFile.name,
+          accessKeySecret: "V5NBQA3zN9dP78b9XLai3APQ5EFM3V",
+          videoFileName: videoFile.name,
+          videoTitle: videoFile.name,
         },
       };
-      getVideoUploadInfo(query).then((res)=>{
-        if(res.resultCode=="200"&&res.data.ErrorMessage==""){
+      getVideoUploadInfo(query).then((res) => {
+        if (res.resultCode == "200" && res.data.ErrorMessage == "") {
           debugger;
-          var uploadAuth=res.data.OriginalUploadAuth;
-          var uploadAddress=res.data.OriginalUploadAddress;
-          var videoId =res.data.VideoId;
-          aliyunVideoId=res.data.VideoId;
-          uploaderAliyun.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress,videoId);
+          var uploadAuth = res.data.OriginalUploadAuth;
+          var uploadAddress = res.data.OriginalUploadAddress;
+          var videoId = res.data.VideoId;
+          aliyunVideoId = res.data.VideoId;
+          uploaderAliyun.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress, videoId);
         }
-        else{
+        else {
           ElMessage({
-            message: "获取视频上传凭证失败."+res.data.ErrorMessage,
+            message: "获取视频上传凭证失败." + res.data.ErrorMessage,
             grouping: true,
             type: "error",
           });
@@ -405,25 +361,24 @@ export default {
       uploaderAliyun.addFile(videoFile, null, null, null, userData);
       uploaderAliyun.startUpload();
     };
-    const perviewVideo=(videoSource)=>{
-      if(videoSource=='aliyun')
-      {
+    const perviewVideo = (videoSource) => {
+      if (videoSource == 'aliyun') {
         var player = new Aliplayer({
-           id: 'aliyunVideoPlayer',
-           width: '100%',
-           vid : aliyunVideoId,//必选参数。音视频ID。示例：1e067a2831b641db90d570b6480f****。
-           playauth : aliyunPlayAuth,//必选参数。音视频播放凭证。
-         },function(player){
-           console.log('The player is created.')
+          id: 'aliyunVideoPlayer',
+          width: '100%',
+          vid: aliyunVideoId,//必选参数。音视频ID。示例：1e067a2831b641db90d570b6480f****。
+          playauth: aliyunPlayAuth,//必选参数。音视频播放凭证。
+        }, function (player) {
+          console.log('The player is created.')
         });
       }
-      else{
+      else {
         var player = new Aliplayer({
-           id: 'aliyunVideoPlayer',
-           width: '100%',
-           source:videoForm.data.video_url
-         },function(player){
-           console.log('The player is created.')
+          id: 'aliyunVideoPlayer',
+          width: '100%',
+          source: videoForm.data.video_url
+        }, function (player) {
+          console.log('The player is created.')
         });
       }
     };
@@ -431,7 +386,7 @@ export default {
     // const getParams = () => {
     //   videoId = route.query.videoId;
     // };
-    
+
     const bindVideo = (videoId) => {
       if (videoId != undefined) {
         let params = {
@@ -442,13 +397,27 @@ export default {
         getVideoById(params).then((res) => {
           if (res.resultCode == "200") {
             videoForm.data = JSON.parse(res.data);
+            videoForm.data.video_year = "" + videoForm.data.video_year;
           }
         });
       }
     };
-    const handleAvatarSuccess=(res)=>{
-      videoForm.data.video_facede="http://47.93.84.178:14474/Images/"+res.data.newFileName;
+    const handleAvatarSuccess = (res) => {
+      videoForm.data.video_facede = "http://47.93.84.178:14474/Images/" + res.data.newFileName;
     };
+
+    const handleAvatarRemove = () => {
+      videoForm.data.video_facede = "";
+    };
+
+    const dialogImageUrl = ref(""); // 预览图片
+    const imageVisible = ref(false);
+    
+    const handlePictureCardPreview = () => {
+      dialogImageUrl.value = videoForm.data.video_facede;
+      imageVisible.value = true;
+    };
+
     const publicChange = (item) => {
       console.log(item);
       if (item == "0302" || item == "0304") {
@@ -464,15 +433,15 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
-    
+
     const onSubmit = () => {
       videoForm.data.video_state = "0401";
       videoForm.data.admin_id = "0";
       videoForm.data.admin_ip = "localhost";
       //todo 判断是阿里云视频还是网络视频
-      videoForm.data.aliyun_videoId=aliyunVideoId;
+      videoForm.data.aliyun_videoId = aliyunVideoId;
       debugger
-      videoForm.data.video_facede=CoverUrl;
+      videoForm.data.video_facede = CoverUrl;
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
@@ -495,8 +464,8 @@ export default {
       videoForm.data.admin_id = "0";
       videoForm.data.admin_ip = "localhost";
       //todo 判断是阿里云视频还是网络视频
-      videoForm.data.aliyun_videoId=aliyunVideoId;
-      videoForm.data.video_facede=CoverUrl;
+      videoForm.data.aliyun_videoId = aliyunVideoId;
+      videoForm.data.video_facede = CoverUrl;
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
@@ -529,12 +498,12 @@ export default {
       // getParams();
       // bindVideo();
     });
-    
-    const videoFileChange=(event)=>{
+
+    const videoFileChange = (event) => {
       debugger
-      const filePath=event.target.value;
-      const fileName=event.target.files[0];
-      videoFile=fileName;
+      const filePath = event.target.value;
+      const fileName = event.target.files[0];
+      videoFile = fileName;
       // var oFReader = new FileReader();
       // oFReader.readAsDataURL(filePath);
       // oFReader.onloadend = function(oFRevent){
@@ -588,7 +557,17 @@ export default {
       videoFile,
       uploadVideo,
       perviewVideo,
+
+      handleAvatarRemove,
+      dialogImageUrl,
+      imageVisible,
+      handlePictureCardPreview,
     };
   },
 };
 </script>
+<style scope>
+.center .el-dialog__body {
+  text-align: center;
+}
+</style>

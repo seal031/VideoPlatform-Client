@@ -25,19 +25,25 @@
             <div class="top-login-btn poi" @click="dialogFormVisible = true" v-if="loginBtnVisible">
               <!-- <el-button type="text" class="text-info-color">登录</el-button>
               <el-avatar :icon="Avatar" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
-              <el-icon><Avatar /></el-icon>
+              <el-icon>
+                <Avatar />
+              </el-icon>
               <span>登录</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="logout">
               <!-- <el-button type="text" class="text-info-color">我的</el-button>
               <el-avatar :icon="HomeFilled" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
-              <el-icon><User /></el-icon>
+              <el-icon>
+                <User />
+              </el-icon>
               <span>{{realName}}</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToMySpace">
               <!-- <el-button type="text" class="text-info-color">我的</el-button>
               <el-avatar :icon="HomeFilled" :size="30" style="--el-avatar-bg-color: #0c9b91"></el-avatar> -->
-              <el-icon><HomeFilled /></el-icon>
+              <el-icon>
+                <HomeFilled />
+              </el-icon>
               <span>我的</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToManage">
@@ -49,7 +55,7 @@
 
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
-            <el-dialog title="用户登录" v-model="dialogFormVisible" width="30%" center :modal-append-to-body="true"
+            <el-dialog title="用户登录" v-model="dialogFormVisible" :show-close="false" width="30%" center :modal-append-to-body="true"
               append-to-body>
               <div class="ms-title">登录系统</div>
               <el-form :model="loginModel.data" label-width="0px" class="ms-content">
@@ -83,7 +89,7 @@
 
 <script>
 import { Search, Avatar, Lock, HomeFilled, Setting } from "@element-plus/icons-vue";
-import { ref, reactive, inject, onMounted, onBeforeUpdate } from "vue";
+import { ref, reactive, inject, onMounted, onBeforeUpdate, watch } from "vue";
 import { login } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
@@ -198,30 +204,42 @@ export default {
       },
     };
 
-    onBeforeUpdate(() => { });
+    onBeforeUpdate(() => {
+    });
 
     onMounted(() => {
+      init();
+    });
+
+    const init = () => {
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
       userName = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
       loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
-    });
+    };
 
-    const logout=()=>{
+    watch(loginBtnVisible, (val) => {
+      if (val) {
+        dialogFormVisible.value = true;
+      }
+    }, { immediate: true })
+
+    const logout = () => {
       ElMessageBox.confirm("确认登出?", "登出", {
-            confirmButtonText: "登出",
-            cancelButtonText: "取消",
-            type: "warning",
-          }).then(() => {
-            localStorage.setItem("user_id", null);
-            localStorage.setItem("user_role", null);
-            localStorage.setItem("user_name", null);
-            localStorage.setItem("real_name", null);
-            localStorage.setItem("user_school", null);
-            loginBtnVisible.value = true;
-          });
+        confirmButtonText: "登出",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        localStorage.setItem("user_id", null);
+        localStorage.setItem("user_role", null);
+        localStorage.setItem("user_name", null);
+        localStorage.setItem("real_name", null);
+        localStorage.setItem("user_school", null);
+        // localStorage.removeItem("ms_username");
+        loginBtnVisible.value = true;
+      });
     };
 
     return {
@@ -289,21 +307,22 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: rgba(96,96,96,0.6);
+  color: rgba(96, 96, 96, 0.6);
   transition: color 0.1s linear;
 }
 
-.top-content .top-login-btn .el-icon{
+.top-content .top-login-btn .el-icon {
   font-size: 22px;
 }
 
 
-.top-content .top-login-btn span{
+.top-content .top-login-btn span {
   font-size: 12px;
   line-height: 12px;
   margin-top: 6px;
 }
-.top-content .top-login-btn:hover{
+
+.top-content .top-login-btn:hover {
   color: #fff !important;
 }
 
