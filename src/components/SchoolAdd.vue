@@ -214,7 +214,7 @@ export default {
             }
             setSchoolAdmin(params).then((resAdmin)=>{
               if(resAdmin.resultCode=="200"){
-                ElMessage("保存成功");
+                ElMessage.success("保存成功");
                 context.emit('closeSchoolAdd');
               }
               else{
@@ -257,7 +257,29 @@ export default {
       selectedSchoolId.value = SchoolForm.data.school_id;
     };
     const ResetPwd=(row)=>{
-
+      let params = {
+            params: {
+              user_id: row.user_id,
+              newPwd:"123456",
+            }
+          };
+      resetPwd(params).then((res)=>{
+        if(res.resultCode=="200"){
+          ElMessage.success("重置密码成功");
+          dialogFormVisible.value = false;
+          dialogChangePwdVisible.value=false;
+          loginBtnVisible.value = false;
+          newPwd.value="";
+          newPwdCheck.value="";
+        }
+        else{
+          ElMessage({
+            message: "重置密码失败：" + res.message,
+            grouping: true,
+            type: "error",
+          });
+        }
+      });
     };
     const handleEdit = (row) => {
       UserAddVisible.value = true;

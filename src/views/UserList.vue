@@ -270,11 +270,11 @@ export default {
 }
 
 .handle-select {
-  width: 150px;
+  width: 120px;
 }
 
 .handle-input {
-  width: 300px;
+  width: 250px;
   display: inline-block;
 }
 .table {

@@ -183,7 +183,6 @@ export default {
             dialogChangePwdVisible.value=false;
             loginBtnVisible.value = false;
             // methods.callFather();
-            debugger
             ctx.emit("getSession");
           } else {
             ElMessage.warning({
@@ -217,23 +216,23 @@ export default {
               newPwd:newPwd.value,
             }
           };
-          resetPwd(params).then((res)=>{
-            if(res.resultCode=="200"){
-              ElMessage.success("修改密码成功");
-              dialogFormVisible.value = false;
-              dialogChangePwdVisible.value=false;
-              loginBtnVisible.value = false;
-              newPwd.value="";
-              newPwdCheck.value="";
-            }
-            else{
-              ElMessage({
-                message: "修改密码失败：" + res.message,
-                grouping: true,
-                type: "error",
-              });
-            }
+      resetPwd(params).then((res)=>{
+        if(res.resultCode=="200"){
+          ElMessage.success("修改密码成功");
+          dialogFormVisible.value = false;
+          dialogChangePwdVisible.value=false;
+          loginBtnVisible.value = false;
+          newPwd.value="";
+          newPwdCheck.value="";
+        }
+        else{
+          ElMessage({
+            message: "修改密码失败：" + res.message,
+            grouping: true,
+            type: "error",
           });
+        }
+      });
     };
     const handleDropdown = (command) => {
       console.log(command);
@@ -262,7 +261,6 @@ export default {
 
     const methods = {
       callFather() {
-        debugger
         this.triggerEvent("getSession");
       },
     };
@@ -271,8 +269,9 @@ export default {
     });
 
     onMounted(() => {
-      init();
+      // init();
     });
+    
 
     const init = () => {
       userId = localStorage.getItem("user_id");
@@ -282,6 +281,7 @@ export default {
       userSchool = localStorage.getItem("user_school");
       loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
     };
+    init();//在setup中执行，先于watch
 
     watch(loginBtnVisible, (val) => {
       if (val) {
@@ -331,6 +331,7 @@ export default {
       Setting,
       Lock,
 
+      init,
       methods,
       logout,
     };

@@ -10,6 +10,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
+        <el-form>
         <el-row>
           <el-col :span="24">
             <el-button type="primary" :icon="Plus" @click="handleAdd()"
@@ -18,44 +19,63 @@
           </el-col>
         </el-row>
         <el-divider></el-divider>
-        内容分类
-        <el-select
-          v-model="query.params.briefType"
-          clearable
-          placeholder="请选择"
-          class="handle-select mr10"
-        >
-          <el-option
-            v-for="(item, c) in briefTypeList"
-            :key="c"
-            :label="item.code_name"
-            :value="item.code_id"
-          ></el-option>
-        </el-select>
-        内容状态
-        <el-select
-          v-model="query.params.briefState"
-          clearable
-          placeholder="请选择"
-          class="handle-select mr10"
-        >
-          <el-option
-            v-for="(item, c) in stateTypeList"
-            :key="c"
-            :label="item.code_name"
-            :value="item.code_id"
-          ></el-option>
-        </el-select>
-        关键字
-        <el-input
-          v-model="query.params.keyword"
-          placeholder="请输入关键字"
-          clearable
-          class="handle-input mr10"
-        ></el-input>
-        <el-button type="primary" :icon="Search" @click="handleSearch()"
-          >搜索</el-button
-        >
+        <el-row>
+        <el-col :span="4">
+          <el-form-item>
+            内容分类
+            <el-select
+              v-model="query.params.briefType"
+              clearable
+              placeholder="请选择"
+              class="handle-select mr10"
+            >
+              <el-option
+                v-for="(item, c) in briefTypeList"
+                :key="c"
+                :label="item.code_name"
+                :value="item.code_id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item>
+            内容状态
+            <el-select
+              v-model="query.params.briefState"
+              clearable
+              placeholder="请选择"
+              class="handle-select mr10"
+            >
+              <el-option
+                v-for="(item, c) in stateTypeList"
+                :key="c"
+                :label="item.code_name"
+                :value="item.code_id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item>
+            关键字
+            <el-input
+              v-model="query.params.keyword"
+              placeholder="请输入关键字"
+              clearable
+              class="handle-input mr10"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch()"
+              >搜索</el-button
+            >
+          </el-form-item>
+        </el-col>
+      </el-row>
+      </el-form>
       </div>
       <div style="width: 100%; height: 100%">
         <el-table
@@ -339,7 +359,7 @@ export default {
 }
 
 .handle-input {
-  width: 300px;
+  width: 240px;
   display: inline-block;
 }
 .table {

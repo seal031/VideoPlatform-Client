@@ -9,6 +9,7 @@
   </div>
   <div class="container">
     <div class="handle-box">
+      <el-form>
       <el-row>
         <el-col :span="24">
           <el-button type="primary" :icon="Plus" @click="handleAdd()"
@@ -17,66 +18,93 @@
         </el-col>
       </el-row>
       <el-divider></el-divider>
-      视频分类
-      <el-select
-        v-model="query.params.videoType"
-        clearable
-        placeholder="请选择"
-        class="handle-select mr10"
-      >
-        <el-option
-          v-for="(item, c) in videoTypeList"
-          :key="c"
-          :label="item.code_name"
-          :value="item.code_id"
-        ></el-option>
-      </el-select>
-      年度
-      <el-date-picker
-        v-model="query.params.videoYear"
-        type="year"
-        value-format="YYYY"
-        placeholder="请选择"
-        style="width: 120px"
-      >
-      </el-date-picker>
-      公开分类
-      <el-select
-        v-model="query.params.publicType"
-        clearable
-        placeholder="请选择"
-        class="handle-select mr10"
-      >
-        <el-option
-          v-for="(item, c) in publicTypeList"
-          :key="c"
-          :label="item.code_name"
-          :value="item.code_id"
-        ></el-option>
-      </el-select>
-      视频状态
-      <el-select
-        v-model="query.params.videoState"
-        clearable
-        placeholder="请选择"
-        class="handle-select mr10"
-      >
-        <el-option
-          v-for="(item, c) in stateTypeList"
-          :key="c"
-          :label="item.code_name"
-          :value="item.code_id"
-        ></el-option>
-      </el-select>
-      关键字
-      <el-input
-        v-model="query.params.keyword"
-        placeholder="请输入关键字"
-        class="handle-input mr10"
-      ></el-input>
-      <el-button type="primary" :icon="Search" @click="handleSearch"
-        >搜索</el-button
-      >
+      <el-row>
+        <el-col :span="4">
+          <el-form-item>
+            视频分类
+            <el-select
+              v-model="query.params.videoType"
+              clearable
+              placeholder="请选择"
+              class="handle-select mr10"
+            >
+            <el-option
+              v-for="(item, c) in videoTypeList"
+              :key="c"
+              :label="item.code_name"
+              :value="item.code_id"
+            ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item>
+            年度
+            <el-date-picker
+              v-model="query.params.videoYear"
+              type="year"
+              value-format="YYYY"
+              placeholder="请选择"
+              style="width: 150px"
+            >
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item>
+            公开分类
+            <el-select
+              v-model="query.params.publicType"
+              clearable
+              placeholder="请选择"
+              class="handle-select mr10"
+            >
+              <el-option
+                v-for="(item, c) in publicTypeList"
+                :key="c"
+                :label="item.code_name"
+                :value="item.code_id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item>
+            视频状态
+            <el-select
+              v-model="query.params.videoState"
+              clearable
+              placeholder="请选择"
+              class="handle-select mr10"
+            >
+              <el-option
+                v-for="(item, c) in stateTypeList"
+                :key="c"
+                :label="item.code_name"
+                :value="item.code_id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item>
+            关键字
+            <el-input
+              v-model="query.params.keyword"
+              placeholder="请输入关键字"
+              class="handle-input mr10"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item>
+            <el-button type="primary" :icon="Search" @click="handleSearch"
+              >搜索</el-button
+            >
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
     </div>
     <el-table :data="tableData" stripe border style="width: 100%" lazy>
       <el-table-column prop="video_title" label="视频标题" width="350">
@@ -345,11 +373,11 @@ export default {
 }
 
 .handle-select {
-  width: 120px;
+  width: 130px;
 }
 
 .handle-input {
-  width: 300px;
+  width: 200px;
   display: inline-block;
 }
 .table {
