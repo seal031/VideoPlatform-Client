@@ -35,6 +35,7 @@
                 >
                   <video-item
                     :src="ele.video_facede"
+                    :tip="ele.video_title"
                     :videoId="ele.video_id"
                     :viewCount="ele.view_count"
                     :appreciateCount="ele.appreciate_count"
@@ -89,6 +90,7 @@
               >
                 <video-item
                   :src="ele.video_facede"
+                  :tip="ele.video_title"
                   :videoId="ele.video_id"
                   :viewCount="ele.view_count"
                   :appreciateCount="ele.appreciate_count"
