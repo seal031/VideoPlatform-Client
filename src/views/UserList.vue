@@ -70,8 +70,7 @@
               ></el-form-item
             >
           </el-col>
-          <el-col :span="6">
-          </el-col>
+          <el-col :span="6"> </el-col>
         </el-row>
       </el-form>
     </div>
@@ -92,8 +91,11 @@
       </el-table-column>
       <el-table-column prop="countUser" label="子账号数量" width="120">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150">
+      <el-table-column fixed="right" label="操作" width="200">
         <template #default="scope">
+          <el-button @click="resetAdminPwd(scope.row)" type="text" size="small"
+            >重置管理员密码</el-button
+          >
           <el-button @click="handleEdit(scope.row)" type="text" size="small"
             >编辑</el-button
           >
@@ -103,16 +105,16 @@
         </template>
       </el-table-column>
     </el-table>
-        <div class="pagination">
-          <el-pagination
-            background
-            layout="total, prev, pager, next"
-            :current-page="query.params.pageIndex"
-            :page-size="query.params.pageSize"
-            :total="pageTotal"
-            @current-change="handlePageChange"
-          ></el-pagination>
-        </div>
+    <div class="pagination">
+      <el-pagination
+        background
+        layout="total, prev, pager, next"
+        :current-page="query.params.pageIndex"
+        :page-size="query.params.pageSize"
+        :total="pageTotal"
+        @current-change="handlePageChange"
+      ></el-pagination>
+    </div>
     <el-dialog title="编辑学校" v-model="SchoolAddVisible">
       <school-add
         @closeSchoolAdd="handleClose"
@@ -136,6 +138,7 @@ import {
   getUserBySchoolId,
   addSchool,
   delSchool,
+  resetPwd,
 } from "../api/serviceApi";
 import SchoolAdd from "../components/SchoolAdd.vue";
 export default {
@@ -198,6 +201,41 @@ export default {
       query.params.pageIndex = val;
       bindSchoolList();
     };
+    const resetAdminPwd=(row)=>{
+      debugger
+      if(row.administrator==""){
+        ElMessage({
+                  message: "此高校尚无管理员",
+                  grouping: true,
+                  type: "info",
+                });
+      }else{
+        ElMessageBox.confirm("确定要重置【"+row.school_name+"】的管理员密码吗？", "提示", {
+          confirmButtonText: "重置密码",
+          cancelButtonText: "取消",
+          type: "warning",
+        }).then(()=>{
+          let params = {
+            params: {
+              user_id: row.administrator,
+              newPwd:"123456",
+            }
+          };
+          resetPwd(params).then((res)=>{
+            if(res.resultCode=="200"){
+              ElMessage.success("重置密码成功");
+            }
+            else{
+              ElMessage({
+                message: "重置密码失败：" + res.message,
+                grouping: true,
+                type: "error",
+              });
+            }
+          });
+        })
+      }
+    };
     const handleEdit = (row) => {
       SchoolAddVisible.value = true;
       selectedSchoolId.value = row.school_id;
@@ -257,6 +295,7 @@ export default {
       handleAdd,
       handleClose,
       handleSearch,
+      resetAdminPwd,
       handleEdit,
       handleDel,
     };

@@ -14,7 +14,7 @@
           v-model:page-size="tpxwQuery.params.pageSize" layout="total, prev, pager, next" :total="tpxwTotalCount">
         </el-pagination>
       </div>
-        <el-table :data="tpxwList" style="width: 100%" :show-header="false" class="customer-table"
+        <el-table :data="tpxwList" style="width: 100%" :show-header="false" class="customer-table poi"
         @row-click="showBrief">
         <el-table-column prop="brief_title" label="">
         </el-table-column>
@@ -28,7 +28,7 @@
           v-model:page-size="tzggQuery.params.pageSize" layout="total, prev, pager, next" :total="tzggTotalCount">
         </el-pagination>
       </div>
-        <el-table :data="tzggList" style="width: 100%" :show-header="false" class="customer-table"
+        <el-table :data="tzggList" style="width: 100%" :show-header="false" class="customer-table poi"
         @row-click="showBrief">
         <el-table-column prop="brief_title" label="">
         </el-table-column>
@@ -42,7 +42,7 @@
           v-model:page-size="zcfgQuery.params.pageSize" layout="total, prev, pager, next" :total="zcfgTotalCount">
         </el-pagination>
       </div>
-        <el-table :data="zcfgList" style="width: 100%" :show-header="false" class="customer-table"
+        <el-table :data="zcfgList" style="width: 100%" :show-header="false" class="customer-table poi"
         @row-click="showBrief">
         <el-table-column prop="brief_title" label="">
         </el-table-column>

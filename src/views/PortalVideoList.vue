@@ -71,7 +71,7 @@
             <!-- TODO 点击跳转 -->
             <el-row class="video-items">
               <div
-                class="video-item"
+                class="video-item poi"
                 v-for="(ele, i) in tableData"
                 :key="i"
                 @click.enter="jump(ele)"

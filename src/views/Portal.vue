@@ -8,7 +8,7 @@
         <el-col :span="12">
           <div>
             <div class="mt20 mb20">
-              <span class="f20">图片新闻</span>
+              <span class="f20 poi" @click="jump('/portalBriefList','tpxw')">图片新闻</span>
               <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <document />
@@ -46,7 +46,7 @@
               </sup>
             </div>
             <div v-if="hotVideoList && hotVideoList.length > 0" class="video-wrap">
-              <div class="video-item" v-for="(hotvideoitem, i) in hotVideoList.slice(0, 6)" :key="i"
+              <div class="video-item poi" v-for="(hotvideoitem, i) in hotVideoList.slice(0, 6)" :key="i"
                 @click.enter="showVideo(hotvideoitem)">
                 <video-item :src="hotvideoitem.video_facede" :tip="hotvideoitem.video_title"
                   :videoId="hotvideoitem.video_id" :viewCount="hotvideoitem.view_count"
@@ -240,7 +240,7 @@
           </template>
           <div v-if="item.content && item.content.length > 0">
             <el-row class="video-items">
-              <div class="video-item" v-for="(ele, i) in item.content.slice(0, 12)" :key="i"
+              <div class="video-item poi" v-for="(ele, i) in item.content.slice(0, 12)" :key="i"
                 @click.enter="showVideo(ele)">
                 <video-item :src="ele.video_facede" :videoId="ele.video_id" :viewCount="ele.view_count"
                   :appreciateCount="ele.appreciate_count" :tip="ele.video_title"/>
@@ -288,8 +288,7 @@
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
-                  <!-- TODO 替换名称 -->
-                  <div>{{ scope.row.brief_title }}</div>
+                  <div class="poi">{{ scope.row.brief_title }}</div>
                 </template>
               </el-table-column>
               <el-table-column prop="create_time" label width="130" :formatter="methods.dateFormat"></el-table-column>
@@ -314,8 +313,12 @@
             </div>
             <el-table :data="zcfgList" :show-header="false" class="customer-table p10" height="200" empty-text="暂无数据"
               @row-click="showBrief">
-              <el-table-column type="index" width="30" />
-              <el-table-column prop="brief_title" />
+              <!-- <el-table-column type="index" width="30" /> -->
+              <el-table-column prop="brief_title">
+                <template #default="scope">
+                  <div class="poi">{{ scope.row.brief_title }}</div>
+                </template>
+              </el-table-column>
               <el-table-column prop="create_time" label width="130" :formatter="methods.dateFormat"></el-table-column>
             </el-table>
           </el-col>
