@@ -76,7 +76,6 @@
                 <div class="login-btn">
                   <el-button type="primary" @click="submitLogin()">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
               </el-form>
             </el-dialog>
             <el-dialog title="修改密码" v-model="dialogChangePwdVisible" :show-close="false" width="30%" center :modal-append-to-body="true"

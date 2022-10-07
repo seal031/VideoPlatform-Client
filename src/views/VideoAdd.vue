@@ -38,7 +38,7 @@
 
               </el-row>
               <el-row>
-                <el-col :span="24">
+                <el-col :span="8">
                   <el-form-item label="封面图片">
                     <el-upload action="http://47.93.84.178:14474/Upload" list-type="picture-card" :auto-upload="true"
                       :limit="1" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload"
@@ -77,6 +77,10 @@
                     </el-dialog>
                   </el-form-item>
                 </el-col>
+                <el-col :span="8">
+                  <div id="aliyunVideoPlayer"></div>
+                </el-col>
+                <el-col :span="8"></el-col>
               </el-row>
               <el-row>
                 <el-col :span="24">
@@ -116,7 +120,11 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="所属高校" prop="video_school">
-                    <el-input v-model="videoForm.data.video_school"></el-input>
+                    <!-- <el-input v-model="videoForm.data.video_school"></el-input> -->
+                    <el-select v-model="videoForm.data.video_school" placeholder="请选择" clearable  style="width: 100%">
+                      <el-option v-for="(item, c) in schoolList" :key="c" :label="item.school_name"
+                        :value="item.school_id"></el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -159,6 +167,14 @@
     </el-col>
     <el-col :span="9"></el-col>
   </el-row>
+
+  <!-- <el-dialog title="视频预览" v-model="dialogPerviewVisible" :show-close="true" width="60%" center :modal-append-to-body="true" append-to-body>
+    <el-container>
+      <el-main>
+        
+      </el-main>
+    </el-container>
+  </el-dialog> -->
 </template>
 
 <script>
@@ -201,8 +217,20 @@ export default {
     //下拉数据模型列表
     let publicTypeList = ref([]);
     let videoTypeList = ref([]);
+    let schoolList=ref([]);
+    //获取学校用的参数
+    let query = reactive({
+      params: {
+        schoolType: "",
+        schoolCategoly: "",
+        keyword: "",
+        pageIndex: 1,
+        pageSize: 10000,
+      },
+    });
     let showPublicObject = ref(false);
     let previewImg = "";
+    let dialogPerviewVisible=ref(false);
     let options = reactive({
       width: "100%", //播放器宽度
       height: "450px", //播放器高度
@@ -258,7 +286,15 @@ export default {
       data: JSON.parse(JSON.stringify(initVideoFormData)),
     });
     const rules = {
-      name: [{ required: true, message: "请输入内容", trigger: "blur" }],
+      video_url: [{ required: true, message: "请输入内容", trigger: "blur" }],
+      video_title: [{ required: true, message: "请输入内容", trigger: "blur" }],
+      video_type: [{ required: true, message: "请选择分类", trigger: "blur" }],
+      video_year: [{ required: true, message: "请选择年份", trigger: "blur" }],
+      award: [{ required: true, message: "请输入内容", trigger: "blur" }],
+      teacher: [{ required: true, message: "请输入内容", trigger: "blur" }],
+      video_school: [{ required: true, message: "请选择高校", trigger: "blur" }],
+      video_brief: [{ required: true, message: "请输入内容", trigger: "blur" }],
+      public_type: [{ required: true, message: "请选择", trigger: "blur" }],
     };
     //////////////阿里云视频相关////////////
     var aliyunVideoId = ""; //阿里云视频id
@@ -373,12 +409,14 @@ export default {
       if (videoSource == 'aliyun') {
         var player = new Aliplayer({
           id: 'aliyunVideoPlayer',
-          width: '100%',
+          width: '280px',
+          height:'150px',
           vid: aliyunVideoId,//必选参数。音视频ID。示例：1e067a2831b641db90d570b6480f****。
           playauth: aliyunPlayAuth,//必选参数。音视频播放凭证。
         }, function (player) {
           console.log('The player is created.')
         });
+        dialogPerviewVisible.value=true;//显示弹出模态框
       }
       else {
         var player = new Aliplayer({
@@ -449,7 +487,7 @@ export default {
       //todo 判断是阿里云视频还是网络视频
       videoForm.data.aliyun_videoId = aliyunVideoId;
       debugger
-      videoForm.data.video_facede = CoverUrl;
+      // videoForm.data.video_facede = CoverUrl; //暂时不从阿里云获取封面，由用户上传
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
@@ -473,7 +511,7 @@ export default {
       videoForm.data.admin_ip = "localhost";
       //todo 判断是阿里云视频还是网络视频
       videoForm.data.aliyun_videoId = aliyunVideoId;
-      videoForm.data.video_facede = CoverUrl;
+      // videoForm.data.video_facede = CoverUrl;//暂时不从阿里云获取封面，由用户上传
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
@@ -501,6 +539,12 @@ export default {
       getVideoType().then((res) => {
         if (res.resultCode == "200") {
           videoTypeList.value = res.data;
+        }
+      });
+      getSchoolList(query).then((res) => {
+        if (res.resultCode == "200") {
+          debugger
+          schoolList.value = JSON.parse(res.data.School_list);
         }
       });
       // getParams();
@@ -544,6 +588,7 @@ export default {
       videoId,
       publicTypeList,
       videoTypeList,
+      schoolList,
       showPublicObject,
       previewImg,
       options,
@@ -570,6 +615,7 @@ export default {
       dialogImageUrl,
       imageVisible,
       handlePictureCardPreview,
+      dialogPerviewVisible,
     };
   },
 };
