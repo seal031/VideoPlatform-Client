@@ -83,7 +83,7 @@
               <div class="ms-title">修改密码</div>
               <el-form  label-width="0px" class="ms-content">
                 <el-form-item>当前账号 : {{userName}}</el-form-item>
-                <el-form-item>用户名称 : {{realName}}</el-form-item>
+                <el-form-item>用户姓名 : {{realName}}</el-form-item>
                 <el-form-item prop="username">
                   <el-input v-model="newPwd" placeholder="新密码" tabindex="1">
                     <template #prepend>

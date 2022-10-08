@@ -49,7 +49,7 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="管理员姓名" prop="SchoolCategoryTypeList">
+          <el-form-item label="管理员账号" prop="SchoolCategoryTypeList">
             <el-input
               v-model="AdminForm.data.user_name"
               placeholder="请输入"
@@ -57,7 +57,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="管理员账号" prop="SchoolCategoryTypeList">
+          <el-form-item label="管理员姓名" prop="SchoolCategoryTypeList">
             <el-input
               v-model="AdminForm.data.real_name"
               placeholder="请输入"
@@ -83,7 +83,7 @@
       border
       lazy
     >
-      <el-table-column prop="real_name" label="人员姓名">
+      <el-table-column prop="real_name" label="用户姓名">
       </el-table-column>
       <el-table-column prop="user_name" label="账号名称">
       </el-table-column>

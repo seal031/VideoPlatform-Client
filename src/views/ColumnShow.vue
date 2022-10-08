@@ -8,7 +8,6 @@
       <el-breadcrumb-item>正文</el-breadcrumb-item>
     </el-breadcrumb>
     <el-divider class="portal-divider"></el-divider>
-    <el-container>
       <el-header>
         <h2>{{ briefForm.data.brief_title }}</h2>
         <p>

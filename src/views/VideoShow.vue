@@ -6,8 +6,8 @@
     <div class="width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>优秀视频</el-breadcrumb-item>
-        <el-breadcrumb-item>更多</el-breadcrumb-item>
+        <el-breadcrumb-item>{{breadcrumb}}</el-breadcrumb-item>
+        <el-breadcrumb-item>视频详情</el-breadcrumb-item>
       </el-breadcrumb>
       <el-divider class="portal-divider"></el-divider>
 
@@ -184,20 +184,15 @@
                   :isShowCount="false"
                 />
                 <div class="f12 des">
-                  <!-- TODO 替换title -->
                   <div>{{ ele.video_title }}</div>
-                  <!-- <span class="mr2">大学物理</span> -->
-                  <!-- <span class="mr1">波粒二象性</span> -->
-                  <div class="sub-title">
-                    <span class="mr5 truncate-text">{{ele.video_brief}}</span>
-                    <span class="mr2">｜</span>
+                  <div class="redColor sub-title">
+                    <span class="mr5 truncate-text">{{ele.award}}</span>
+                  </div>
+                  <div class=" sub-title">
                     <span class="author">{{ ele.teacher }}</span>
                   </div>
-
-                  <div class="redColor mt15">
-                    <span class="mr5">{{ ele.award }}</span>
-                    <!-- <span class="mr5">理科类：</span> -->
-                    <!-- <span class="mr5">一等奖</span> -->
+                  <div class=" sub-title">
+                    <span class="mr5">{{ ele.video_year }}年度</span>
                   </div>
                   <el-divider
                     class="portal-divider"
@@ -241,8 +236,6 @@
       <div class="width1000">
         <el-col :span="17" class="pr20 article">
           <div :class="articleStyle">
-            <!-- 如果你看到一件事物却没有触动，那么诗歌就无法从你这里产生。从某种意义上来说，所有诗歌都是外部事物对一颗“诗心”的回应。我们写诗是为了实现自己与他人与世界与自然之间的联系。就像罗伯特·弗罗斯特在一首短诗里说的，“我们围成一个圆圈跳舞，猜测秘密坐在其中，通晓一切”。我们对于诗歌的认识，正是如此。“诗，只能在精神领域深处寻求那异样的东西。当诗人直面其所处的时代和精神，挖掘并整理它们，他会意识到，这事儿，的确不能交给其他人来处理。”胡弦在他的文章《随笔五则》中不无自信地说。
-            如果你看到一件事物却没有触动，那么诗歌就无法从你这里产生。从某种意义上来说，所有诗歌都是外部事物对一颗“诗心”的回应。我们写诗是为了实现自己与他人与世界与自然之间的联系。就像罗伯特·弗罗斯特在一首短诗里说的，“我们围成一个圆圈跳舞，猜测秘密坐在其中，通晓一切”。我们对于诗歌的认识，正是如此。“诗，只能在精神领域深处寻求那异样的东西。当诗人直面其所处的时代和精神，挖掘并整理它们，他会意识到，这事儿，的确不能交给其他人来处理。”胡弦在他的文章《随笔五则》中不无自信地说。 -->
             {{ videoForm.data.video_brief }}
           </div>
           <el-button type="text" class="more-btn" @click="showOrHide">{{
@@ -303,6 +296,7 @@ export default {
     let userName = "";
     let realName = ref("");
     let userSchool = "";
+    let breadcrumb=ref("");//面包屑
 
     let videoId = "";
     let isStar = ref(false); //是否已收藏
@@ -380,6 +374,25 @@ export default {
         getVideoById(query).then((res) => {
           if (res.resultCode == "200") {
             videoForm.data = JSON.parse(res.data);
+            //绑定面包屑
+            switch (videoForm.data.video_type) {
+              case "0201":
+                breadcrumb.value = "青教赛";
+                // breadcrumbParam.value="tpxw";
+                break;
+              case "0202":
+                breadcrumb.value = "青管赛";
+                // breadcrumbParam.value="tzgg";
+                break;
+              case "0203":
+                breadcrumb.value = "师德榜样";
+                // breadcrumbParam.value="zcfg";
+                break;
+              case "0204":
+                breadcrumb.value = "云课堂";
+                // breadcrumbParam.value="zcfg";
+                break;
+            }
             if(videoForm.data.aliyun_videoId!=null){
               getAliyunVideoAuth();
             }
@@ -593,6 +606,7 @@ export default {
       userName,
       realName,
       userSchool,
+      breadcrumb,
 
       videoId,
       isStar,
