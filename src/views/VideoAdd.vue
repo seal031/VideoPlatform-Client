@@ -360,7 +360,7 @@ export default {
       //文件上传进度，单位：字节
       'onUploadProgress': function (uploadInfo, totalSize, loadedPercent) {
         console.log(loadedPercent);
-        uploadPercent.value = loadedPercent * 100;
+        uploadPercent.value = (+(+loadedPercent).toFixed(2)) * 100;
         //todo 展示进度条   
       },
       //上传凭证或STS token超时

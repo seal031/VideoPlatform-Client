@@ -5,7 +5,7 @@
         <el-row align="middle" justify="space-between" class="pcth100">
           <el-image :src="getImageUrl('logo.png')" :fit="contain" class="top-logo"></el-image>
 
-          <el-form-item class="m0">
+          <el-form-item style="height: 100%">
             <!--<div v-if="!loginBtnVisible">
               <el-dropdown split-button type="primary" size="small" @command="handleDropdown">
                 当前用户：{{ realName }}

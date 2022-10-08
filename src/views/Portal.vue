@@ -687,7 +687,7 @@ export default {
   margin-top: -50px;
   color: #fff;
   font-size: 18px;
-  padding: 0 120px 0 30px;
+  padding: 0 120px 0 0;
   position: relative;
   z-index: 1;
   text-overflow: ellipsis;
