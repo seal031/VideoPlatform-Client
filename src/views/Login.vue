@@ -2,26 +2,25 @@
     <div class="login-wrap">
         <div class="ms-login">
             <div class="ms-title">视频平台</div>
-            <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
-                <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
+            <el-form :model="loginModel.data" :rules="rules" ref="login" label-width="0px" class="ms-content">
+                <el-form-item prop="user_name">
+                    <el-input v-model="loginModel.data.user_name" placeholder="请输入用户名">
                         <template #prepend>
                             <el-button icon="el-icon-user"></el-button>
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="param.password"
-                        @keyup.enter="submitForm()">
+                <el-form-item prop="user_pwd">
+                    <el-input type="password" placeholder="请输入密码" v-model="loginModel.data.user_pwd"
+                        @keyup.enter="submitLogin()">
                         <template #prepend>
                             <el-button icon="el-icon-lock"></el-button>
                         </template>
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" @click="submitForm()">登录</el-button>
+                    <el-button type="primary" @click="submitLogin()">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
             </el-form>
         </div>
     </div>
@@ -32,49 +31,96 @@ import { ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
+import { login } from "../api/serviceApi";
 
 export default {
     setup() {
         const router = useRouter();
-        const param = reactive({
-            username: "admin",
-            password: "123123",
-        });
-
+        // const param = reactive({
+        //     username: "admin",
+        //     password: "123123",
+        // });
         const rules = {
-            username: [
-                {
-                    required: true,
-                    message: "请输入用户名",
-                    trigger: "blur",
-                },
+            user_name: [
+                {required: true, message: "请输入用户名",trigger: "blur"},
             ],
-            password: [
+            user_pwd: [
                 { required: true, message: "请输入密码", trigger: "blur" },
             ],
         };
-        const login = ref(null);
-        const submitForm = () => {
-            login.value.validate((valid) => {
-                if (valid) {
-                    ElMessage.success("登录成功");
-                    localStorage.setItem("ms_username", param.username);
-                    router.push("/");
-                } else {
-                    ElMessage.error("登录成功");
-                    return false;
-                }
-            });
-        };
+        // const login = ref(null);
+        // const submitForm = () => {
+        //     login.value.validate((valid) => {
+        //         if (valid) {
+        //             ElMessage.success("登录成功");
+        //             localStorage.setItem("ms_username", param.username);
+        //             router.push("/");
+        //         } else {
+        //             ElMessage.error("登录成功");
+        //             return false;
+        //         }
+        //     });
+        // };
 
         const store = useStore();
         store.commit("clearTags");
+        
+        //登录模型
+        let loginModel = reactive({
+            data: {
+                user_name: "",
+                user_pwd: "",
+            },
+        });
+        const submitLogin = () => {
+            login(loginModel.data)
+                .then((res) => {
+                if (res.resultCode == "200") {
+                    ElMessage.success({
+                        message: "登录成功",
+                        type: "success",
+                    });
+                    var user = JSON.parse(res.data);
+                    // userId = user.user_id;
+                    // userRole = user.user_role;
+                    // userName.value = user.user_name;
+                    // realName.value = user.real_name;
+                    // userSchool = user.user_school;
+                    localStorage.setItem("user_id", user.user_id);
+                    localStorage.setItem("user_role", user.user_role);
+                    localStorage.setItem("user_name", user.user_name);
+                    localStorage.setItem("real_name", user.real_name);
+                    localStorage.setItem("user_school", user.user_school);
+                    router.push("/portal");
+                    // const href = router.resolve({
+                    //     path: '/portal',
+                    //     query: { },
+                    // });
+                    // window.open(href.href);
+                } else {
+                    ElMessage.warning({
+                    message: "登录失败",
+                    type: "warning",
+                    });
+                    localStorage.setItem("user_id", null);
+                    localStorage.setItem("user_role", null);
+                    localStorage.setItem("user_name", null);
+                    localStorage.setItem("real_name", null);
+                    localStorage.setItem("user_school", null);
+                }
+                })
+                .catch((err) => {
+                    debugger;
+                });
+            };
 
         return {
-            param,
+            // param,
             rules,
-            login,
-            submitForm,
+            // login,
+            // submitForm,
+            loginModel,
+            submitLogin,
         };
     },
 };

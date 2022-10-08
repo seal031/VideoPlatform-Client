@@ -126,15 +126,23 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || '教育集团工会网站';
-    const role = localStorage.getItem('ms_username');
-    if (!role && to.path !== '/login') {
+    debugger
+    const user_name = localStorage.getItem('user_name');
+    const user_role= localStorage.getItem('user_role');
+    if (!user_name && to.path !== '/login') {
         next('/login');
-    } else if (to.meta.permission) {
-        // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-        role === 'admin'
-            ? next()
-            : next('/403');
-    } else {
+    } 
+    // else if (to.meta.permission) {
+    //     // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
+    //     user_name === 'admin'
+    //         ? next()
+    //         : next('/403');
+    // } 
+    else if(user_role!="0101"&&(to.path=='/VideoList'||to.path=='/ColumnList'||to.path=='/UserList'))
+    {
+        next('/portal')
+    }
+    else {
         next();
     }
 });

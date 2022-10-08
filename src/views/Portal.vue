@@ -60,7 +60,7 @@
                     <span class="mr2">｜</span>
                     <span class="author">{{hotvideoitem.teacher}}</span>
                   </div>
-                  <div class="truncate-text">{{hotvideoitem.video_year}}</div>
+                  <div class="truncate-text">{{hotvideoitem.video_year}}年度</div>
                 </div>
               </div>
             </div>
@@ -254,7 +254,7 @@
                     <span class="mr2">｜</span>
                     <span>{{ele.teacher}}</span>
                   </div>
-                  <div>{{ele.video_year}}</div>
+                  <div>{{ele.video_year}}年度</div>
                 </div>
               </div>
             </el-row>
@@ -475,7 +475,7 @@ export default {
           params: {
             userId: userId,
             userRole: userRole,
-            videoSchool: userSchool,
+            user_school: userSchool,
             videoType: "0201", //青教赛视频
             videoState: "0401", //已发布
             topN: 10,
@@ -493,7 +493,7 @@ export default {
           params: {
             userId: userId,
             userRole: userRole,
-            videoSchool: userSchool,
+            user_school: userSchool,
             videoType: "0202", //青管赛视频
             videoState: "0401", //已发布
             topN: 12,
@@ -530,7 +530,7 @@ export default {
           params: {
             userId: userId,
             userRole: userRole,
-            videoSchool: userSchool,
+            user_school: userSchool,
             videoType: "0204", //云课堂视频
             videoState: "0401", //已发布
             topN: 12,
@@ -612,6 +612,11 @@ export default {
       userName = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
+      console.log("首页"+userId);
+      console.log("首页"+userRole);
+      console.log("首页"+userName);
+      console.log("首页"+realName.value);
+      console.log("首页"+userSchool);
     };
 
     onMounted(() => {

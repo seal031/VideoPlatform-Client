@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-form ref="formRef" :model="SchoolForm.data" label-width="120px">
+    <el-form ref="formRef" :rules="rules" :model="SchoolForm.data" label-width="120px">
       <el-row>
         <el-col :span="24">
           <el-form-item label="学校名称" prop="school_name">
@@ -170,6 +170,12 @@ export default {
       }
     });
 
+    const rules = {
+      school_name: [{ required: true, message: "请输入内容", trigger: "blur" }],
+      school_type_code: [{ required: true, message: "请选择学校分类", trigger: "change" }],
+      school_category_code: [{ required: true, message: "请选择学校性质", trigger: "change" }],
+    };
+
     const bindSchool = () => {
       if (SchoolId != "") {
         let params = {
@@ -200,8 +206,8 @@ export default {
       }
     };
     const onSubmit=()=>{
-      console.log('onSubmit')
       addSchool(SchoolForm.data).then((res)=>{
+        debugger
         if(res.resultCode=="200"){
           SchoolId=res.data;//此处data返回学校id
           if(AdminForm.data.user_name!=""){
@@ -225,6 +231,10 @@ export default {
                 });
               }
             })
+          }
+          else{
+            ElMessage.success("保存成功");
+            context.emit('closeSchoolAdd');
           }
         }
         else{
@@ -340,6 +350,7 @@ export default {
 
       SchoolId,
       UserList,
+      rules,
       selectedUserId,
       selectedSchoolId,
       UserAddVisible,

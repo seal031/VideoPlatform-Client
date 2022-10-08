@@ -46,7 +46,7 @@
               </el-icon>
               <span>我的</span>
             </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToManage">
+            <div class="top-login-btn poi" v-if="manageBtnVisible" @click="JumpToManage">
               <el-icon>
                 <Setting />
               </el-icon>
@@ -134,6 +134,7 @@ export default {
     let newPwd=ref("");
     let newPwdCheck=ref("");
     let loginBtnVisible = ref(true);
+    let manageBtnVisible=ref(false);
     //登录模型
     let loginModel = reactive({
       data: {
@@ -181,6 +182,7 @@ export default {
             dialogFormVisible.value = false;
             dialogChangePwdVisible.value=false;
             loginBtnVisible.value = false;
+            manageBtnVisible.value=userRole=="0101";
             // methods.callFather();
             ctx.emit("getSession");
           } else {
@@ -278,7 +280,13 @@ export default {
       userName.value = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
+      console.log("顶端"+userId);
+      console.log("顶端"+userRole);
+      console.log("顶端"+userName.value);
+      console.log("顶端"+realName.value);
+      console.log("顶端"+userSchool);
       loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
+      manageBtnVisible.value=userRole=="0101";
     };
     init();//在setup中执行，先于watch
 
@@ -301,6 +309,7 @@ export default {
         localStorage.setItem("user_school", null);
         // localStorage.removeItem("ms_username");
         loginBtnVisible.value = true;
+        manageBtnVisible.value=false;
       });
     };
 
@@ -316,6 +325,7 @@ export default {
       newPwd,
       newPwdCheck,
       loginBtnVisible,
+      manageBtnVisible,
       getImageUrl,
       JumpToMySpace,
       JumpToManage,

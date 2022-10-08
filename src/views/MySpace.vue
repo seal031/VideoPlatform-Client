@@ -1,10 +1,10 @@
 <template>
   <div class="videoList-wrap rel">
   <top-tool-bar></top-tool-bar>
-  <div class="portal-wrap">
+  <div class="portal-wrap width1000">
     <el-tabs
       tab-position="left"
-      style="height: 100%; weight: 400px"
+      style="height: 100%; weight: 100px"
       type="border-card"
       :stretch="true"
     >
@@ -49,7 +49,7 @@
                       <span>{{ ele.teacher }}</span>
                     </div>
                     <div>
-                      {{ ele.video_year }}
+                      {{ ele.video_year }}年度
                     </div>
                   </div>
                 </div>
@@ -104,7 +104,7 @@
                     <span>{{ ele.teacher }}</span>
                   </div>
                   <div>
-                    {{ ele.video_year }}
+                    {{ ele.video_year }}年度
                   </div>
                 </div>
               </div>
@@ -159,7 +159,7 @@
                     <span>{{ ele.teacher }}</span>
                   </div>
                   <div>
-                    {{ ele.video_year }}
+                    {{ ele.video_year }}年度
                   </div>
                 </div>
               </div>
@@ -211,6 +211,7 @@ export default {
     let wdscQuery = reactive({
       params: {
         userId: "",
+        userRole:"",
         videoState: "0401",
         pageIndex: 1,
         pageSize: 20,
@@ -222,14 +223,21 @@ export default {
         //videoState: "0401", //我的视频含草稿
         pageIndex: 1,
         pageSize: 20,
+        userId:"",
+        user_school:"",
+        userRole:"",
+        part:"my",
       },
     });
     let bxspQuery = reactive({
       params: {
-        videoSchool: "",
+        // videoSchool: "",
         videoState: "0401",
         pageIndex: 1,
         pageSize: 20,
+        user_school:"",
+        userRole:"",
+        part:"myschool",
       },
     });
 
@@ -285,8 +293,12 @@ export default {
     onMounted(() => {
       getSession();
       wdscQuery.params.userId=userId;
-      wdspQuery.params.uploader=userId;
-      bxspQuery.params.videoSchool=userSchool;
+      wdscQuery.params.userRole=userRole;
+      wdspQuery.params.userId=userId;
+      wdspQuery.params.user_school=userSchool;
+      wdspQuery.params.userRole=userRole;
+      bxspQuery.params.user_school=userSchool;
+      bxspQuery.params.userRole=userRole;
       bindWdscList();
       bindWdspList();
       bindBxspList();
@@ -384,12 +396,16 @@ export default {
   /* 视频比是16:9 */
   width: 180px;
   margin-bottom: 10px;
-  margin-right: 50px;
+  margin-right: 20px;
 }
 .video-result .video-item:nth-child(5n) {
   margin-right: 0;
 }
 .redColor {
   color: #de460c;
+}
+.width1000 {
+  width: 1000px;
+  margin: 0 auto;
 }
 </style>

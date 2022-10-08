@@ -24,7 +24,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item>
-            <span class="label">学科</span>
+            <span class="label">视频分类</span>
             <!-- TODO videoTypeName 动态渲染 -->
             <el-radio-group
               v-model="tabText"
@@ -93,7 +93,7 @@
                     <span>{{ele.teacher}}</span>
                   </div>
                   <div>
-                    {{ele.video_year}}
+                    {{ele.video_year}}年度
                   </div>
                 </div>
               </div>
@@ -146,9 +146,9 @@ export default {
         videoState: "0401",
         pageIndex: 1,
         pageSize: 20,
-        userId:null,
-        videoSchool:null,
-        userRole:null,
+        userId:userId,
+        user_school:userSchool,
+        userRole:userRole,
       },
     });
     let videoTypeList = ref([]);
