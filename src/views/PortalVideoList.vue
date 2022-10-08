@@ -160,6 +160,9 @@ export default {
       { value: "03", label: "转发" },
     ];
     const getVideo = () => {
+      query.params.userId=userId;
+      query.params.user_school=userSchool;
+      query.params.userRole=userRole;
       getVideoList(query).then((res) => {
         if (res.resultCode == "200") {
           tableData.value = JSON.parse(res.data.videoList);
@@ -168,6 +171,7 @@ export default {
       });
     };
     const getSession = () => {
+      debugger
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
       userName = localStorage.getItem("user_name");
@@ -209,7 +213,6 @@ export default {
       getVideo();
     };
     const videoYearChange = (value) => {
-      debugger;
       query.params.videoYear = parseInt(value);
       getVideo();
     };

@@ -78,7 +78,7 @@
                 </div>
               </el-form>
             </el-dialog>
-            <el-dialog title="修改密码" v-model="dialogChangePwdVisible" :show-close="false" width="30%" center :modal-append-to-body="true"
+            <el-dialog title="修改密码" v-model="dialogChangePwdVisible" :show-close="true" width="30%" center :modal-append-to-body="true"
               append-to-body>
               <div class="ms-title">修改密码</div>
               <el-form  label-width="0px" class="ms-content">
@@ -310,6 +310,8 @@ export default {
         // localStorage.removeItem("ms_username");
         loginBtnVisible.value = true;
         manageBtnVisible.value=false;
+        //退出跳转至登录页面
+        router.push("/login");
       });
     };
 

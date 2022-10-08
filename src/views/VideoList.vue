@@ -52,7 +52,7 @@
         </el-col>
         <el-col :span="4">
           <el-form-item>
-            公开分类
+            视频开放
             <el-select
               v-model="query.params.publicType"
               clearable
@@ -117,7 +117,7 @@
       </el-table-column>
       <el-table-column prop="video_year" label="年度" width="60">
       </el-table-column>
-      <el-table-column prop="public_type" label="发布分类" width="90">
+      <el-table-column prop="public_type" label="视频开放" width="90">
       </el-table-column>
       <el-table-column prop="video_state" label="视频状态" width="90">
       </el-table-column>
@@ -224,6 +224,7 @@ export default {
         // debugger;
         publicTypeList.value = res.data;
       });
+      getData();
     });
     const getSession = () => {
       userId = localStorage.getItem("user_id");
@@ -234,12 +235,13 @@ export default {
     };
     // 获取视频列表
     const getData = () => {
+      debugger
+      query.params.userRole=userRole;
       getVideoList(query).then((res) => {
         tableData.value = JSON.parse(res.data.videoList);
         pageTotal.value = res.data.totalCount || 50;
       });
     };
-    getData();
     //新增
     const handleAdd = () => {
       video_id.value = undefined;

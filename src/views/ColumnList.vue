@@ -89,7 +89,7 @@
           </el-table-column>
           <el-table-column
             prop="create_time"
-            label="编辑时间"
+            label="发布时间"
             width="200"
             :formatter="dateFormat"
           ></el-table-column>

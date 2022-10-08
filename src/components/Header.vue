@@ -5,7 +5,7 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="logo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后台管理</div>
+        <div class="logo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;教育工会工作平台</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 消息中心 -->

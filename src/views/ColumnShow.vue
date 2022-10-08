@@ -1,6 +1,12 @@
 <template>
   <div class="portal-wrap">
     <top-tool-bar></top-tool-bar>
+    <el-breadcrumb separator=">" class="mt20 mb20">
+      <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{path:'/portalBriefList'}">{{breadcrumb}}</el-breadcrumb-item>
+      <el-breadcrumb-item>正文</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-divider class="portal-divider"></el-divider>
     <el-container>
       <el-header>
         <h2>{{ briefForm.data.brief_title }}</h2>
@@ -62,6 +68,8 @@ export default {
     let userName = "";
     let realName = ref("");
     let userSchool = "";
+    let breadcrumb = ref(""); // 面包屑
+    let breadcrumbParam=ref("");//面包屑跳转参数
 
     let briefId = "";
     let content = ref("content");
@@ -96,6 +104,22 @@ export default {
           getBriefById(params).then((res) => {
             // debugger;
             briefForm.data = JSON.parse(res.data);
+            //绑定面包屑
+            switch (briefForm.data.brief_type) {
+              case "0503":
+                breadcrumb.value = "图片新闻";
+                breadcrumbParam.value="tpxw";
+                break;
+              case "0501":
+                breadcrumb.value = "通知公告";
+                breadcrumbParam.value="tzgg";
+                break;
+              case "0502":
+                breadcrumb.value = "政策法规";
+                breadcrumbParam.value="zcfg";
+                break;
+            }
+
             content.value = marked(briefForm.data.brief_content, {
               breaks: true,
             }).replace(/<pre>/g, "<pre class='hljs'>");
@@ -136,6 +160,8 @@ export default {
       userName,
       realName,
       userSchool,
+      breadcrumb,
+      breadcrumbParam,
 
       moment,
 

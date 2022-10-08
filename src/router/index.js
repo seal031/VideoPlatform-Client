@@ -126,7 +126,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || '教育集团工会网站';
-    debugger
     const user_name = localStorage.getItem('user_name');
     const user_role= localStorage.getItem('user_role');
     if (!user_name && to.path !== '/login') {

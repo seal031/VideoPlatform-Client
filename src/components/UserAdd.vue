@@ -113,6 +113,7 @@ export default {
       UserForm.data.user_school=SchoolId;
       UserForm.data.admin_id = "0";
       UserForm.data.admin_ip = "localhost";
+      UserForm.data.user_role="0103";
       console.log(UserForm.data)
       addUser(UserForm.data).then((res)=>{
         if (res.resultCode == "200") {

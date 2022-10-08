@@ -141,10 +141,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="开放对象" prop="public_type" v-show="showPublicObject">
-                    <el-select v-model="videoForm.data.public_type" placeholder="请选择">
-                      <el-option v-for="(item, c) in publicTypeList" :key="c" :label="item.code_name"
-                        :value="item.code_id"></el-option>
+                  <el-form-item label="开放对象" prop="public_school" v-show="showPublicObject">
+                    <el-select v-model="videoForm.data.public_school" placeholder="请选择" clearable multiple collapse-tags collapse-tags-tooltip style="width: 100%">
+                      <el-option v-for="(item, c) in schoolList" :key="c" :label="item.school_name"
+                        :value="item.school_id"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -311,7 +311,6 @@ export default {
       retryDuration: 2, //网络原因失败时，重新上传间隔时间，默认为2秒
       //开始上传
       'onUploadstarted': function (uploadInfo) {
-        debugger
         // var uploadAuth = data.UploadAuth;
         // var uploadAddress = data.UploadAddress;
         // var videoId = data.VideoId;
@@ -359,14 +358,12 @@ export default {
       },
       //文件上传进度，单位：字节
       'onUploadProgress': function (uploadInfo, totalSize, loadedPercent) {
-        console.log(loadedPercent);
         uploadPercent.value = loadedPercent * 100;
         //todo 展示进度条   
       },
       //上传凭证或STS token超时
       'onUploadTokenExpired': function (uploadInfo) {
         //todo 调用后台刷新凭证接口
-
       },
       //全部文件上传结束
       'onUploadEnd': function (uploadInfo) { }
@@ -383,7 +380,6 @@ export default {
       };
       getVideoUploadInfo(query).then((res) => {
         if (res.resultCode == "200" && res.data.ErrorMessage == "") {
-          debugger;
           var uploadAuth = res.data.OriginalUploadAuth;
           var uploadAddress = res.data.OriginalUploadAddress;
           var videoId = res.data.VideoId;
@@ -444,6 +440,10 @@ export default {
           if (res.resultCode == "200") {
             videoForm.data = JSON.parse(res.data);
             videoForm.data.video_year = "" + videoForm.data.video_year;
+            if(videoForm.data.public_type=="0302"){
+              showPublicObject.value=true;
+              videoForm.data.public_school=videoForm.data.public_school.split(',');
+            }
           }
         });
       }
@@ -482,12 +482,15 @@ export default {
 
     const onSubmit = () => {
       videoForm.data.video_state = "0401";
-      videoForm.data.admin_id = "0";
+      videoForm.data.admin_id = userId;
       videoForm.data.admin_ip = "localhost";
       //todo 判断是阿里云视频还是网络视频
       videoForm.data.aliyun_videoId = aliyunVideoId;
       debugger
       // videoForm.data.video_facede = CoverUrl; //暂时不从阿里云获取封面，由用户上传
+      if(videoForm.data.public_type=="0302"){
+        videoForm.data.public_school=videoForm.data.public_school.join(',')//开发高校下拉列表中获取的是array，转为逗号分隔的字符串
+      }
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
@@ -543,7 +546,6 @@ export default {
       });
       getSchoolList(query).then((res) => {
         if (res.resultCode == "200") {
-          debugger
           schoolList.value = JSON.parse(res.data.School_list);
         }
       });
@@ -552,7 +554,7 @@ export default {
     });
 
     const videoFileChange = (event) => {
-      debugger
+      // debugger
       const filePath = event.target.value;
       const fileName = event.target.files[0];
       videoFile = fileName;
