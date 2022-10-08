@@ -657,7 +657,7 @@ export default {
   width: 100%;
   --el-card-border-color: transparent;
   --el-card-padding: 0;
-  max-height: 1050px;
+  max-height: 973px;
   display: flex;
   flex-direction: column;
 }
@@ -669,7 +669,7 @@ export default {
 }
 .video-show-wrap .el-card__body {
   background-color: #faf8f9;
-  margin-top: 36px;
+  margin-top: 42px;
   padding-top: 10px;
   overflow: auto;
   padding: 20px 20px 0;

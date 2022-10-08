@@ -1,6 +1,7 @@
-<template>
+﻿<template>
   <div class="portal-wrap">
     <top-tool-bar></top-tool-bar>
+    <el-container style="height: calc(100% - 195px)">
     <el-breadcrumb separator=">" class="mt20 mb20">
       <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{path:'/portalBriefList'}">{{breadcrumb}}</el-breadcrumb-item>
@@ -18,28 +19,24 @@
           </span>
         </p>
       </el-header>
-      <el-container>
-        <el-main>
-          <!-- <img
-            :src="briefForm.data.brief_image"
-            style="width: 200px; height: 150px"
+      <el-main>
+        <!-- <img
+          :src="briefForm.data.brief_image"
+          style="width: 200px; height: 150px"
+          class="html-content"
+        /> -->
+        <div
+          style="background: #ffffff"
+          class="html-parent"
+        >
+          <div
+            id="content"
             class="html-content"
-          /> -->
-          <div style="width: 100%; min-height: 1200px">
-            <div
-              style="width: 100%; min-height: 1000px; background: #ffffff"
-              class="html-parent"
-            >
-              <div
-                id="content"
-                class="html-content"
-                v-html="content"
-                style="width: 75%"
-              ></div>
-            </div>
-          </div>
-        </el-main>
-      </el-container>
+            v-html="content"
+            style="width: 75%"
+          ></div>
+        </div>
+      </el-main>
     </el-container>
     <portal-footer></portal-footer>
   </div>
