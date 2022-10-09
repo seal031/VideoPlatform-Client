@@ -103,6 +103,7 @@
             <el-col :span="24">
               <el-form-item label="附件">
                 <el-upload
+                  class="upload-text"
                   action="http://47.93.84.178:14474/Upload/AnnexFile"
                   list-type="text"
                   :auto-upload="true"
@@ -112,8 +113,8 @@
                   :on-success="handleAnnexSuccess"
                   :before-upload="beforeAnnexUpload"
                   :on-remove="handleAnnexRemove"
-                >点击选择附件
-                <!-- <el-button type="primary">点击选择附件</el-button> -->
+                >
+                <el-button type="primary">点击选择附件</el-button>
                 </el-upload>
               </el-form-item>
             </el-col>
@@ -413,5 +414,10 @@ export default {
 <style scope>
 .center .el-dialog__body{
   text-align: center;
+}
+.upload-text .el-upload--text{
+  border: none;
+  height: auto;
+  text-align: left;
 }
 </style>
