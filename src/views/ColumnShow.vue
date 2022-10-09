@@ -34,6 +34,10 @@
             style="width: 75%"
           ></div>
         </div>
+        <p :v-for="(key,value,index) in annexObjList">
+          <!-- <a href={{value}}></a> -->
+          <span>{{key}}</span>
+        </p>
       </el-main>
     </div>
     <portal-footer></portal-footer>
@@ -68,6 +72,7 @@ export default {
 
     let briefId = "";
     let content = ref("content");
+    let annexObjList=ref({});
     //数据模型
     let briefForm = reactive({
       data: {
@@ -114,7 +119,13 @@ export default {
                 breadcrumbParam.value = "zcfg";
                 break;
             }
-
+            //绑定附件
+            debugger
+            var annexStrList=briefForm.data.annex.split(',');
+            annexStrList.forEach(element => {
+              annexObjList[element]="http://47.93.84.178:14474/Files/"+element;
+            });
+            //绑定新闻内容
             content.value = marked(briefForm.data.brief_content, {
               breaks: true,
             }).replace(/<pre>/g, "<pre class='hljs'>");
@@ -162,6 +173,7 @@ export default {
 
       briefId,
       briefForm,
+      annexObjList,
       content,
       getBriefById,
       getSession,

@@ -249,18 +249,18 @@ export default {
         }
       });
       annexList.push(newFileName);
-      console.log (annexList);
     };
     const beforeAnnexUpload=(file)=>{
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 10;
-      if (!isJPG) {
-        ElMessage.error("上传文件必须为jpeg格式");
-      }
+      // const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 50;
+      // if (!isJPG) {
+      //   ElMessage.error("上传文件必须为jpeg格式");
+      // }
       if (!isLt2M) {
-        ElMessage.error("上传文件必须小于10MB!");
+        ElMessage.error("上传文件必须小于50MB!");
       }
-      return isJPG && isLt2M;
+      // return isJPG && isLt2M;
+      return isLt2M;
     };
     const handleAnnexRemove=(file)=>{
       let tempFileList = [];
@@ -270,8 +270,6 @@ export default {
         }
       }
       annexList = tempFileList;
-      console.log(tempFileList);
-      console.log (annexList);
     };
     // const handleDownload = (file) => {
     //   debugger;
@@ -286,7 +284,8 @@ export default {
       briefForm.data.brief_state = "0401";
       briefForm.data.admin_id = "0";
       briefForm.data.admin_ip = "localhost";
-      // briefForm.data.brief_image = imageUrl.value;
+      briefForm.data.brief_image = imageUrl.value;
+      briefForm.data.annex=annexList.join(',');
       console.log(briefForm.data);
       addBrief(briefForm.data).then((res) => {
         if ((res.resultCode = "200")) {
@@ -309,7 +308,8 @@ export default {
       briefForm.data.brief_state = "0402";
       briefForm.data.admin_id = "0";
       briefForm.data.admin_ip = "localhost";
-      // briefForm.data.brief_image = imageUrl.value;
+      briefForm.data.brief_image = imageUrl.value;
+      briefForm.data.annex=annexList.join(',');
       console.log(briefForm.data);
       addBrief(briefForm.data).then((res) => {
         if ((res.resultCode = "200")) {
