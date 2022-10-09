@@ -51,10 +51,10 @@
             <el-col :span="18">
               <el-form-item label="封面图片">
                 <el-upload
-                  action="http://47.93.84.178:14474/Upload"
+                  action="http://47.93.84.178:14474/Upload/Image"
                   list-type="picture-card"
                   :auto-upload="true"
-                  :multiple= false
+                  :multiple= "false"
                   :show-file-list="false"
                   :limit="1"
                   :on-success="handleAvatarSuccess"
@@ -96,6 +96,25 @@
                 <rt-editor2
                   v-model="briefForm.data.brief_content"
                 ></rt-editor2>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="附件">
+                <el-upload
+                  action="http://47.93.84.178:14474/Upload/AnnexFile"
+                  list-type="text"
+                  :auto-upload="true"
+                  :multiple= "true"
+                  :show-file-list="true"
+                  :limit="3"
+                  :on-success="handleAnnexSuccess"
+                  :before-upload="beforeAnnexUpload"
+                  :on-remove="handleAnnexRemove"
+                >点击选择附件
+                <!-- <el-button type="primary">点击选择附件</el-button> -->
+                </el-upload>
               </el-form-item>
             </el-col>
           </el-row>
@@ -163,6 +182,7 @@ export default {
     let briefId = props.briefId;
     let dialogVisible=props.dialogVisible;
     let isReadonly = false;
+    let annexList=[];//附件名称列表
     //下拉模型
     let columnTypeList = ref([]);
     let filelist=ref([]);
@@ -199,9 +219,7 @@ export default {
     const disabled = ref(true);
     const imageUrl = ref("");
     const handleAvatarSuccess = (res, file) => {
-      debugger;
-      briefForm.data.brief_image =
-        "http://47.93.84.178:14474/Images/" + res.data.newFileName;
+      briefForm.data.brief_image = "http://47.93.84.178:14474/Images/" + res.data.newFileName;
     };
     const beforeAvatarUpload = (file) => {
       const isJPG = file.type === "image/jpeg";
@@ -220,6 +238,39 @@ export default {
     const handlePictureCardPreview = () => {
       dialogImageUrl.value = briefForm.data.brief_image;
       imageVisible.value = true;
+    };
+
+    const handleAnnexSuccess=(res,file)=>{
+      var newFileName=res.data.newFileName;
+      annexList.forEach(element => {
+        if(element===newFileName){
+          return;
+        }
+      });
+      annexList.push(newFileName);
+      console.log (annexList);
+    };
+    const beforeAnnexUpload=(file)=>{
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 10;
+      if (!isJPG) {
+        ElMessage.error("上传文件必须为jpeg格式");
+      }
+      if (!isLt2M) {
+        ElMessage.error("上传文件必须小于10MB!");
+      }
+      return isJPG && isLt2M;
+    };
+    const handleAnnexRemove=(file)=>{
+      let tempFileList = [];
+      for (var index = 0; index < annexList.length; index++) {
+        if (annexList[index] !== file.name) {
+          tempFileList.push(annexList[index]);
+        }
+      }
+      annexList = tempFileList;
+      console.log(tempFileList);
+      console.log (annexList);
     };
     // const handleDownload = (file) => {
     //   debugger;
@@ -343,6 +394,10 @@ export default {
       handleRemove,
       handlePictureCardPreview,
       // handleDownload,
+      annexList,
+      handleAnnexSuccess,
+      beforeAnnexUpload,
+      handleAnnexRemove,
       onSubmit,
       onDraft,
       getWangEditorValue,
