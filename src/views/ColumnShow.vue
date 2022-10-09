@@ -1,13 +1,15 @@
 ﻿<template>
   <div class="portal-wrap">
     <top-tool-bar></top-tool-bar>
-    <el-container style="height: calc(100% - 195px)">
-    <el-breadcrumb separator=">" class="mt20 mb20">
-      <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{path:'/portalBriefList'}">{{breadcrumb}}</el-breadcrumb-item>
-      <el-breadcrumb-item>正文</el-breadcrumb-item>
-    </el-breadcrumb>
-    <el-divider class="portal-divider"></el-divider>
+    <div class="width1000">
+      <el-breadcrumb separator=">" class="mt20 mb20">
+        <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/portalBriefList' }">{{
+          breadcrumb
+        }}</el-breadcrumb-item>
+        <el-breadcrumb-item>正文</el-breadcrumb-item>
+      </el-breadcrumb>
+      <el-divider class="portal-divider"></el-divider>
       <el-header>
         <h2>{{ briefForm.data.brief_title }}</h2>
         <p>
@@ -24,10 +26,7 @@
           style="width: 200px; height: 150px"
           class="html-content"
         /> -->
-        <div
-          style="background: #ffffff"
-          class="html-parent"
-        >
+        <div style="background: #ffffff" class="html-parent">
           <div
             id="content"
             class="html-content"
@@ -36,7 +35,7 @@
           ></div>
         </div>
       </el-main>
-    </el-container>
+    </div>
     <portal-footer></portal-footer>
   </div>
 </template>
@@ -65,7 +64,7 @@ export default {
     let realName = ref("");
     let userSchool = "";
     let breadcrumb = ref(""); // 面包屑
-    let breadcrumbParam=ref("");//面包屑跳转参数
+    let breadcrumbParam = ref(""); //面包屑跳转参数
 
     let briefId = "";
     let content = ref("content");
@@ -104,15 +103,15 @@ export default {
             switch (briefForm.data.brief_type) {
               case "0503":
                 breadcrumb.value = "图片新闻";
-                breadcrumbParam.value="tpxw";
+                breadcrumbParam.value = "tpxw";
                 break;
               case "0501":
                 breadcrumb.value = "通知公告";
-                breadcrumbParam.value="tzgg";
+                breadcrumbParam.value = "tzgg";
                 break;
               case "0502":
                 breadcrumb.value = "政策法规";
-                breadcrumbParam.value="zcfg";
+                breadcrumbParam.value = "zcfg";
                 break;
             }
 

@@ -700,7 +700,7 @@ export default {
 .video-show-wrap .video-item {
   /* 视频比是16:9 */
   width: 176px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   flex-shrink: 0;
 }
 
