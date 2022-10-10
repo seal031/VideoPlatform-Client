@@ -34,10 +34,14 @@
             style="width: 75%"
           ></div>
         </div>
-        <p :v-for="(key,value,index) in annexObjList">
-          <!-- <a href={{value}}></a> -->
-          <span>{{key}}</span>
-        </p>
+        <div>
+          <template v-if="annexObjList && annexObjList.length>0">
+              <span>相关附件:</span>
+            <p v-for="(item,index) in annexObjList" :key="index">
+              <a :href=item.value hreflang="zh">{{item.key}}</a>
+            </p>
+          </template>
+        </div>
       </el-main>
     </div>
     <portal-footer></portal-footer>
@@ -72,7 +76,7 @@ export default {
 
     let briefId = "";
     let content = ref("content");
-    let annexObjList=ref({});
+    let annexObjList=ref([]);
     //数据模型
     let briefForm = reactive({
       data: {
@@ -123,7 +127,8 @@ export default {
             debugger
             var annexStrList=briefForm.data.annex.split(',');
             annexStrList.forEach(element => {
-              annexObjList[element]="http://47.93.84.178:14474/Files/"+element;
+              // annexObjList[element]="http://47.93.84.178:14474/Files/"+element;
+              annexObjList.value.push({'key':element,'value':"http://47.93.84.178:14474/Files/"+element});
             });
             //绑定新闻内容
             content.value = marked(briefForm.data.brief_content, {

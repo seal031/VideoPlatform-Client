@@ -136,8 +136,8 @@
   <el-row>
     <el-col :span="10"></el-col>
     <el-col :span="4">
-      <el-button type="primary" @click="onSubmit">发布内容</el-button>
-      <el-button type="primary" @click="onDraft">存为草稿</el-button>
+      <el-button type="primary" @click="onSubmit">发布</el-button>
+      <el-button type="primary" @click="onDraft">暂存</el-button>
     </el-col>
     <el-col :span="10"></el-col>
   </el-row>
