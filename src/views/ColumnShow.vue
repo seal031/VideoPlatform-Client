@@ -31,16 +31,17 @@
             id="content"
             class="html-content"
             v-html="content"
-            style="width: 75%"
+            style="width: 100%"
           ></div>
         </div>
         <div>
           <template v-if="annexObjList && annexObjList.length>0">
-              <span>相关附件:</span>
+            <span>相关附件:</span>
             <p v-for="(item,index) in annexObjList" :key="index">
               <a :href=item.value hreflang="zh">{{item.key}}</a>
             </p>
           </template>
+          <template v-else></template>
         </div>
       </el-main>
     </div>
@@ -125,11 +126,12 @@ export default {
             }
             //绑定附件
             debugger
-            var annexStrList=briefForm.data.annex.split(',');
+            var annexStrList=briefForm.data.annex.split(',').filter(i=>i && i.trim());
             annexStrList.forEach(element => {
               // annexObjList[element]="http://47.93.84.178:14474/Files/"+element;
               annexObjList.value.push({'key':element,'value':"http://47.93.84.178:14474/Files/"+element});
             });
+            console.log(annexObjList.value.length)
             //绑定新闻内容
             content.value = marked(briefForm.data.brief_content, {
               breaks: true,
@@ -205,7 +207,7 @@ export default {
   overflow: auto;
 }
 .html-parent {
-  text-align: center;
+  text-align: left;
 }
 .html-content {
   margin: 0 auto;

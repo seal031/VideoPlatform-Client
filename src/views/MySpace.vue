@@ -3,8 +3,8 @@
   <top-tool-bar></top-tool-bar>
   <div class="portal-wrap width1000">
     <el-tabs
-      tab-position="left"
-      style="height: 100%; weight: 100px"
+      tab-position="top"
+      style="height: 100%"
       type="border-card"
       :stretch="true"
     >
@@ -343,10 +343,6 @@ export default {
 .videoList-wrap {
   height: 100%;
   overflow: auto;
-}
-.width100 {
-  width: 1000px;
-  margin: 0 auto;
 }
 .query-subjects {
   background-color: #c8e7e2;
