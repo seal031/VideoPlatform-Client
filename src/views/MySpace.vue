@@ -340,7 +340,6 @@ export default {
 <style scoped>
 .portal-wrap {
   height: 100%;
-  overflow: auto;
 }
 .videoList-wrap {
   height: 100%;
