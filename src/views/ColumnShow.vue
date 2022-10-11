@@ -4,7 +4,7 @@
     <div class="width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/portalBriefList' }">{{
+        <el-breadcrumb-item>{{
           breadcrumb
         }}</el-breadcrumb-item>
         <el-breadcrumb-item>正文</el-breadcrumb-item>
@@ -48,7 +48,6 @@
     <portal-footer></portal-footer>
   </div>
 </template>
-
 <script>
 import moment from "moment";
 import { ref, reactive, onMounted } from "vue";

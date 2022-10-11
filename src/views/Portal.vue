@@ -22,7 +22,7 @@
                 </el-carousel-item>
               </el-carousel>
               <div class="carousel-title">
-                <span>{{ hotCarouselTitle }}</span>
+                <span>&nbsp;&nbsp;{{ hotCarouselTitle }}</span>
               </div>
             </div>
           </div>

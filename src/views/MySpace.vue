@@ -6,7 +6,7 @@
       tab-position="top"
       style="height: 100%"
       type="border-card"
-      :stretch="true"
+      :stretch="false"
     >
       <el-tab-pane>
         <template #label>
@@ -62,10 +62,8 @@
       </el-tab-pane>
       <el-tab-pane>
         <template #label>
-          <span
-            ><i class="el-icon-date"></i
-            >&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;我的视频</span
-          >
+          <span><i class="el-icon-date"></i>我的视频</span>
+          <!-- &#12288;&#12288;&#12288;&#12288;&#12288;&#12288; -->
         </template>
         <div class="video-result">
         <div class="tr mb10">
@@ -118,9 +116,9 @@
       <el-tab-pane>
         <template #label>
           <span :icon="Star"
-            ><i class="el-icon-date"></i
-            >&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;本校视频</span
-          >
+            ><i class="el-icon-date"></i>
+            <!-- &#12288;&#12288;&#12288;&#12288;&#12288;&#12288; -->
+            本校视频</span>
         </template>
         <div class="video-result">
         <div class="tr mb10">
