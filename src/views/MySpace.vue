@@ -2,6 +2,10 @@
   <div class="videoList-wrap rel">
   <top-tool-bar></top-tool-bar>
   <div class="portal-wrap width1000">
+    <el-breadcrumb separator=">" class="mt20 mb20">
+      <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>我的空间</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-tabs
       tab-position="top"
       style="height: 100%"
