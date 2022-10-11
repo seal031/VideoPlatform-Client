@@ -6,6 +6,7 @@ import Video from "../views/VideoShow.vue"
 import BriefList from "../views/PortalColumnList.vue"
 import VideoList from "../views/PortalVideoList.vue"
 import MySpace from "../views/MySpace.vue"
+import SearchResult from "../views/SearchResult.vue"
 
 const routes = [
     {
@@ -50,7 +51,20 @@ const routes = [
     {
         path: "/MySpace",
         name: "MySpace",
+        meta: {
+            title: '我的空间',
+            permission: false
+        },
         component: MySpace,
+    },
+    {
+        path: "/SearchResult",
+        name: "SearchResult",
+        meta: {
+            title: '搜索结果',
+            permission: false
+        },
+        component: SearchResult,
     },
     {
         path: "/Manage",
