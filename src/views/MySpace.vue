@@ -392,8 +392,8 @@ export default {
 }
 .video-result .video-item {
   /* 视频比是16:9 */
-  width: 180px;
-  margin-bottom: 10px;
+  width: 170px;
+  margin-bottom: 20px;
   margin-right: 20px;
 }
 .video-result .video-item:nth-child(5n) {
