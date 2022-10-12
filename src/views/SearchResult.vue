@@ -19,21 +19,21 @@
           <div class="video-result">
             <div class="tr mb10">
               <el-pagination
-                @current-change="handleCurrentChange"
-                v-model:currentPage="videoQuery.params.pageIndex"
-                v-model:page-size="videoQuery.params.pageSize"
+                @current-change="handleCurrentChangeTpxw"
+                v-model:currentPage="tpxwQuery.params.pageIndex"
+                v-model:page-size="tpxwQuery.params.pageSize"
                 layout="total, prev, pager, next"
-                :total="wdscTotalCount"
+                :total="tpxwTotalCount"
               >
               </el-pagination>
             </div>
             <div>
-              <template v-if="wdscList && wdscList.length > 0">
-                <!-- TODO 点击跳转 -->
+              <template v-if="tpxwList && tpxwList.length > 0">
+                <!-- TODO 改为列表 -->
                 <el-row class="video-items">
                   <div
                     class="video-item"
-                    v-for="(ele, i) in wdscList"
+                    v-for="(ele, i) in videoList"
                     :key="i"
                     @click.enter="jump(ele)"
                   >
@@ -59,8 +59,8 @@
                   </div>
                 </el-row>
               </template>
-              <template v-else-if="wdscList">暂无视频</template>
-              <template v-else>视频列表加载中...</template>
+              <template v-else-if="videoList">无符合条件结果</template>
+              <template v-else>检索中...</template>
             </div>
           </div>
         </el-tab-pane>
@@ -72,21 +72,21 @@
           <div class="video-result">
           <div class="tr mb10">
             <el-pagination
-              @current-change="handleCurrentChange"
-              v-model:currentPage="wdspQuery.params.pageIndex"
-              v-model:page-size="wdspQuery.params.pageSize"
+              @current-change="handleCurrentChangeTzgg"
+              v-model:currentPage="tzggQuery.params.pageIndex"
+              v-model:page-size="tzggQuery.params.pageSize"
               layout="total, prev, pager, next"
-              :total="wdspTotalCount"
+              :total="tzggTotalCount"
             >
             </el-pagination>
           </div>
           <div>
-            <template v-if="wdspList && wdspList.length > 0">
-              <!-- TODO 点击跳转 -->
+            <template v-if="tpxwList && tpxwList.length > 0">
+              <!-- TODO 换成列表 -->
               <el-row class="video-items">
                 <div
                   class="video-item"
-                  v-for="(ele, i) in wdspList"
+                  v-for="(ele, i) in tpxwList"
                   :key="i"
                   @click.enter="jump(ele)"
                 >
@@ -112,36 +112,86 @@
                 </div>
               </el-row>
             </template>
-            <template v-else-if="wdspList">暂无视频</template>
-            <template v-else>视频列表加载中...</template>
+            <template v-else-if="tpxwList">无符合条件结果</template>
+            <template v-else>检索中...</template>
+          </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane>
+          <template #label>
+            <span :icon="Star"><i class="el-icon-date"></i>政策法规</span>
+          </template>
+          <div class="video-result">
+          <div class="tr mb10">
+            <el-pagination
+              @current-change="handleCurrentChangeZcfg"
+              v-model:currentPage="zcfgQuery.params.pageIndex"
+              v-model:page-size="zcfgQuery.params.pageSize"
+              layout="total, prev, pager, next"
+              :total="zcfgTotalCount"
+            >
+            </el-pagination>
+          </div>
+          <div>
+            <template v-if="zcfgList && zcfgList.length > 0">
+              <!-- TODO 换成列表 -->
+              <el-row class="video-items">
+                <div
+                  class="video-item"
+                  v-for="(ele, i) in zcfgList"
+                  :key="i"
+                  @click.enter="jump(ele)"
+                >
+                  <video-item
+                    :src="ele.video_facede"
+                    :tip="ele.video_title"
+                    :videoId="ele.video_id"
+                    :viewCount="ele.view_count"
+                    :appreciateCount="ele.appreciate_count"
+                    :collectionCount="ele.collection_count"
+                  />
+                  <div>
+                    <div><span class="mr5">{{ele.video_title}}</span></div>
+                    <div class="redColor">
+                      <span class="mr5">{{ ele.award }}</span>
+                      <span class="mr2">｜</span>
+                      <span>{{ ele.teacher }}</span>
+                    </div>
+                    <div>
+                      {{ ele.video_year }}年度
+                    </div>
+                  </div>
+                </div>
+              </el-row>
+            </template>
+            <template v-else-if="zcfgList">无符合条件结果</template>
+            <template v-else>检索中...</template>
           </div>
           </div>
         </el-tab-pane>
         <el-tab-pane>
           <template #label>
             <span :icon="Star"
-              ><i class="el-icon-date"></i>
-              <!-- &#12288;&#12288;&#12288;&#12288;&#12288;&#12288; -->
-              政策法规</span>
+              ><i class="el-icon-date"></i>优秀视频</span>
           </template>
           <div class="video-result">
           <div class="tr mb10">
             <el-pagination
-              @current-change="handleCurrentChange"
-              v-model:currentPage="bxspQuery.params.pageIndex"
-              v-model:page-size="bxspQuery.params.pageSize"
+              @current-change="handleCurrentChangeVideo"
+              v-model:currentPage="videoQuery.params.pageIndex"
+              v-model:page-size="videoQuery.params.pageSize"
               layout="total, prev, pager, next"
-              :total="bxspTotalCount"
+              :total="videoTotalCount"
             >
             </el-pagination>
           </div>
           <div>
-            <template v-if="bxspList && bxspList.length > 0">
+            <template v-if="videoList && videoList.length > 0">
               <!-- TODO 点击跳转 -->
               <el-row class="video-items">
                 <div
                   class="video-item"
-                  v-for="(ele, i) in bxspList"
+                  v-for="(ele, i) in videoList"
                   :key="i"
                   @click.enter="jump(ele)"
                 >
@@ -167,62 +217,7 @@
                 </div>
               </el-row>
             </template>
-            <template v-else-if="bxspList">暂无视频</template>
-            <template v-else>视频列表加载中...</template>
-          </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane>
-          <template #label>
-            <span :icon="Star"
-              ><i class="el-icon-date"></i>
-              <!-- &#12288;&#12288;&#12288;&#12288;&#12288;&#12288; -->
-              优秀视频</span>
-          </template>
-          <div class="video-result">
-          <div class="tr mb10">
-            <el-pagination
-              @current-change="handleCurrentChange"
-              v-model:currentPage="bxspQuery.params.pageIndex"
-              v-model:page-size="bxspQuery.params.pageSize"
-              layout="total, prev, pager, next"
-              :total="bxspTotalCount"
-            >
-            </el-pagination>
-          </div>
-          <div>
-            <template v-if="bxspList && bxspList.length > 0">
-              <!-- TODO 点击跳转 -->
-              <el-row class="video-items">
-                <div
-                  class="video-item"
-                  v-for="(ele, i) in bxspList"
-                  :key="i"
-                  @click.enter="jump(ele)"
-                >
-                  <video-item
-                    :src="ele.video_facede"
-                    :tip="ele.video_title"
-                    :videoId="ele.video_id"
-                    :viewCount="ele.view_count"
-                    :appreciateCount="ele.appreciate_count"
-                    :collectionCount="ele.collection_count"
-                  />
-                  <div>
-                    <div><span class="mr5">{{ele.video_title}}</span></div>
-                    <div class="redColor">
-                      <span class="mr5">{{ ele.award }}</span>
-                      <span class="mr2">｜</span>
-                      <span>{{ ele.teacher }}</span>
-                    </div>
-                    <div>
-                      {{ ele.video_year }}年度
-                    </div>
-                  </div>
-                </div>
-              </el-row>
-            </template>
-            <template v-else-if="bxspList">暂无视频</template>
+            <template v-else-if="zcfgList">暂无视频</template>
             <template v-else>视频列表加载中...</template>
           </div>
           </div>
@@ -264,9 +259,11 @@
         let tpxwList = ref([]); //图片新闻模型列表
         let tzggList = ref([]); //通知公告模型列表
         let zcfgList = ref([]); //政策法规模型列表
+        let videoList=ref([]);//视频列表
         let tpxwTotalCount = ref(0); // 图片新闻总数
         let tzggTotalCount = ref(0); // 通知公告总数
         let zcfgTotalCount = ref(0); // 政策法规总数
+        let videoTotalCount=ref(0);//视频总数
         let tpxwQuery = reactive({
         params: {
             briefType: "0503", //图片新闻
@@ -294,24 +291,40 @@
             topN: 20,
         },
         });
+        let videoQuery=reactive({
+            params: {
+                videoType: "",
+                videoTypeName: "",
+                videoYear: null,
+                keyword: "",
+                publicType: "",
+                videoState: "0401",
+                pageIndex: 1,
+                pageSize: 20,
+                userId:userId,
+                user_school:userSchool,
+                userRole:userRole,
+            },
+        });
   
       const methods = {
         getParams() {
-            keyword= route.query.activeTab;
+            keyword= route.query.keyword;
         },
         dateFormat(date) {
           return moment(date).format("YYYY-MM-DD");
-        },
-      };
-      const bindVideoList = () => {
-        getCollectVideoList(videoQuery).then((res) => {
-          debugger;
-          if (res.resultCode == "200") {
-            wdscList.value = JSON.parse(res.data.videoList);
-            wdscTotalCount.value = res.data.totalCount;
-          }
-        });
-      };
+            },
+        };
+
+        const bindVideoList = () => {
+            getCollectVideoList(videoQuery).then((res) => {
+            debugger;
+            if (res.resultCode == "200") {
+                videoList.value = JSON.parse(res.data.videoList);
+                videoTotalCount.value = res.data.totalCount;
+            }
+            });
+        };
       
       const getSession = () => {
         userId = localStorage.getItem("user_id");
@@ -320,6 +333,23 @@
         realName.value = localStorage.getItem("real_name");
         userSchool = localStorage.getItem("user_school");
       };
+      
+    const handleCurrentChangeTpxw = (val) => {
+      tpxwQuery.params.pageIndex = val;
+      methods.getTpxwList();
+    };
+    const handleCurrentChangeTzgg = (val) => {
+      tzggQuery.params.pageIndex = val;
+      methods.getTzggList();
+    };
+    const handleCurrentChangeZcfg = (val) => {
+      zcfgQuery.params.pageIndex = val;
+      methods.getZcfgList();
+    };
+    const handleCurrentChangeVideo=(val)=>{
+        videoQuery.params.pageIndex=val;
+        bindVideoList();
+    };
       
       // 跳转
       const jump = (v) => {
@@ -356,13 +386,22 @@
         realName,
         userSchool,
   
-        wdscList,
-        wdspList,
-        bxspList,
-        wdscTotalCount,
-        wdspTotalCount,
-        bxspTotalCount,
+        videoList,
+        tzggList,
+        tpxwList,
+        zcfgList,
+        tzggTotalCount,
+        tpxwTotalCount,
+        zcfgTotalCount,
+        videoTotalCount,
+        tpxwQuery,
+        tzggQuery,
+        zcfgQuery,
         videoQuery,
+        handleCurrentChangeTpxw,
+        handleCurrentChangeTzgg,
+        handleCurrentChangeZcfg,
+        handleCurrentChangeVideo,
         methods,
         bindVideoList,
         getSession,
