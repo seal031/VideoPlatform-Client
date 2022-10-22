@@ -2,9 +2,11 @@
   <div class="top-wrap">
     <div class="top-content">
       <el-form class="pcth100">
-        <el-row align="middle" justify="space-between" class="pcth100">
-          <el-image :src="getImageUrl('logo.png')" :fit="contain" class="top-logo"></el-image>
-          <el-form-item class="m0">
+        <el-row align="top" justify="space-between" class="pcth100">
+          <div class="top-logo pcth100">
+            <el-image :src="getImageUrl('logo.png')" :fit="contain" ></el-image>
+          </div>
+          <el-form-item class="m0 pcth100">
             <el-input
               class="top-input"
               size="normal"
@@ -18,7 +20,7 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item style="height: 100%">
+          <el-form-item class="pcth100" style="width: 250px;">
             <!--<div v-if="!loginBtnVisible">
               <el-dropdown split-button type="primary" size="small" @command="handleDropdown">
                 当前用户：{{ realName }}
@@ -387,7 +389,7 @@ export default {
 }
 
 .top-content .top-logo {
-  min-width: 195px;
+  width: 250px;
 }
 
 .top-content .top-input {
