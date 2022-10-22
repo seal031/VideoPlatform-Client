@@ -51,7 +51,12 @@ export default {
             {
                 icon: "el-icon-lx-lock",
                 index: "/UserList",
-                title: "系统权限管理",
+                title: "用户权限管理",
+            },
+            {
+                icon: "el-icon-lx-flag",
+                index: "/LogList",
+                title: "系统日志管理",
             },
         ];
 

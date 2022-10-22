@@ -282,7 +282,7 @@ export default {
     const onSubmit = () => {
       // 表单校验
       briefForm.data.brief_state = "0401";
-      briefForm.data.admin_id = "0";
+      briefForm.data.admin_id = userId;
       briefForm.data.admin_ip = "localhost";
       briefForm.data.brief_image = imageUrl.value;
       briefForm.data.annex=annexList.join(',');
@@ -306,7 +306,7 @@ export default {
     };
     const onDraft = () => {
       briefForm.data.brief_state = "0402";
-      briefForm.data.admin_id = "0";
+      briefForm.data.admin_id = userId;
       briefForm.data.admin_ip = "localhost";
       briefForm.data.brief_image = imageUrl.value;
       briefForm.data.annex=annexList.join(',');

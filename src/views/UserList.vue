@@ -2,7 +2,7 @@
   <div class="crumbs">
     <el-breadcrumb separator="/">
       <el-breadcrumb-item>
-        <i class="el-icon-lx-calendar"></i> 系统权限管理
+        <i class="el-icon-lx-calendar"></i> 用户权限管理
       </el-breadcrumb-item>
       <el-breadcrumb-item>高校列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -86,6 +86,8 @@
       <el-table-column prop="school_type_name" label="学校性质" width="120">
       </el-table-column>
       <el-table-column prop="school_category_name" label="学校分类" width="120">
+      </el-table-column>
+      <el-table-column prop="administrator_realName" label="管理员姓名" width="150">
       </el-table-column>
       <el-table-column prop="administrator_name" label="管理员账号" width="150">
       </el-table-column>
@@ -250,7 +252,7 @@ export default {
           let params = {
             params: {
               school_id: row.school_id,
-              admin_id: "admin",
+              admin_id: userId,
               admin_ip: "127.0.0.1",
             },
           };

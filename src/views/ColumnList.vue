@@ -173,7 +173,7 @@ export default {
             params: {
               brief_id: row.brief_id,
               brief_title: row.brief_title,
-              admin_id: "",
+              admin_id: userId,
               admin_ip: "127.0.0.1",
             },
           };

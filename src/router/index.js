@@ -102,7 +102,7 @@ const routes = [
             path: "/UserList",
             name: "UserList",
             meta: {
-                title: '系统权限管理'
+                title: '用户权限管理'
             },
             component: () => import( /* webpackChunkName: "donate" */ "../views/UserList.vue")
         }, {
@@ -121,6 +121,14 @@ const routes = [
                 permission: false
             },
             component: () => import("../views/ColumnShow.vue")
+        }, {
+            path: "/LogList",
+            name: "ColumnShow",
+            meta: {
+                title: '系统日志管理',
+                permission: false
+            },
+            component: () => import("../views/LogList.vue")
         }
         ]
     }, {

@@ -295,7 +295,7 @@ export default {
               params: {
                 video_id: videoToDelete.video_id,
                 video_title:videoToDelete.video_title,
-                admin_id: "admin",
+                admin_id: userId,
                 admin_ip: "127.0.0.1",
               },
             };

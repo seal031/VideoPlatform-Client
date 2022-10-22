@@ -4,7 +4,20 @@
       <el-form class="pcth100">
         <el-row align="middle" justify="space-between" class="pcth100">
           <el-image :src="getImageUrl('logo.png')" :fit="contain" class="top-logo"></el-image>
-
+          <el-form-item class="m0">
+            <el-input
+              class="top-input"
+              size="normal"
+              placeholder="请输入查找内容"
+              v-model="keyword"
+            >
+              <template #append>
+                <el-button type="primary" :icon="Search" @click="searchHandle"
+                  >搜索</el-button
+                >
+              </template>
+            </el-input>
+          </el-form-item>
           <el-form-item style="height: 100%">
             <!--<div v-if="!loginBtnVisible">
               <el-dropdown split-button type="primary" size="small" @command="handleDropdown">
@@ -128,6 +141,7 @@ export default {
     let userName = ref("");
     let realName = ref("");
     let userSchool = "";
+    let keyword=ref("");
 
     let dialogFormVisible = ref(false);
     let dialogChangePwdVisible=ref(false);
@@ -159,7 +173,14 @@ export default {
       });
       window.open(href.href, "_blank");
     };
-    const searchHandle = () => { };
+    const searchHandle = () => {
+      debugger
+      const href = router.resolve({
+        path: '/SearchResult',
+        query: { keyword: keyword.value },
+      });
+      window.open(href.href, "_blank");
+     };
     const submitLogin = () => {
       login(loginModel.data)
         .then((res) => {
@@ -321,6 +342,7 @@ export default {
       userName,
       realName,
       userSchool,
+      keyword,
 
       dialogFormVisible,
       dialogChangePwdVisible,

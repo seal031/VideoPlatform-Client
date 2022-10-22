@@ -510,7 +510,7 @@ export default {
     };
     const onDraft = () => {
       videoForm.data.video_state = "0402";
-      videoForm.data.admin_id = "0";
+      videoForm.data.admin_id = userId;
       videoForm.data.admin_ip = "localhost";
       //todo 判断是阿里云视频还是网络视频
       videoForm.data.aliyun_videoId = aliyunVideoId;
