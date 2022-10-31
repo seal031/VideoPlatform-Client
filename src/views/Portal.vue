@@ -1,4 +1,5 @@
 <template>
+  <outer-ip></outer-ip>
   <div class="portal-wrap">
     <top-tool-bar></top-tool-bar>
     <portal-header></portal-header>
@@ -337,10 +338,10 @@ import portalHeader from "../components/PortalHeader.vue";
 import PortalFooter from "../components/PortalFooter.vue";
 import TopToolBar from "../components/TopToolBar.vue";
 import VideoItem from "../components/VideoItem.vue";
+import OuterIp from "../components/outerNetIp.vue";
 import { getVideoList, getBriefList } from "../api/serviceApi";
 import { Document } from "@element-plus/icons-vue";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
-
 export default {
   components: {
     portalHeader,
@@ -348,6 +349,7 @@ export default {
     TopToolBar,
     VideoItem,
     Document,
+    OuterIp,
   },
   methods: {
     showBrief(row) {
@@ -618,6 +620,11 @@ export default {
       console.log("首页"+realName.value);
       console.log("首页"+userSchool);
     };
+
+    // 获取的外网IP
+    const outerIp = computed(() =>{
+      return window.returnCitySN ? window.returnCitySN['cip']: "";
+    });
 
     onMounted(() => {
       getSession();
