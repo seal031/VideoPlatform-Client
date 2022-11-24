@@ -12,9 +12,10 @@
               size="normal"
               placeholder="请输入查找内容"
               v-model="keyword"
+              @keyup.enter="searchHandle"
             >
               <template #append>
-                <el-button type="primary" :icon="Search" @click="searchHandle"
+                <el-button type="primary" :icon="Search" @click="searchHandle" 
                   >搜索</el-button
                 >
               </template>
@@ -420,6 +421,8 @@ export default {
   align-items: center;
   color: rgba(96, 96, 96, 0.6);
   transition: color 0.1s linear;
+  height: 100%;
+  justify-content: center;
 }
 
 .top-content .top-login-btn .el-icon {
