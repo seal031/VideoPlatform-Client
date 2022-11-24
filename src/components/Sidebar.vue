@@ -44,7 +44,7 @@ export default {
                 title: "视频资源管理",
             },
             {
-                icon: "el-icon-lx-calendar",
+                icon: "el-icon-lx-cascades",
                 index: "/ColumnList",
                 title: "内容发布管理",
             },
@@ -54,7 +54,7 @@ export default {
                 title: "用户权限管理",
             },
             {
-                icon: "el-icon-lx-flag",
+                icon: "el-icon-lx-calendar",
                 index: "/LogList",
                 title: "系统日志管理",
             },

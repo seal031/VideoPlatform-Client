@@ -13,7 +13,7 @@
           <el-form>
           <!-- <el-divider></el-divider> -->
           <el-row>
-          <el-col :span="4">
+          <!-- <el-col :span="4">
             <el-form-item>
               内容分类
               <el-select
@@ -48,7 +48,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="6">
             <el-form-item>
               关键字
@@ -72,32 +72,19 @@
         </div>
         <div style="width: 100%; height: 100%">
           <el-table
-            :data="briefFormList"
+            :data="logFormList"
             border
             style="width: 100%; height: 100%"
           >
-            <el-table-column prop="brief_title" label="内容标题">
+            <el-table-column prop="real_name" label="姓名" width="120">
             </el-table-column>
-            <el-table-column prop="brief_type" label="内容分类" width="120">
+            <el-table-column prop="user_name" label="账号" width="120">
             </el-table-column>
-            <el-table-column
-              prop="create_time"
-              label="发布时间"
-              width="200"
-              :formatter="dateFormat"
-            ></el-table-column>
-            <el-table-column fixed="right" label="操作" width="150">
-              <template #default="scope">
-                <el-button @click="handleShow(scope.row)" type="text" size="small"
-                  >预览</el-button
-                >
-                <el-button @click="handleEdit(scope.row)" type="text" size="small"
-                  >编辑</el-button
-                >
-                <el-button @click="handleDel(scope.row)" type="text" size="small"
-                  >删除</el-button
-                >
-              </template>
+            <el-table-column prop="role_name" label="账号类型" width="120">
+            </el-table-column>
+            <el-table-column prop="operate_detail" label="操作">
+            </el-table-column>
+            <el-table-column prop="operate_time" label="操作时间" width="180" :formatter="dateFormat" >
             </el-table-column>
           </el-table>
           <div class="pagination">
@@ -113,81 +100,20 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      v-model="dialogVisible"
-      title="编辑内容"
-      width="80%"
-      top="20px"
-      @close="handleClose"
-      :destroy-on-close="true"
-    >
-      <column-add :briefId="brief_id" @dialogclose="handleClose"></column-add>
-    </el-dialog>
   </template>
   
   <script>
-    import moment from "moment";
+  import moment from "moment";
   import { Search, Plus, Cellphone, Delete } from "@element-plus/icons-vue";
   import { getCurrentInstance } from "vue";
   import { ref, reactive, onMounted } from "@vue/runtime-core";
-  import { getBriefBaseList, getColumnType, delBrief } from "../api/serviceApi";
+  import { getLogs } from "../api/serviceApi";
   import { ElMessage, ElMessageBox } from "element-plus";
   import { useRouter, useRoute } from "vue-router";
-  import ColumnAdd from ".//ColumnAdd.vue";
   
   export default {
-    components: { ColumnAdd },
+    components: {  },
     methods: {
-      //预览
-      handleShow(row) {
-        // 页面跳转
-        const href = this.$router.resolve({
-          path: "/BriefShow",
-          query: { briefId: row.brief_id },
-        });
-        window.open(href.href, "_blank");
-      },
-      //编辑
-      // handleEdit(row) {
-      //   this.$router.resolve({
-      //     path: "/ColumnAdd",
-      //     query: { briefId: row.brief_id, isReadonly: false },
-      //   });
-      // },
-      //删除
-      handleDel(row) {
-        ElMessageBox.confirm("确定要删除吗？", "提示", {
-          confirmButtonText: "删除",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-          .then(() => {
-            let params = {
-              params: {
-                brief_id: row.brief_id,
-                brief_title: row.brief_title,
-                admin_id: userId,
-                admin_ip: "127.0.0.1",
-              },
-            };
-            delBrief(params)
-              .then((res) => {
-                if (res.resultCode == "200") {
-                  this.methods.getBriefList();
-                  ElMessage.success("删除成功");
-                } else {
-                  ElMessage({
-                    message: "获取数据失败：" + res.message,
-                    grouping: true,
-                    type: "error",
-                  });
-                }
-              })
-              .catch(() => {});
-            // tableData.value.splice(index, 1);
-          })
-          .catch(() => {});
-      },
     },
     setup() {
       let userId = "";
@@ -198,61 +124,27 @@
   
       let query = reactive({
         params: {
-          briefType: "",
-          briefState: "",
           keyword: "",
           pageIndex: 1,
           pageSize: 10,
         },
       });
-      const stateTypeList = [
-        {
-          code_name: "已发布",
-          code_id: "0401",
-        },
-        {
-          code_name: "草稿",
-          code_id: "0402",
-        },
-      ];
-      //下拉数据模型列表
-      let briefTypeList = ref([]);
       //table模型
-      let briefFormList = ref([]);
+      let logFormList = ref([]);
       const pageTotal = ref(0);
-      //数据模型
-      const briefForm = reactive({
-        brief_id: "",
-        brief_title: "",
-        brief_content: "",
-        brief_type: "",
-        brief_state: "",
-      });
+
       const dateFormat=(date) =>{
-        debugger
-          return moment(date.create_time).format("YYYY-MM-DD");
+          return moment(date.operate_time).format("YYYY-MM-DD hh:mm:ss");
         };
       const methods = {
         //加载列表
-        getBriefList() {
-          getBriefBaseList(query).then((res) => {
+        getLogList() {
+          getLogs(query).then((res) => {
             console.log(res);
             if (res.resultCode == "200") {
-              briefFormList.value = JSON.parse(res.data.BriefList);
+              debugger
+              logFormList.value = JSON.parse(res.data.LogList);
               pageTotal.value = res.data.totalCount || 50;
-            } else {
-              ElMessage({
-                message: "获取数据失败：" + res.message,
-                grouping: true,
-                type: "error",
-              });
-            }
-          });
-        },
-        getColumnTypeList() {
-          getColumnType().then((res) => {
-            if (res.resultCode == "200") {
-              briefTypeList.value = res.data;
             } else {
               ElMessage({
                 message: "获取数据失败：" + res.message,
@@ -270,38 +162,20 @@
         realName.value = localStorage.getItem("real_name");
         userSchool = localStorage.getItem("user_school");
       };
-      const handleAdd=()=>{
-        brief_id.value=undefined
-        dialogVisible.value = true;
-      };
   
       onMounted(() => {
         getSession();
-        methods.getColumnTypeList();
-        methods.getBriefList();
+        methods.getLogList();
       });
-      const dialogVisible = ref(false);
-      const brief_id = ref("");
-  
-      const handleEdit = (row)=>{
-        brief_id.value = row.brief_id;
-        dialogVisible.value = true;
-      };
       
       const handleSearch=()=> {
-        methods.getBriefList();
+        methods.getLogList();
       };
       
       // 分页导航
       const handlePageChange = (val) => {
         query.params.pageIndex = val;
-        methods.getBriefList();
-      };
-      
-      const handleClose = ()=>{
-        brief_id.value = "";
-        dialogVisible.value=false;
-        handleSearch();
+        methods.getLogList();
       };
   
       return {
@@ -323,18 +197,11 @@
         userRole,
         pageTotal,
         query,
-        briefTypeList,
-        stateTypeList,
-        briefForm,
-        briefFormList,
+        // logForm,
+        logFormList,
         methods,
         getSession,
   
-        dialogVisible,
-        brief_id,
-        handleAdd,
-        handleEdit,
-        handleClose,
         handleSearch,
         handlePageChange,
       };

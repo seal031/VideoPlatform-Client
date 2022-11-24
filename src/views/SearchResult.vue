@@ -6,7 +6,9 @@
         <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>搜索结果</el-breadcrumb-item>
       </el-breadcrumb>
+      <div>“{{keyword}}”有{{allTotalCount}}项符合查询的结果</div>
       <el-tabs
+        class="demo-tabs"
         tab-position="top"
         style="height: 100%"
         type="border-card"
@@ -171,7 +173,7 @@
   import VideoItem from "../components/VideoItem.vue";
   import { getVideoList, getBriefList } from "../api/serviceApi";
   import { onMounted, ref, reactive } from "vue";
-  import { getCurrentInstance, inject } from "@vue/runtime-core";
+  import { getCurrentInstance, inject, onUpdated } from "@vue/runtime-core";
   import {  useRoute, useRouter } from "vue-router";
   
   export default {
@@ -198,6 +200,7 @@
         let tzggTotalCount = ref(0); // 通知公告总数
         let zcfgTotalCount = ref(0); // 政策法规总数
         let videoTotalCount=ref(0);//视频总数
+        let allTotalCount=ref(0);//查询结果总数
         let tpxwQuery = reactive({
         params: {
             briefType: "0503", //图片新闻
@@ -234,7 +237,7 @@
                 publicType: "",
                 videoState: "0401",
                 pageIndex: 1,
-                pageSize: 20,
+                pageSize: 15,
                 userId:userId,
                 user_school:userSchool,
                 userRole:userRole,
@@ -339,6 +342,10 @@
             bindTzgg();
             bindZcfg();
             bindVideoList();
+            allTotalCount.value=zcfgTotalCount.value+tpxwTotalCount.value+tzggTotalCount.value+videoTotalCount.value;
+        });
+        onUpdated(()=>{
+          keyword=route.query.keyword;
         });
         return {
             Star,
@@ -356,6 +363,7 @@
             tzggList,
             tpxwList,
             zcfgList,
+            allTotalCount,
             tzggTotalCount,
             tpxwTotalCount,
             zcfgTotalCount,
@@ -382,6 +390,12 @@
   </script>
   
   <style scoped>
+  .demo-tabs > .el-tabs__content {
+    padding: 32px;
+    color: #6b778c;
+    /* font-size: 32px; */
+    /* font-weight: 600; */
+}
   .portal-wrap {
     height: 100%;
   }

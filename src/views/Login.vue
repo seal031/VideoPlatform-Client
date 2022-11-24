@@ -27,13 +27,17 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive,computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { login } from "../api/serviceApi";
+import OuterIp from "../components/outerNetIp.vue";
 
 export default {
+    components:{
+        OuterIp,
+    },
     setup() {
         const router = useRouter();
         // const param = reactive({
@@ -70,9 +74,16 @@ export default {
             data: {
                 user_name: "",
                 user_pwd: "",
+                admin_ip:"",
             },
         });
+        // 获取的外网IP
+        const outerIp = computed(() =>{
+            return window.returnCitySN ? window.returnCitySN['cip']: "";
+        });
         const submitLogin = () => {
+            debugger
+            loginModel.data.admin_ip=outerIp.value;
             login(loginModel.data)
                 .then((res) => {
                 if (res.resultCode == "200") {
@@ -121,6 +132,7 @@ export default {
             // submitForm,
             loginModel,
             submitLogin,
+            outerIp,
         };
     },
 };

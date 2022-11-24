@@ -465,6 +465,7 @@ export default {
       //观看量
       let params = {
         params: {
+          user_id: userId,
           video_id: videoId,
         },
       };

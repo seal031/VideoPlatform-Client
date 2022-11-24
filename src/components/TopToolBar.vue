@@ -128,10 +128,11 @@
 
 <script>
 import { Search, Avatar, Lock, HomeFilled, Setting } from "@element-plus/icons-vue";
-import { ref, reactive, inject, onMounted, onBeforeUpdate, watch } from "vue";
+import { ref, reactive, inject, onMounted, onBeforeUpdate, watch,computed } from "vue";
 import { login,resetPwd } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import OuterIp from "../components/outerNetIp.vue";
 
 export default {
   setup(props, ctx) {
@@ -156,11 +157,16 @@ export default {
       data: {
         user_name: "",
         user_pwd: "",
+        admin_ip:"",
       },
     });
     const getImageUrl = (name) => {
       return new URL(`http://47.93.84.178:8080/assets/img/${name}`, import.meta.url).href;
     };
+    // 获取的外网IP
+    const outerIp = computed(() =>{
+      return window.returnCitySN ? window.returnCitySN['cip']: "";
+    });
     const JumpToMySpace = () => {
       const href = router.resolve({
         path: '/MySpace',
@@ -184,6 +190,7 @@ export default {
       window.open(href.href, "_blank");
      };
     const submitLogin = () => {
+      loginModel.admin_ip=outerIp;
       login(loginModel.data)
         .then((res) => {
           if (res.resultCode == "200") {
@@ -202,6 +209,7 @@ export default {
             localStorage.setItem("user_name", user.user_name);
             localStorage.setItem("real_name", user.real_name);
             localStorage.setItem("user_school", user.user_school);
+            localStorage.setItem("userIP",outerIp);
             dialogFormVisible.value = false;
             dialogChangePwdVisible.value=false;
             loginBtnVisible.value = false;

@@ -129,3 +129,6 @@ export function delBrief(params){
 export function login(params){
     return axios.post('/GlobalCode/login',params);
 }
+export function getLogs(params){
+    return axios.get('/GlobalCode/GetLogs',params);
+}

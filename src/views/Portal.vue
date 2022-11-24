@@ -55,7 +55,7 @@
                 <div>
                   <!-- TODO 替换title -->
                   <div class="truncate-text">{{hotvideoitem.video_title}}</div>
-                  <div class="sub-title">
+                  <div class="sub-title redColor">
                     <span class="mr5 truncate-text">{{hotvideoitem.award}}</span>
                     <!-- <span class="mr2">波力</span> -->
                     <span class="mr2">｜</span>
