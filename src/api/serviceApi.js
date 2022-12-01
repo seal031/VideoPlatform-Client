@@ -44,6 +44,9 @@ export function getSchoolCategoryType(params){
 export function addchoolType(params){
     return axios.get('/GlobalCode/AddSchoolType',params);
 }
+export function writeLog(params){
+    return axios.post('/GlobalCode/WriteLog',{},params);
+}
 /////////////////////公共参数 END //////////////////////
 
 export function getSchoolList(params){

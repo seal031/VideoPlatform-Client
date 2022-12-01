@@ -285,7 +285,7 @@ export default {
         keyword.value = route.query.keyword;
       },
       dateFormat(date) {
-        return moment(date).format("YYYY-MM-DD");
+        return moment(date.create_time).format("YYYY-MM-DD");
       },
     };
 
@@ -379,14 +379,11 @@ export default {
       bindTzgg();
       bindZcfg();
       bindVideoList();
-      allTotalCount.value =
-        zcfgTotalCount.value +
-        tpxwTotalCount.value +
-        tzggTotalCount.value +
-        videoTotalCount.value;
     });
     onUpdated(() => {
-      keyword.value = route.query.keyword;
+      // keyword.value = route.query.keyword;
+      debugger
+      allTotalCount.value=tzggTotalCount.value+tpxwTotalCount.value+zcfgTotalCount.value+videoTotalCount.value;
     });
     return {
       Star,

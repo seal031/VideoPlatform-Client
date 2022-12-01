@@ -53,7 +53,7 @@ import moment from "moment";
 import { ref, reactive, onMounted } from "vue";
 import TopToolBar from "../components/TopToolBar.vue";
 import PortalFooter from "../components/PortalFooter.vue";
-import { getBriefById } from "../api/serviceApi";
+import { getBriefById,writeLog } from "../api/serviceApi";
 import { useRoute, useRouter } from "vue-router";
 import { marked } from "marked";
 import hljs from "highlight.js";
@@ -123,6 +123,8 @@ export default {
                 breadcrumbParam.value = "zcfg";
                 break;
             }
+            //记录访问日志
+            writeLogs("查看了"+breadcrumb.value+"《"+briefForm.data.brief_title+"》","查看了"+breadcrumb.value+"《"+briefForm.data.brief_title+"》");
             //绑定附件
             debugger
             var annexStrList=briefForm.data.annex.split(',').filter(i=>i && i.trim());
@@ -146,6 +148,20 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
+    
+    const writeLogs=((log_content,log_detail)=>{
+        let params={
+            params:{
+                user_id:userId,
+                user_ip:"",
+                operate_content:log_content,
+                operate_detail:log_detail
+            }
+        }
+        writeLog(params).then((res)=>{
+            
+        })
+    })
 
     onMounted(() => {
       getSession();
@@ -184,6 +200,7 @@ export default {
       getBriefById,
       getSession,
       methods,
+      writeLogs,
     };
   },
 };

@@ -236,7 +236,6 @@ export default {
       brief_state: "",
     });
     const dateFormat=(date) =>{
-      debugger
         return moment(date.create_time).format("YYYY-MM-DD");
       };
     const methods = {

@@ -235,7 +235,6 @@ export default {
     };
     // 获取视频列表
     const getData = () => {
-      debugger
       query.params.userRole=userRole;
       getVideoList(query).then((res) => {
         tableData.value = JSON.parse(res.data.videoList);
@@ -255,7 +254,6 @@ export default {
     };
     // 分页导航
     const handlePageChange = (val) => {
-      debugger
       query.params.pageIndex = val;
       getData();
     };
@@ -271,7 +269,6 @@ export default {
         type: "warning",
       }).then(() => {
           //判断是否阿里云视频
-          debugger;
           if(videoToDelete.aliyun_videoId!=null){
             let queryDeleteAliyun = {
               params: {
@@ -300,7 +297,6 @@ export default {
               },
             };
           deleteVideo(query).then((res)=>{
-            debugger
             if(res.resultCode=="200"&&res.data=="success"){
                 ElMessage.success("删除成功");
                 handleSearch();

@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
+        <el-menu class="sidebar-el-menu" @select="handleSelect" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in items">
                 <template v-if="item.subs">
@@ -32,11 +32,19 @@
 </template>
 
 <script>
-import { computed, watch } from "vue";
+import { computed, watch,ref } from "vue";
+  import {  onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import {writeLog} from "../api/serviceApi"
 export default {
     setup() {
+        let userId = "";
+        let userRole = "";
+        let userName = "";
+        let realName = ref("");
+        let userSchool = "";
+
         const items = [
             {
                 icon: "el-icon-lx-camera",
@@ -60,6 +68,31 @@ export default {
             },
         ];
 
+        const writeLogs=((log_content,log_detail)=>{
+            let params={
+                params:{
+                    user_id:userId,
+                    user_ip:"",
+                    operate_content:log_content,
+                    operate_detail:log_detail
+                }
+            }
+            writeLog(params).then((res)=>{
+                
+            })
+        })
+        onMounted(() => {
+            getSession();
+        });
+        
+        const getSession = () => {
+            userId = localStorage.getItem("user_id");
+            userRole = localStorage.getItem("user_role");
+            userName = localStorage.getItem("user_name");
+            realName.value = localStorage.getItem("real_name");
+            userSchool = localStorage.getItem("user_school");
+        };
+
         const route = useRoute();
 
         const onRoutes = computed(() => {
@@ -68,11 +101,38 @@ export default {
 
         const store = useStore();
         const collapse = computed(() => store.state.collapse);
+        const handleSelect=((key,keypath)=>{
+            debugger
+            switch(key){
+                case "/VideoList":
+                    writeLogs("访问视频资源管理","访问视频资源管理");
+                    break;
+                case "/ColumnList":
+                    writeLogs("访问内容发布管理","访问内容发布管理");
+                    break;
+                case "/UserList":
+                    writeLogs("访问用户权限管理","访问用户权限管理");
+                    break;
+                case "/LogList":
+                    writeLogs("访问系统日志管理","访问系统日志管理");
+                    break;
+                default:
+                    break;
+            }
+        })
 
         return {
+            userRole,
+            userName,
+            realName,
+            userSchool,
+
             items,
             onRoutes,
             collapse,
+            getSession,
+            handleSelect,
+            writeLogs,
         };
     },
 };
