@@ -136,6 +136,9 @@ import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import OuterIp from "../components/outerNetIp.vue";
 
 export default {
+  props: {
+    KEYWORD: ref(String),
+  },
   setup(props, ctx) {
     const router = useRouter();
     const route = useRoute();
@@ -303,6 +306,8 @@ export default {
 
     onMounted(() => {
       // init();
+      keyword.value=props.KEYWORD;
+      debugger
     });
     
 

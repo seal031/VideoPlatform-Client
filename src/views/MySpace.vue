@@ -9,7 +9,6 @@
     <el-tabs
       tab-position="top"
       style="height: 100%"
-      type="border-card"
       :stretch="false"
     >
       <el-tab-pane>

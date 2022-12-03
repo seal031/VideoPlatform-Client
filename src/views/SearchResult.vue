@@ -1,12 +1,12 @@
 <template>
   <div class="videoList-wrap rel">
-    <top-tool-bar></top-tool-bar>
+    <top-tool-bar :KEYWORD="keyword"></top-tool-bar>
     <div class="portal-wrap width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>搜索结果</el-breadcrumb-item>
       </el-breadcrumb>
-      <div>“{{ keyword }}”有{{ allTotalCount }}项符合查询的结果</div>
+      <div>约有{{ allTotalCount }}项符合查询的结果</div>
       <el-tabs
         class="demo-tabs"
         tab-position="top"
@@ -236,7 +236,7 @@ export default {
     let tzggTotalCount = ref(0); // 通知公告总数
     let zcfgTotalCount = ref(0); // 政策法规总数
     let videoTotalCount = ref(0); //视频总数
-    let allTotalCount = ref(0); //查询结果总数
+    let allTotalCount = ref(""); //查询结果总数
     let tpxwQuery = reactive({
       params: {
         briefType: "0503", //图片新闻
@@ -289,33 +289,33 @@ export default {
       },
     };
 
-    const bindTpxw = () => {
-      getBriefList(tpxwQuery).then((res) => {
+    const bindTpxw =async () => {
+      await getBriefList(tpxwQuery).then((res) => {
         if (res.resultCode == "200") {
           tpxwList.value = JSON.parse(res.data.BriefList);
           tpxwTotalCount.value = res.data.totalCount;
         }
       });
     };
-    const bindTzgg = () => {
-      getBriefList(tzggQuery).then((res) => {
+    const bindTzgg =async () => {
+      await getBriefList(tzggQuery).then((res) => {
         if (res.resultCode == "200") {
           tzggList.value = JSON.parse(res.data.BriefList);
           tzggTotalCount.value = res.data.totalCount;
         }
       });
     };
-    const bindZcfg = () => {
-      getBriefList(zcfgQuery).then((res) => {
+    const bindZcfg =async () => {
+      await getBriefList(zcfgQuery).then((res) => {
         if (res.resultCode == "200") {
           zcfgList.value = JSON.parse(res.data.BriefList);
           zcfgTotalCount.value = res.data.totalCount;
         }
       });
     };
-    const bindVideoList = () => {
+    const bindVideoList =async () => {
       //获取视频
-      getVideoList(videoQuery).then((res) => {
+      await getVideoList(videoQuery).then((res) => {
         if (res.resultCode == "200") {
           videoList.value = JSON.parse(res.data.videoList);
           videoTotalCount.value = res.data.totalCount;
@@ -365,7 +365,7 @@ export default {
       window.open(href.href, "_blank");
     };
 
-    onMounted(() => {
+    onMounted(async () => {
       getSession();
       methods.getParams();
       videoQuery.params.userId = userId;
@@ -375,15 +375,21 @@ export default {
       tzggQuery.params.keyword = keyword.value;
       tpxwQuery.params.keyword = keyword.value;
       zcfgQuery.params.keyword = keyword.value;
-      bindTpxw();
-      bindTzgg();
-      bindZcfg();
-      bindVideoList();
+      debugger;
+      await bindTpxw();
+      await bindTzgg();
+      await bindZcfg();
+      await bindVideoList();
+      allTotalCount.value =//a+b+c+d;
+        tzggTotalCount.value +
+        tpxwTotalCount.value +
+        zcfgTotalCount.value +
+        videoTotalCount.value;
     });
     onUpdated(() => {
       // keyword.value = route.query.keyword;
-      debugger
-      allTotalCount.value=tzggTotalCount.value+tpxwTotalCount.value+zcfgTotalCount.value+videoTotalCount.value;
+      // debugger
+      // allTotalCount.value=tzggTotalCount.value+tpxwTotalCount.value+zcfgTotalCount.value+videoTotalCount.value;
     });
     return {
       Star,
