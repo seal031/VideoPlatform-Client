@@ -6,7 +6,7 @@
         <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>搜索结果</el-breadcrumb-item>
       </el-breadcrumb>
-      <div>约有{{ allTotalCount }}项符合查询的结果</div>
+      <div>约有 <span class="red-result">{{ allTotalCount }}</span> 项符合查询的结果</div>
       <el-tabs
         class="demo-tabs"
         tab-position="top"
@@ -499,5 +499,8 @@ export default {
 .width1000 {
   width: 1000px;
   margin: 0 auto;
+}
+.red-result{
+  color: red;
 }
 </style>

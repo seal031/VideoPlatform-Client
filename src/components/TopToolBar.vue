@@ -21,7 +21,7 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item class="pcth100" style="width: 250px;">
+          <el-form-item class="pcth100 menu" style="width: 250px;">
             <!--<div v-if="!loginBtnVisible">
               <el-dropdown split-button type="primary" size="small" @command="handleDropdown">
                 当前用户：{{ realName }}
@@ -43,32 +43,32 @@
                 <Avatar />
               </el-icon>
               <span>登录</span>
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="logout">
               <el-icon>
                 <User />
               </el-icon>
               <span>{{realName}}</span>
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="dialogChangePwdVisible=true">
               <el-icon>
                 <Edit />
               </el-icon>
               <span>修改密码</span>
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
             <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="JumpToMySpace">
               <el-icon>
                 <HomeFilled />
               </el-icon>
               <span>我的</span>
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
             <div class="top-login-btn poi" v-if="manageBtnVisible" @click="JumpToManage">
               <el-icon>
                 <Setting />
               </el-icon>
               <span>管理</span>
 
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
             <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
             <el-dialog title="用户登录" v-model="dialogFormVisible" :show-close="false" width="30%" center :modal-append-to-body="true" :close-on-click-modal="false" :close-on-press-escape="false"
               append-to-body>
@@ -428,6 +428,7 @@ export default {
   transition: color 0.1s linear;
   height: 100%;
   justify-content: center;
+  margin-right: 30px;
 }
 
 .top-content .top-login-btn .el-icon {
@@ -459,6 +460,9 @@ export default {
   bottom: 2px;
 } */
 
+.menu :deep .el-form-item__content{
+  justify-content: end;
+}
 .login-wrap {
   position: relative;
   width: 100%;
