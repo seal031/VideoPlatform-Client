@@ -428,7 +428,7 @@ export default {
   transition: color 0.1s linear;
   height: 100%;
   justify-content: center;
-  margin-right: 30px;
+  margin-right: 22px;
 }
 
 .top-content .top-login-btn .el-icon {
@@ -461,7 +461,7 @@ export default {
 } */
 
 .menu :deep .el-form-item__content{
-  justify-content: end;
+  justify-content: flex-end;
 }
 .login-wrap {
   position: relative;
