@@ -1,6 +1,6 @@
 <template>
   <div class="videoList-wrap rel">
-    <top-tool-bar :KEYWORD="keyword"></top-tool-bar>
+    <top-tool-bar :keyword="keyword"></top-tool-bar>
     <div class="portal-wrap width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
         <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>

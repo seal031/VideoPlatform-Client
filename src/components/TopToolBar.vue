@@ -137,7 +137,7 @@ import OuterIp from "../components/outerNetIp.vue";
 
 export default {
   props: {
-    KEYWORD: ref(String),
+    keyword: ref(""),
   },
   setup(props, ctx) {
     const router = useRouter();
@@ -302,12 +302,12 @@ export default {
     };
 
     onBeforeUpdate(() => {
+      debugger
+      keyword.value=props.keyword;
     });
 
-    onMounted(() => {
+    onMounted(async () => {
       // init();
-      keyword.value=props.KEYWORD;
-      debugger
     });
     
 
