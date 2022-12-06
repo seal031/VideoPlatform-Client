@@ -5,19 +5,18 @@
     ></top-tool-bar>
     <div class="width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>{{breadcrumb}}</el-breadcrumb-item>
         <el-breadcrumb-item>视频详情</el-breadcrumb-item>
       </el-breadcrumb>
       <el-divider class="portal-divider"></el-divider>
-
       <el-row>
         <el-col :span="16">
           <div class="video_title">{{ videoForm.data.video_title }}</div>
           <div class="mb10">
             <span class="video_title redColor mr20">{{
               videoForm.data.award
-            }}</span>
+            }} | {{videoForm.data.teacher}}</span>
             <span>{{ dateFormat(videoForm.data.create_time) }}</span>
           </div>
           <div class="videoBg pr20">
