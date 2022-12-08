@@ -6,7 +6,7 @@
         <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>搜索结果</el-breadcrumb-item>
       </el-breadcrumb>
-      <div>约有 <span class="red-result">{{ allTotalCount }}</span> 项符合查询的结果</div>
+      <div class="result">约有 <span class="red-result">{{ allTotalCount }}</span> 项符合查询的结果</div>
       <el-tabs
         class="demo-tabs"
         tab-position="top"
@@ -201,7 +201,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import { Star, Wallet, OfficeBuilding } from "@element-plus/icons-vue";
 import moment from "moment";
 import TopToolBar from "../components/TopToolBar.vue";
@@ -289,7 +289,7 @@ export default {
       },
     };
 
-    const bindTpxw =async () => {
+    const bindTpxw = async () => {
       await getBriefList(tpxwQuery).then((res) => {
         if (res.resultCode == "200") {
           tpxwList.value = JSON.parse(res.data.BriefList);
@@ -297,7 +297,7 @@ export default {
         }
       });
     };
-    const bindTzgg =async () => {
+    const bindTzgg = async () => {
       await getBriefList(tzggQuery).then((res) => {
         if (res.resultCode == "200") {
           tzggList.value = JSON.parse(res.data.BriefList);
@@ -305,7 +305,7 @@ export default {
         }
       });
     };
-    const bindZcfg =async () => {
+    const bindZcfg = async () => {
       await getBriefList(zcfgQuery).then((res) => {
         if (res.resultCode == "200") {
           zcfgList.value = JSON.parse(res.data.BriefList);
@@ -313,7 +313,7 @@ export default {
         }
       });
     };
-    const bindVideoList =async () => {
+    const bindVideoList = async () => {
       //获取视频
       await getVideoList(videoQuery).then((res) => {
         if (res.resultCode == "200") {
@@ -436,32 +436,39 @@ export default {
 .portal-wrap {
   height: 100%;
 }
+
 .videoList-wrap {
   height: 100%;
   overflow: auto;
 }
+
 .query-subjects {
   background-color: #c8e7e2;
   width: 100%;
   position: absolute;
   left: 0;
 }
+
 .query-subjects .el-form-item {
   height: 60px;
   border-bottom: 1px solid #bbb;
   margin-bottom: 0;
 }
+
 .query-subjects .el-form-item:first-child {
   border-top: 1px solid #bbb;
 }
+
 .query-subjects .label {
   width: 90px;
   font-size: 18px;
 }
+
 .query-subjects .el-radio-button {
   --el-radio-button-checked-bg-color: #09a991;
   --el-radio-button-checked-border-color: #09a991;
 }
+
 .query-subjects :deep .el-radio-button__inner {
   background: var(--el-button-bg-color, transparent);
   border: none !important;
@@ -471,9 +478,11 @@ export default {
   padding: 0 20px;
   font-size: 16px;
 }
+
 .video-result {
   margin-top: 0px;
 }
+
 .video-result .el-radio-button {
   --el-radio-button-checked-bg-color: white;
   --el-radio-button-checked-border-color: #dcdfe6;
@@ -484,23 +493,32 @@ export default {
 .video-result .video-items {
   font-size: 13px;
 }
+
 .video-result .video-item {
   /* 视频比是16:9 */
   width: 170px;
   margin-bottom: 20px;
   margin-right: 20px;
 }
+
 .video-result .video-item:nth-child(5n) {
   margin-right: 0;
 }
+
 .redColor {
   color: #de460c;
 }
+
 .width1000 {
   width: 1000px;
   margin: 0 auto;
 }
-.red-result{
+
+.red-result {
   color: red;
+}
+
+.result {
+  font-size: 14px;
 }
 </style>

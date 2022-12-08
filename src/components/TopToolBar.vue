@@ -48,9 +48,9 @@
               <el-icon>
                 <User />
               </el-icon>
-              <span>{{realName}}</span>
+              <span>{{ realName }}</span>
             </div>
-            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="dialogChangePwdVisible=true">
+            <div class="top-login-btn poi" v-if="!loginBtnVisible" @click="dialogChangePwdVisible = true">
               <el-icon>
                 <Edit />
               </el-icon>
@@ -70,9 +70,9 @@
 
             </div>
             <!--仔细阅读Dialog的各个属性参数，会影响到布局排版，例如遇到了一个大坑就是没有设置:append-to-body='true'，导致遮罩遮盖整个页面，:lock-scroll="false"没有设置的话，点击前后会感觉到头部导航栏的移动，体验性很不好！！还有设置dialog的宽度width="40%"前面不用加冒号：-->
-            <el-dialog title="用户登录" v-model="dialogFormVisible" :show-close="false" width="30%" center :modal-append-to-body="true" :close-on-click-modal="false" :close-on-press-escape="false"
-              append-to-body>
-              <div class="ms-title">登录系统</div>
+            <el-dialog title="用户登录" v-model="dialogFormVisible" :show-close="false" width="30%" center
+              :modal-append-to-body="true" :close-on-click-modal="false" :close-on-press-escape="false" append-to-body>
+              <!-- <div class="ms-title">登录系统</div> -->
               <el-form :model="loginModel.data" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                   <el-input v-model="loginModel.data.user_name" placeholder="请输入账号" tabindex="1">
@@ -94,12 +94,12 @@
                 </div>
               </el-form>
             </el-dialog>
-            <el-dialog title="修改密码" v-model="dialogChangePwdVisible" :show-close="true" width="30%" center :modal-append-to-body="true"
-              append-to-body>
-              <div class="ms-title">修改密码</div>
-              <el-form  label-width="0px" class="ms-content">
-                <el-form-item>当前账号 : {{userName}}</el-form-item>
-                <el-form-item>用户姓名 : {{realName}}</el-form-item>
+            <el-dialog title="修改密码" v-model="dialogChangePwdVisible" :show-close="true" width="30%" center
+              :modal-append-to-body="true" append-to-body>
+              <!-- <div class="ms-title">修改密码</div> -->
+              <el-form class="ms-content">
+                <el-form-item label="当前账号：" style="margin-bottom: 0;">{{ userName }}</el-form-item>
+                <el-form-item label="用户姓名：" style="margin-bottom: 10px;">{{ realName }}</el-form-item>
                 <el-form-item prop="username">
                   <el-input v-model="newPwd" placeholder="新密码" tabindex="1">
                     <template #prepend>
@@ -108,8 +108,7 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input v-model="newPwdCheck" placeholder="重复密码" 
-                    @keyup.enter="submitChangePwd()" tabindex="2">
+                  <el-input v-model="newPwdCheck" placeholder="重复密码" @keyup.enter="submitChangePwd()" tabindex="2">
                     <template #prepend>
                       <el-button :icon="Lock"></el-button>
                     </template>
@@ -129,8 +128,8 @@
 
 <script>
 import { Search, Avatar, Lock, HomeFilled, Setting } from "@element-plus/icons-vue";
-import { ref, reactive, inject, onMounted, onBeforeUpdate, watch,computed } from "vue";
-import { login,resetPwd } from "../api/serviceApi";
+import { ref, reactive, inject, onMounted, onBeforeUpdate, watch, computed } from "vue";
+import { login, resetPwd } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import OuterIp from "../components/outerNetIp.vue";
@@ -148,28 +147,28 @@ export default {
     let userName = ref("");
     let realName = ref("");
     let userSchool = "";
-    let keyword=ref("");
+    let keyword = ref("");
 
     let dialogFormVisible = ref(false);
-    let dialogChangePwdVisible=ref(false);
-    let newPwd=ref("");
-    let newPwdCheck=ref("");
+    let dialogChangePwdVisible = ref(false);
+    let newPwd = ref("");
+    let newPwdCheck = ref("");
     let loginBtnVisible = ref(true);
-    let manageBtnVisible=ref(false);
+    let manageBtnVisible = ref(false);
     //登录模型
     let loginModel = reactive({
       data: {
         user_name: "",
         user_pwd: "",
-        admin_ip:"",
+        admin_ip: "",
       },
     });
     const getImageUrl = (name) => {
       return new URL(`http://47.93.84.178:8080/assets/img/${name}`, import.meta.url).href;
     };
     // 获取的外网IP
-    const outerIp = computed(() =>{
-      return window.returnCitySN ? window.returnCitySN['cip']: "";
+    const outerIp = computed(() => {
+      return window.returnCitySN ? window.returnCitySN['cip'] : "";
     });
     const JumpToMySpace = () => {
       const href = router.resolve({
@@ -192,9 +191,9 @@ export default {
         query: { keyword: keyword.value },
       });
       window.open(href.href, "_blank");
-     };
+    };
     const submitLogin = () => {
-      loginModel.admin_ip=outerIp;
+      loginModel.admin_ip = outerIp;
       login(loginModel.data)
         .then((res) => {
           if (res.resultCode == "200") {
@@ -213,11 +212,11 @@ export default {
             localStorage.setItem("user_name", user.user_name);
             localStorage.setItem("real_name", user.real_name);
             localStorage.setItem("user_school", user.user_school);
-            localStorage.setItem("userIP",outerIp);
+            localStorage.setItem("userIP", outerIp);
             dialogFormVisible.value = false;
-            dialogChangePwdVisible.value=false;
+            dialogChangePwdVisible.value = false;
             loginBtnVisible.value = false;
-            manageBtnVisible.value=userRole=="0101";
+            manageBtnVisible.value = userRole == "0101";
             // methods.callFather();
             ctx.emit("getSession");
           } else {
@@ -236,9 +235,8 @@ export default {
           debugger;
         });
     };
-    const submitChangePwd=()=>{
-      if(newPwd.value!=newPwdCheck.value)
-      {
+    const submitChangePwd = () => {
+      if (newPwd.value != newPwdCheck.value) {
         ElMessage({
           message: "两次输入的密码不一致",
           grouping: true,
@@ -247,21 +245,21 @@ export default {
         return;
       }
       let params = {
-            params: {
-              user_id: userId,
-              newPwd:newPwd.value,
-            }
-          };
-      resetPwd(params).then((res)=>{
-        if(res.resultCode=="200"){
+        params: {
+          user_id: userId,
+          newPwd: newPwd.value,
+        }
+      };
+      resetPwd(params).then((res) => {
+        if (res.resultCode == "200") {
           ElMessage.success("修改密码成功");
           dialogFormVisible.value = false;
-          dialogChangePwdVisible.value=false;
+          dialogChangePwdVisible.value = false;
           loginBtnVisible.value = false;
-          newPwd.value="";
-          newPwdCheck.value="";
+          newPwd.value = "";
+          newPwdCheck.value = "";
         }
-        else{
+        else {
           ElMessage({
             message: "修改密码失败：" + res.message,
             grouping: true,
@@ -303,13 +301,13 @@ export default {
 
     onBeforeUpdate(() => {
       debugger
-      keyword.value=props.keyword;
+      keyword.value = props.keyword;
     });
 
     onMounted(async () => {
       // init();
     });
-    
+
 
     const init = () => {
       userId = localStorage.getItem("user_id");
@@ -317,13 +315,13 @@ export default {
       userName.value = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
-      console.log("顶端"+userId);
-      console.log("顶端"+userRole);
-      console.log("顶端"+userName.value);
-      console.log("顶端"+realName.value);
-      console.log("顶端"+userSchool);
+      console.log("顶端" + userId);
+      console.log("顶端" + userRole);
+      console.log("顶端" + userName.value);
+      console.log("顶端" + realName.value);
+      console.log("顶端" + userSchool);
       loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
-      manageBtnVisible.value=userRole=="0101";
+      manageBtnVisible.value = userRole == "0101";
     };
     init();//在setup中执行，先于watch
 
@@ -346,7 +344,7 @@ export default {
         localStorage.setItem("user_school", null);
         // localStorage.removeItem("ms_username");
         loginBtnVisible.value = true;
-        manageBtnVisible.value=false;
+        manageBtnVisible.value = false;
         //退出跳转至登录页面
         router.push("/login");
       });
@@ -460,9 +458,10 @@ export default {
   bottom: 2px;
 } */
 
-.menu :deep .el-form-item__content{
+.menu :deep .el-form-item__content {
   justify-content: flex-end;
 }
+
 .login-wrap {
   position: relative;
   width: 100%;
@@ -492,7 +491,7 @@ export default {
 }
 
 .ms-content {
-  padding: 30px 30px;
+  padding: 0 30px;
 }
 
 .login-btn {
