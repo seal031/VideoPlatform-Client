@@ -30,7 +30,7 @@ const routes = [
         path: "/BriefShow",
         name: "BriefShow",
         meta:{
-            title:'通知公告'
+            // title:'通知公告'
         },
         component: Brief,
     },

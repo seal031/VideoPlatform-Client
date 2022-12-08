@@ -143,7 +143,7 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    background-image: url(../assets/img/login-bg.jpg);
+    background-image: url(../assets/img/login-bg.png);
     background-size: 100%;
 }
 .ms-title {
@@ -151,7 +151,7 @@ export default {
     line-height: 50px;
     text-align: center;
     font-size: 20px;
-    color: rgb(9, 17, 247);
+    color: #036AC6;
     border-bottom: 1px solid #ddd;
 }
 .ms-login {
@@ -174,6 +174,7 @@ export default {
     width: 100%;
     height: 36px;
     margin-bottom: 10px;
+    color: #036AC6;
 }
 .login-tips {
     font-size: 12px;

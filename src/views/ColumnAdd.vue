@@ -221,6 +221,7 @@ export default {
     const imageUrl = ref("");
     const handleAvatarSuccess = (res, file) => {
       briefForm.data.brief_image = "http://47.93.84.178:14474/Images/" + res.data.newFileName;
+      imageUrl.value="http://47.93.84.178:14474/Images/" + res.data.newFileName;
     };
     const beforeAvatarUpload = (file) => {
       const isJPG = file.type === "image/jpeg";
@@ -280,7 +281,6 @@ export default {
     };
     // 提交
     const onSubmit = () => {
-      // 表单校验
       briefForm.data.brief_state = "0401";
       briefForm.data.admin_id = userId;
       briefForm.data.admin_ip = "localhost";

@@ -8,33 +8,20 @@
         <div class="logo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;教育工会工作平台</div>
         <div class="header-right">
             <div class="header-user-con">
-                <!-- 消息中心 -->
-                <!-- <div class="btn-bell">
-                    <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
-                        <router-link to="/tabs">
-                            <i class="el-icon-bell"></i>
-                        </router-link>
-                    </el-tooltip>
-                    <span class="btn-bell-badge" v-if="message"></span>
-                </div> -->
                 <!-- 用户头像 -->
-                <div class="user-avator">
-                    <!-- <img src="../assets/img/img.jpg" /> -->
-                    <el-icon><Avatar /></el-icon>
+                <div class="poi" @click="logout">
+                    <el-icon>
+                        <Avatar />
+                    </el-icon>
+                    <span>{{realName}}</span>
                 </div>
                 <!-- 用户名下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+                <!-- <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
                         {{username}}
                         <i class="el-icon-caret-bottom"></i>
                     </span>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <!-- <el-dropdown-item command="user">个人中心</el-dropdown-item> -->
-                            <!-- <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item> -->
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
+                </el-dropdown> -->
             </div>
         </div>
     </div>
@@ -43,6 +30,7 @@
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { ElMessage, ElMessageBox } from "element-plus";
 export default {
     setup() {
         const username = localStorage.getItem("real_name");
@@ -71,6 +59,21 @@ export default {
                 router.push("/user");
             }
         };
+        const logout = () => {
+            ElMessageBox.confirm("确认退出?", "退出", {
+                confirmButtonText: "退出",
+                cancelButtonText: "取消",
+                type: "warning",
+            }).then(() => {
+                localStorage.setItem("user_id", null);
+                localStorage.setItem("user_role", null);
+                localStorage.setItem("user_name", null);
+                localStorage.setItem("real_name", null);
+                localStorage.setItem("user_school", null);
+                //退出跳转至登录页面
+                router.push("/login");
+        });
+        };
 
         return {
             username,
@@ -78,6 +81,7 @@ export default {
             collapse,
             collapseChage,
             handleCommand,
+            logout,
         };
     },
 };
@@ -157,5 +161,49 @@ export default {
 }
 .el-dropdown-menu__item {
     text-align: center;
+}
+
+.header .top-logo {
+  width: 250px;
+}
+
+.header .top-input {
+  width: 410px;
+  --el-input-border-radius: 16px;
+  --el-input-border: none;
+  --el-input-bg-color: rgba(255, 255, 255, 0.7);
+}
+
+.header .top-input :deep .el-input-group__append {
+  background-color: #026bc6;
+  border: 1px solid #026bc6;
+  color: #fff;
+  padding: 0 29px;
+}
+
+.header .top-login-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(96, 96, 96, 0.6);
+  transition: color 0.1s linear;
+  height: 100%;
+  justify-content: center;
+  margin-right: 22px;
+}
+
+.header .top-login-btn .el-icon {
+  font-size: 22px;
+}
+
+
+.header .top-login-btn span {
+  font-size: 12px;
+  line-height: 12px;
+  margin-top: 6px;
+}
+
+.header .top-login-btn:hover {
+  color: #fff !important;
 }
 </style>
