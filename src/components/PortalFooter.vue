@@ -2,10 +2,10 @@
   <!-- TODO 版权信息 -->
   <div class="portal-footer">
     <div class="mb10">
-      <span class="mr5">Copyright &copy;</span>
-      <span class="mr5">2018</span>
-      <span class="mr5">教育集团工会</span>
-      <span class="mr5">All Rights Reserved</span>
+      <span class="mr5">主办单位</span>
+      <span class="mr5">:</span>
+      <span class="mr5">教育工会及各高校 </span>
+      <span class="mr5">版权所有@2022</span>
     </div>
     <div>
       <span class="mr5">本网站支持IPv6访问</span>

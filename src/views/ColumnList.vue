@@ -87,6 +87,8 @@
           </el-table-column>
           <el-table-column prop="brief_type" label="内容分类" width="120">
           </el-table-column>
+          <el-table-column prop="brief_state" label="状态" width="120">
+          </el-table-column>
           <el-table-column
             prop="create_time"
             label="发布时间"
@@ -202,6 +204,7 @@ export default {
     let userName = "";
     let realName = ref("");
     let userSchool = "";
+    let delBtnText=ref("");
 
     let query = reactive({
       params: {

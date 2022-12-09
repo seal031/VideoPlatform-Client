@@ -11,7 +11,9 @@
       <div>
         <span>
           <template v-if="isShowCount">
-            <el-icon></el-icon>
+            <el-icon>
+              <video-play />
+            </el-icon>
             <!-- TODO 播放量 -->
             <span class="mr10">{{ viewCount }}</span>
             <el-icon>
@@ -39,6 +41,8 @@
 
 <script>
 // import { VideoPlay } from "@element-plus/icons-vue";
+import "vue3-video-play/dist/style.css";
+import vue3VideoPlay from "vue3-video-play";
 
 export default {
   name: "videoitem",

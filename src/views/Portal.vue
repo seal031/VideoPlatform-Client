@@ -77,10 +77,10 @@
     <el-divider class="portal-divider"></el-divider>
     <!-- TODO 系统名称、点击跳转 -->
     <div class="portal-system">
-      <div class="portal-system-item portal-system-item1 poi">
+      <div class="portal-system-item portal-system-item1">
         <span>北京高校青年教师教学基本功比赛管理系统</span>
         <h2>
-          系统入口
+          暂未开放<!-- 系统入口 -->
           <svg t="1645886669360" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="16268" width="22" height="22">
             <path
@@ -122,10 +122,10 @@
           </svg>
         </h2>
       </div>
-      <div class="portal-system-item portal-system-item2 poi">
+      <div class="portal-system-item portal-system-item2">
         <span>北京市师德榜样（先锋）推荐系列活动管理系统</span>
         <h2>
-          系统入口
+          暂未开放<!-- 系统入口 -->
           <svg t="1645887690692" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="25514" width="22" height="22">
             <path
@@ -146,10 +146,11 @@
           </svg>
         </h2>
       </div>
-      <div class="portal-system-item portal-system-item4 poi">
-        <span>志愿服务</span>
+      <div class="portal-system-item portal-system-item4">
+        <span>北京市高校志愿者服务</span>
+        <h2><br/></h2>
         <h2>
-          志愿者23人
+          暂未开放<!-- 志愿者23人 -->
           <svg t="1665021605222" class="svg-icon" viewBox="0 0 1219 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
             p-id="6919" width="22" height="22">
             <path
@@ -428,7 +429,7 @@ export default {
         path: path,
         query: { activeTab: selectedVideoTab.value },
       });
-      debugger
+      // debugger
       window.open(href.href, "_blank");
     };
     const openNews = (path, news) => {
@@ -468,6 +469,7 @@ export default {
         });
         getVideoList(query).then((res) => {
           if (res.resultCode == "200") {
+            debugger;
             hotVideoList.value = JSON.parse(res.data.videoList);
           }
         });

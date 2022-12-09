@@ -16,7 +16,8 @@
           <div class="mb10">
             <span class="video_title redColor mr20">{{
               videoForm.data.award
-            }} | {{videoForm.data.teacher}}</span>
+            }} | {{videoForm.data.teacher}} </span>
+            <span class="video_title redColor mr20"> {{SchoolForm.data.school_name}}  </span>
             <span>{{ dateFormat(videoForm.data.create_time) }}</span>
           </div>
           <div class="videoBg pr20">
@@ -273,6 +274,7 @@ import {
   cancelAppreciate,
   getCollectionAppreciateState,
   getVideoPlayAuth,
+  getSchoolById,
 } from "../api/serviceApi";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import { VideoPlay } from "@element-plus/icons-vue";
@@ -352,6 +354,17 @@ export default {
         aliyun_videoId:"",
       },
     });
+    //学校数据模型
+    let SchoolForm = reactive({
+      data: {
+        school_id: null,
+        school_name: "",
+        school_type_code: "",
+        school_category_code: "",
+        administrator: "",
+        operate_admin: null,
+      },
+    });
     const getSession = () => {
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
@@ -392,6 +405,19 @@ export default {
                 // breadcrumbParam.value="zcfg";
                 break;
             }
+            
+            document.title = videoForm.data.video_title;
+
+            let params = {
+              params: {
+                school_id: videoForm.data.video_school,
+              },
+            };
+            getSchoolById(params).then((res)=>{
+              if (res.resultCode == "200") {
+                SchoolForm.data = JSON.parse(res.data);
+              }
+            });
             if(videoForm.data.aliyun_videoId!=null){
               getAliyunVideoAuth();
             }
@@ -613,6 +639,7 @@ export default {
       isAppreciate,
       isStarText,
       videoForm,
+      SchoolForm,
       options,
 
       getSession,

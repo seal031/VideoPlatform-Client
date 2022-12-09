@@ -15,7 +15,7 @@
             <el-form ref="formRef" :rules="rules" :model="videoForm.data" label-width="80px">
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="本地视频" prop="video_url">
+                  <el-form-item label="视频" prop="video_url">
                     <input type="file" name="file" id="fileSelector" ref="uploader" @change="videoFileChange" />
                     <!-- <el-input
                       v-model="videoForm.data.video_url"
@@ -40,7 +40,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="封面图片">
-                    <el-upload action="http://47.93.84.178:14474/Upload" list-type="picture-card" :auto-upload="true"
+                    <el-upload action="http://47.93.84.178:14474/Upload/Image" list-type="picture-card" :auto-upload="true"
                       :limit="1" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload"
                       :show-file-list="false">
                       <!-- <template #default>
@@ -488,9 +488,9 @@ export default {
       videoForm.data.aliyun_videoId = aliyunVideoId;
       debugger
       // videoForm.data.video_facede = CoverUrl; //暂时不从阿里云获取封面，由用户上传
-      if(videoForm.data.public_type=="0302"){
-        videoForm.data.public_school=videoForm.data.public_school.join(',')//开发高校下拉列表中获取的是array，转为逗号分隔的字符串
-      }
+      // if(videoForm.data.public_type=="0302"){
+        videoForm.data.public_school=videoForm.data.public_school.join(',');//开发高校下拉列表中获取的是array，转为逗号分隔的字符串
+      // }
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({

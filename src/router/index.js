@@ -13,7 +13,7 @@ const routes = [
         path: '/portal',
         name: 'portal',
         meta:{
-            title:'首页-教育集团工会'
+            title:'首页-教育工会工作平台'
         },
         component: Portal,
     },
@@ -147,7 +147,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title || '教育集团工会网站';
+    document.title = to.meta.title || '教育工会工作平台网站';
     const user_name = localStorage.getItem('user_name');
     const user_role= localStorage.getItem('user_role');
     if (!user_name && to.path !== '/login') {

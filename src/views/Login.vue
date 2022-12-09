@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">教育工会工作平台门户</div>
+            <div class="ms-title">教育工会工作平台</div>
             <el-form :model="loginModel.data" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="user_name">
                     <el-input v-model="loginModel.data.user_name" placeholder="请输入用户名">
