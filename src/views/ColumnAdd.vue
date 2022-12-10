@@ -224,7 +224,8 @@ export default {
       imageUrl.value="http://47.93.84.178:14474/Images/" + res.data.newFileName;
     };
     const beforeAvatarUpload = (file) => {
-      const isJPG = file.type === "image/jpeg";
+      debugger;
+      const isJPG = (file.type === "image/jpeg"||file.type === "image/png");
       const isLt2M = file.size / 1024 / 1024 < 10;
       if (!isJPG) {
         ElMessage.error("上传文件必须为jpeg格式");

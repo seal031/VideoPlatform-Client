@@ -286,7 +286,7 @@
               <!-- TODO 点击更多跳转 -->
               <el-button type="text" class="more-btn" @click="jump('/portalBriefList','tzgg')">更多 ></el-button>
             </div>
-            <el-table :data="tzggList" :show-header="false" class="p10" height="200" @row-click="showBrief"
+            <el-table :data="tzggList" :show-header="false" class="p10" height="205" @row-click="showBrief"
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
@@ -320,7 +320,7 @@
               <!-- TODO 点击更多跳转 -->
               <el-button type="text" class="more-btn" @click="jump('/portalBriefList','zcfg')">更多 ></el-button>
             </div>
-            <el-table :data="zcfgList" :show-header="false" class="customer-table p10" height="200" empty-text="暂无数据"
+            <el-table :data="zcfgList" :show-header="false" class="p10" height="205" empty-text="暂无数据"
               @row-click="showBrief">
               <!-- <el-table-column type="index" width="30" /> -->
               <el-table-column prop="brief_title">
@@ -514,7 +514,7 @@ export default {
             user_school: userSchool,
             videoType: "0202", //青管赛视频
             videoState: "0401", //已发布
-            topN: 12,
+            topN: 10,
           },
         });
         getVideoList(query).then((res) => {
@@ -532,7 +532,7 @@ export default {
             videoSchool: userSchool,
             videoType: "0203", //师德榜样视频
             videoState: "0401", //已发布
-            topN: 12,
+            topN: 10,
           },
         });
 
@@ -551,7 +551,7 @@ export default {
             user_school: userSchool,
             videoType: "0204", //云课堂视频
             videoState: "0401", //已发布
-            topN: 12,
+            topN: 10,
           },
         });
         getVideoList(query).then((res) => {
@@ -567,7 +567,7 @@ export default {
           params: {
             briefType: "0501", //通知公告
             briefState: "0401", //已发布
-            topN: 3,
+            topN: 5,
           },
         });
         getBriefList(query).then((res) => {
@@ -582,7 +582,7 @@ export default {
           params: {
             briefType: "0502", //政策法规
             briefState: "0401", //已发布
-            topN: 4,
+            topN: 5,
           },
         });
         getBriefList(query).then((res) => {
@@ -961,5 +961,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 340px;
+  font-size: 13px;
 }
 </style>

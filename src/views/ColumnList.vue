@@ -317,8 +317,9 @@ export default {
           delBrief(params)
             .then((res) => {
               if (res.resultCode == "200") {
-                this.methods.getBriefList();
                 ElMessage.success("删除成功");
+                // this.methods.getBriefList();
+                handleSearch();
               } else {
                 ElMessage({
                   message: "获取数据失败：" + res.message,
