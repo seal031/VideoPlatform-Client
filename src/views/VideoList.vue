@@ -107,13 +107,15 @@
     </el-form>
     </div>
     <el-table :data="tableData" stripe border style="width: 100%" lazy>
-      <el-table-column prop="video_title" label="视频标题" width="350">
+      <el-table-column prop="video_title" label="视频标题" width="300">
       </el-table-column>
       <el-table-column prop="video_type" label="视频分类" width="120">
       </el-table-column>
-      <el-table-column prop="video_school" label="单位" width="250">
+      <el-table-column prop="award" label="获奖情况" width="160">
       </el-table-column>
-      <el-table-column prop="teacher" label="教师" width="120">
+      <el-table-column prop="teacher" label="教师" width="100">
+      </el-table-column>
+      <el-table-column prop="video_school" label="单位" width="150">
       </el-table-column>
       <el-table-column prop="video_year" label="年度" width="60">
       </el-table-column>
