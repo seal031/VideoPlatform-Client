@@ -290,12 +290,14 @@
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
-                  <el-tooltip
-                    :content="scope.row.brief_title "
-                    placement="top-start"
-                  >
-                    <div class="poi text-ellipsis">{{ scope.row.brief_title }}</div>
-                  </el-tooltip>
+                  <div v-tooltip-auto-show>
+                    <el-tooltip
+                      :content="scope.row.brief_title "
+                      placement="top-start"
+                    >
+                      <div class="poi text-ellipsis">{{ scope.row.brief_title }}</div>
+                    </el-tooltip>
+                  </div>
                 </template>
               </el-table-column>
               <el-table-column prop="create_time" label width="130" :formatter="methods.dateFormat"></el-table-column>
@@ -323,12 +325,14 @@
               <!-- <el-table-column type="index" width="30" /> -->
               <el-table-column prop="brief_title">
                 <template #default="scope">
-                  <el-tooltip
-                    :content="scope.row.brief_title "
-                    placement="top-start"
-                  >
-                    <div class="poi text-ellipsis">{{ scope.row.brief_title }}</div>
-                  </el-tooltip>
+                  <div v-tooltip-auto-show>
+                    <el-tooltip
+                      :content="scope.row.brief_title "
+                      placement="top-start"
+                    >
+                      <div class="poi text-ellipsis">{{ scope.row.brief_title }}</div>
+                    </el-tooltip>
+                  </div>
                 </template>
               </el-table-column>
               <el-table-column prop="create_time" label width="130" :formatter="methods.dateFormat"></el-table-column>

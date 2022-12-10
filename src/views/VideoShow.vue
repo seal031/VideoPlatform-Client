@@ -185,7 +185,7 @@
                   :appreciateCount="ele.appreciate_count"
                   :isShowCount="false"
                 />
-                <div class="f12 des">
+                <div class="f12 des" v-tooltip-auto-show>
                   <el-tooltip
                     :content="ele.video_title"
                     placement="top-start"
