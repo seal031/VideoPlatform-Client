@@ -18,7 +18,8 @@
               videoForm.data.award
             }} | {{videoForm.data.teacher}} </span>
             <span class="video_title redColor mr20"> {{SchoolForm.data.school_name}}  </span>
-            <span>{{ dateFormat(videoForm.data.create_time) }}</span>
+            <!-- <span>{{ dateFormat(videoForm.data.create_time) }}</span> -->
+            <span>{{ videoForm.data.video_year }}年度</span>
           </div>
           <div class="videoBg pr20">
             <!-- <vue3VideoPlay
@@ -153,7 +154,7 @@
               v-preventReClick
               >已收藏</el-button
             >
-            <el-button class="mr20" type="text" :icon="Share">转发</el-button>
+            <!-- <el-button class="mr20" type="text" :icon="Share">转发</el-button> -->
           </el-row>
         </el-col>
         <el-col :span="8" class="rel">

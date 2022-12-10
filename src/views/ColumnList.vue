@@ -164,39 +164,42 @@ export default {
     //   });
     // },
     //删除
-    handleDel(row) {
-      ElMessageBox.confirm("确定要删除吗？", "提示", {
-        confirmButtonText: "删除",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          let params = {
-            params: {
-              brief_id: row.brief_id,
-              brief_title: row.brief_title,
-              admin_id: userId,
-              admin_ip: "127.0.0.1",
-            },
-          };
-          delBrief(params)
-            .then((res) => {
-              if (res.resultCode == "200") {
-                this.methods.getBriefList();
-                ElMessage.success("删除成功");
-              } else {
-                ElMessage({
-                  message: "获取数据失败：" + res.message,
-                  grouping: true,
-                  type: "error",
-                });
-              }
-            })
-            .catch(() => {});
-          // tableData.value.splice(index, 1);
-        })
-        .catch(() => {});
-    },
+    // handleDel(row) {
+      // ElMessageBox.confirm("确定要删除吗？", "提示", {
+      //   confirmButtonText: "删除",
+      //   cancelButtonText: "取消",
+      //   type: "warning",
+      // })
+      //   .then(() => {
+      //     debugger;
+      //     let params = {
+      //       params: {
+      //         brief_id: row.brief_id,
+      //         brief_title: row.brief_title,
+      //         admin_id: userId,
+      //         admin_ip: "127.0.0.1",
+      //       },
+      //     };
+      //     delBrief(params)
+      //       .then((res) => {
+      //         if (res.resultCode == "200") {
+      //           this.methods.getBriefList();
+      //           ElMessage.success("删除成功");
+      //         } else {
+      //           ElMessage({
+      //             message: "获取数据失败：" + res.message,
+      //             grouping: true,
+      //             type: "error",
+      //           });
+      //         }
+      //       })
+      //       .catch(() => {});
+      //     // tableData.value.splice(index, 1);
+      //   })
+      //   .catch((err) => {
+      //     debugger;
+      //   });
+    // },
   },
   setup() {
     let userId = "";
@@ -296,6 +299,41 @@ export default {
       brief_id.value = row.brief_id;
       dialogVisible.value = true;
     };
+    const handleDel = (row)=>{
+      ElMessageBox.confirm("确定要删除吗？", "提示", {
+        confirmButtonText: "删除",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          let params = {
+            params: {
+              brief_id: row.brief_id,
+              brief_title: row.brief_title,
+              admin_id: userId,
+              admin_ip: "127.0.0.1",
+            },
+          };
+          delBrief(params)
+            .then((res) => {
+              if (res.resultCode == "200") {
+                this.methods.getBriefList();
+                ElMessage.success("删除成功");
+              } else {
+                ElMessage({
+                  message: "获取数据失败：" + res.message,
+                  grouping: true,
+                  type: "error",
+                });
+              }
+            })
+            .catch(() => {});
+          // tableData.value.splice(index, 1);
+        })
+        .catch((err) => {
+          debugger;
+        });
+    };
     
     const handleSearch=()=> {
       methods.getBriefList();
@@ -343,6 +381,7 @@ export default {
       brief_id,
       handleAdd,
       handleEdit,
+      handleDel,
       handleClose,
       handleSearch,
       handlePageChange,

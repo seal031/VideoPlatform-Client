@@ -489,8 +489,9 @@ export default {
       debugger
       // videoForm.data.video_facede = CoverUrl; //暂时不从阿里云获取封面，由用户上传
       // if(videoForm.data.public_type=="0302"){
+        if(typeof(videoForm.data.public_school)=="object"){
         videoForm.data.public_school=videoForm.data.public_school.join(',');//开发高校下拉列表中获取的是array，转为逗号分隔的字符串
-      // }
+      }
       addVideo(videoForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({

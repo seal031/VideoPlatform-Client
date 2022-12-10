@@ -9,7 +9,7 @@
     </div>
     <div>
       <span class="mr5">本网站支持IPv6访问</span>
-      <span class="mr5">版权所有</span>
+      <!-- <span class="mr5">版权所有</span> -->
       <span class="mr5">复制必究</span>
       <!-- <span>京ICP备09068819号</span> -->
     </div>
