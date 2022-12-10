@@ -1,4 +1,5 @@
 <template>
+<div class="wrap">
   <div class="video-show-wrap rel">
     <top-tool-bar
     v-on:getSession="getSession"
@@ -185,7 +186,12 @@
                   :isShowCount="false"
                 />
                 <div class="f12 des">
-                  <div>{{ ele.video_title }}</div>
+                  <el-tooltip
+                    :content="ele.video_title"
+                    placement="top-start"
+                  >
+                    <div class="truncate-text">{{ ele.video_title }}</div>
+                  </el-tooltip>
                   <div class="redColor sub-title">
                     <span class="mr5 truncate-text">{{ele.award}}</span>
                   </div>
@@ -247,6 +253,7 @@
     </div>
     <portal-footer></portal-footer>
   </div>
+</div>
 </template>
 
 <script>
@@ -667,9 +674,8 @@ export default {
 </script>
 
 <style>
-.video-show-wrap {
+.wrap{
   height: 100%;
-  min-height: 800px;
   overflow: auto;
 }
 .width1000 {
@@ -761,5 +767,4 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 </style>
