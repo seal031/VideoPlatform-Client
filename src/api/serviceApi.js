@@ -20,6 +20,12 @@ export function resetPwd(params){
 export function getVideoType(params){
     return axios.get('/GlobalCode/GetVideoType',params);
 }
+export function getVideoClass(params){
+    return axios.get('/GlobalCode/getVideoClass',params);
+}
+export function getVideoJieCi(params){
+    return axios.get('/GlobalCode/getVideoJieCi',params);
+}
 export function addVideoType(params){
     return axios.get('/GlobalCode/AddVideoType',params);
 }
@@ -135,3 +141,11 @@ export function login(params){
 export function getLogs(params){
     return axios.get('/GlobalCode/GetLogs',params);
 }
+/////////////////////外部系统管理//////////////////
+export function getExternalSystemList(params){
+    return axios.get('/ExternalSystem/GetExternalSystemList',params);
+}
+export function addExternalSystemList(params){
+    return axios.post('/ExternalSystem/AddExternalSystemList',params);
+}
+/////////////////////外部系统管理 END///////////////

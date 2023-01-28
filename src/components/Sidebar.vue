@@ -66,6 +66,11 @@ export default {
                 index: "/LogList",
                 title: "系统日志管理",
             },
+            {
+                icon: "el-icon-lx-home",
+                index: "/ExternalSystemList",
+                title: "系统开放配置",
+            },
         ];
 
         const writeLogs=((log_content,log_detail)=>{
@@ -115,6 +120,9 @@ export default {
                     break;
                 case "/LogList":
                     writeLogs("访问系统日志管理","访问系统日志管理");
+                    break;
+                case "/ExternalSystemList":
+                    writeLogs("访问系统开放配置","访问系统开放配置");
                     break;
                 default:
                     break;

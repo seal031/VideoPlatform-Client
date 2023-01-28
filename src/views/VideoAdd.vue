@@ -90,23 +90,43 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                   <el-form-item label="视频分类" prop="video_type">
-                    <el-select v-model="videoForm.data.video_type" placeholder="请选择" clearable>
+                    <el-select v-model="videoForm.data.video_type" placeholder="请选择" clearable @change="videoTypeChange">
                       <el-option v-for="(item, c) in videoTypeList" :key="c" :label="item.code_name"
                         :value="item.code_id"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                  <el-form-item label="视频年度" prop="video_year">
-                    <el-date-picker v-model="videoForm.data.video_year" format="YYYY" value-format="YYYY" type="year"
-                      placeholder="选择年份" style="width: 100%"></el-date-picker>
+                <el-col :span="8">
+                  <el-form-item label="时间" prop="video_year">
+                    <!-- <el-date-picker v-model="videoForm.data.video_year" format="YYYY" value-format="YYYY" type="year"
+                      placeholder="选择时间" style="width: 100%"></el-date-picker> -->
+                    <el-select v-model="videoForm.data.video_year" placeholder="请选择" clearable>
+                    <el-option v-for="(item, c) in videoYearList" :key="c" :label="item.code_name"
+                      :value="item.code_name"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="组别" prop="video_group" v-if="videoSelectedType=='0201'">
+                    <el-select v-model="videoForm.data.video_group" placeholder="请选择" clearable>
+                      <el-option v-for="(item, c) in videoGroupList" :key="c" :label="item.code_name"
+                        :value="item.code_name"></el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="24">
+                <el-col :span="12">
+                  <el-form-item label="类别" prop="video_class">
+                    <el-select v-model="videoForm.data.video_class" placeholder="请选择" clearable>
+                      <el-option v-for="(item, c) in videoClassList" :key="c" :label="item.code_name"
+                        :value="item.code_name"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
                   <el-form-item label="获奖情况" prop="award">
                     <el-input v-model="videoForm.data.award"></el-input>
                   </el-form-item>
@@ -187,6 +207,8 @@ import {
   getVideoPublicType,
   getSchoolList,
   getVideoType,
+  getVideoClass,
+  getVideoJieCi,
   getVideoById,
   addVideo,
   getVideoUploadInfo,
@@ -217,6 +239,10 @@ export default {
     //下拉数据模型列表
     let publicTypeList = ref([]);
     let videoTypeList = ref([]);
+    let videoClassList=ref([]);
+    let videoYearList=ref([]);
+    let videoGroupList=ref([{code_name:"A组"},{code_name:"B组"}]);
+    let videoSelectedType=ref("");
     let schoolList=ref([]);
     //获取学校用的参数
     let query = reactive({
@@ -465,11 +491,44 @@ export default {
     };
 
     const publicChange = (item) => {
-      console.log(item);
+      // console.log(item);
       if (item == "0302" || item == "0304") {
         showPublicObject.value = true;
       } else {
         showPublicObject.value = false;
+      }
+    };
+    const videoTypeChange=(item)=>{
+      videoSelectedType.value=item;
+      if(item=="0201"){//青教赛
+        getVideoJieCi().then((res)=>{
+          if(res.resultCode=="200"){
+            console.log(res.data);
+            videoYearList.value=res.data;
+          }
+        });
+        getVideoClass().then((res)=>{
+          if(res.resultCode=="200"){
+            videoClassList.value=res.data;
+          }
+        });
+      }
+      else if(item=="0202"){//青管赛
+        getVideoJieCi().then((res)=>{
+          if(res.resultCode=="200"){
+            videoYearList.value=res.data;
+          }
+        });
+        getVideoClass().then((res)=>{
+          if(res.resultCode=="200"){
+            videoClassList.value=res.data;
+          }
+        });
+      }else if(item=="0203"){//师德榜样
+        videoClassList.value=['高校','普教'];
+        videoYearList.value=['2021年','2022年','2023年'];
+      }else{
+
       }
     };
     const getSession = () => {
@@ -590,7 +649,11 @@ export default {
 
       videoId,
       publicTypeList,
+      videoSelectedType,
       videoTypeList,
+      videoClassList,
+      videoYearList,
+      videoGroupList,
       schoolList,
       showPublicObject,
       previewImg,
@@ -601,6 +664,7 @@ export default {
       bindVideo,
       handleAvatarSuccess,
       publicChange,
+      videoTypeChange,
       getSession,
       onSubmit,
       onDraft,

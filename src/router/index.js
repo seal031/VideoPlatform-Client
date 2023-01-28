@@ -123,12 +123,20 @@ const routes = [
             component: () => import("../views/ColumnShow.vue")
         }, {
             path: "/LogList",
-            name: "ColumnShow",
+            name: "LogList",
             meta: {
                 title: '系统日志管理',
                 permission: false
             },
             component: () => import("../views/LogList.vue")
+        }, {
+            path: "/ExternalSystemList",
+            name: "ExternalSystemList",
+            meta: {
+                title: '系统开放配置',
+                permission: false
+            },
+            component: () => import("../views/ExternalSystemList.vue")
         }
         ]
     }, {

@@ -37,7 +37,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
+        <!-- <el-col :span="4">
           <el-form-item>
             年度
             <el-date-picker
@@ -49,7 +49,7 @@
             >
             </el-date-picker>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="4">
           <el-form-item>
             视频开放
@@ -86,6 +86,12 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="4">
+          <el-form-item>
+            是否首页显示
+            <el-switch v-model="query.params.on_portal" />
+          </el-form-item>
+        </el-col>
         <el-col :span="5">
           <el-form-item>
             关键字
@@ -107,17 +113,21 @@
     </el-form>
     </div>
     <el-table :data="tableData" stripe border style="width: 100%" lazy>
-      <el-table-column prop="video_title" label="视频标题" width="280">
+      <el-table-column prop="video_title" label="视频标题" width="200">
       </el-table-column>
       <el-table-column prop="video_type" label="视频分类" width="120">
       </el-table-column>
+      <el-table-column prop="video_year" label="时间" width="90">
+      </el-table-column>
+      <el-table-column prop="video_group" label="组别" width="80">
+      </el-table-column>
+      <el-table-column prop="video_class" label="类别" width="80">
+      </el-table-column>
       <el-table-column prop="award" label="获奖情况" width="160">
       </el-table-column>
-      <el-table-column prop="teacher" label="教师" width="100">
+      <el-table-column prop="teacher" label="教师" width="80">
       </el-table-column>
       <el-table-column prop="video_school" label="单位" width="180">
-      </el-table-column>
-      <el-table-column prop="video_year" label="年度" width="60">
       </el-table-column>
       <el-table-column prop="public_type" label="视频开放" width="90">
       </el-table-column>
@@ -165,6 +175,8 @@ import {
   getVideoType,
   getVideoPublicType,
   getVideoList,
+  getVideoClass,
+  getVideoJieCi,
   deleteVideo,
   deleteAliyunVideo,
 } from "../api/serviceApi";
@@ -198,6 +210,7 @@ export default {
         keyword: "",
         publicType: "",
         videoState: "",
+        on_portal:false,
         pageIndex: 1,
         pageSize: 10,
       },

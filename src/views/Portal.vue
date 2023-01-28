@@ -80,7 +80,7 @@
       <div class="portal-system-item portal-system-item1">
         <span>北京高校青年教师教学基本功比赛管理系统</span>
         <h2>
-          暂未开放<!-- 系统入口 -->
+          {{externalSystemFormQJS.data.open_status}} <!--暂未开放系统入口-->
           <svg t="1645886669360" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="16268" width="22" height="22">
             <path
@@ -123,7 +123,8 @@
         </h2>
       </div>
       <div class="portal-system-item portal-system-item2">
-        <span>北京市师德榜样（先锋）推荐系列活动管理系统</span>
+        <span>北京市高校青年教师管理岗比赛系统</span>
+        <h2><br/></h2>
         <h2>
           暂未开放<!-- 系统入口 -->
           <svg t="1645887690692" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
@@ -354,7 +355,7 @@ import PortalFooter from "../components/PortalFooter.vue";
 import TopToolBar from "../components/TopToolBar.vue";
 import VideoItem from "../components/VideoItem.vue";
 import OuterIp from "../components/outerNetIp.vue";
-import { getVideoList, getBriefList } from "../api/serviceApi";
+import { getVideoList, getBriefList,getExternalSystemList } from "../api/serviceApi";
 import { Document } from "@element-plus/icons-vue";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 export default {
@@ -402,6 +403,44 @@ export default {
     let hotVideoList = ref([]); //热门视频模型列表
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
+    //外部系统数据模型
+    const initExternalSystemFormDataQJS={
+        external_id: null,
+        external_name: "",
+        external_url: "",
+        is_open: 0,
+        open_status:"",
+    };
+    let externalSystemFormQJS = reactive({
+        data: JSON.parse(JSON.stringify(initExternalSystemFormDataQJS)),
+    });
+    const initExternalSystemFormDataQGS={
+        external_id: null,
+        external_name: "",
+        external_url: "",
+        is_open: 0,
+    };
+    let externalSystemFormQGS = reactive({
+        data: JSON.parse(JSON.stringify(initExternalSystemFormDataQGS)),
+    });
+    const initExternalSystemFormDataSDBY={
+        external_id: null,
+        external_name: "",
+        external_url: "",
+        is_open: 0,
+    };
+    let externalSystemFormSDBY = reactive({
+        data: JSON.parse(JSON.stringify(initExternalSystemFormDataSDBY)),
+    });
+    const initExternalSystemFormDataZYZ={
+        external_id: null,
+        external_name: "",
+        external_url: "",
+        is_open: 0,
+    };
+    let externalSystemFormZYZ = reactive({
+        data: JSON.parse(JSON.stringify(initExternalSystemFormDataZYZ)),
+    });
     let selectedVideoTab = ref("qjs")
     const handleTabClick = (tab, event) => {
       console.log(tab, event);
@@ -497,6 +536,7 @@ export default {
             videoType: "0201", //青教赛视频
             videoState: "0401", //已发布
             topN: 10,
+            orderBy:"portal",
           },
         });
         getVideoList(query).then((res) => {
@@ -592,6 +632,19 @@ export default {
         });
       },
       getVideoList() { },
+      getAllExternalSystemList(){
+        getExternalSystemList().then((res)=>{
+            let allExternalSystemList=JSON.parse(res.data.ExternalSystemList);
+            externalSystemFormQJS.data=allExternalSystemList[0];
+            externalSystemFormQJS.data.open_status=externalSystemFormQJS.data.is_open==0?"暂未开放":"系统入口";
+            externalSystemFormQGS.data=allExternalSystemList[1];
+            // externalSystemFormQGS.data.is_open=externalSystemFormQGS.data.is_open==0?false:true;
+            externalSystemFormSDBY.data=allExternalSystemList[2];
+            // externalSystemFormSDBY.data.is_open=externalSystemFormSDBY.data.is_open==0?false:true;
+            externalSystemFormZYZ.data=allExternalSystemList[3];
+            // externalSystemFormZYZ.data.is_open=externalSystemFormZYZ.data.is_open==0?false:true;
+        });
+      },
       dateFormat(date) {
         return moment(date.create_time).format("YYYY-MM-DD");
       },
@@ -630,11 +683,11 @@ export default {
       userName = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
-      console.log("首页"+userId);
-      console.log("首页"+userRole);
-      console.log("首页"+userName);
-      console.log("首页"+realName.value);
-      console.log("首页"+userSchool);
+      // console.log("首页"+userId);
+      // console.log("首页"+userRole);
+      // console.log("首页"+userName);
+      // console.log("首页"+realName.value);
+      // console.log("首页"+userSchool);
     };
 
     // 获取的外网IP
@@ -650,6 +703,7 @@ export default {
       methods.getVideoList();
       methods.getHotVideoList();
       methods.getQjsVideoList();
+      methods.getAllExternalSystemList();
     });
 
     return {
@@ -658,6 +712,15 @@ export default {
       userName,
       realName,
       userSchool,
+      
+      initExternalSystemFormDataQJS,
+      externalSystemFormQJS,
+      initExternalSystemFormDataQGS,
+      externalSystemFormQGS,
+      initExternalSystemFormDataSDBY,
+      externalSystemFormSDBY,
+      initExternalSystemFormDataZYZ,
+      externalSystemFormZYZ,
 
       getTabIconColor,
       getCurrentInstance,
@@ -961,6 +1024,6 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 340px;
-  font-size: 13px;
+  font-size: 15px;
 }
 </style>
