@@ -9,7 +9,7 @@
         <el-col :span="12">
           <div>
             <div class="mt20 mb20">
-              <span class="f20 poi" @click="jump('/portalBriefList','tpxw')">图片新闻</span>
+              <span class="f20 poi" @click="jump('/portalBriefList', 'tpxw')">图片新闻</span>
               <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <document />
@@ -19,7 +19,8 @@
             <div>
               <el-carousel trigger="click" height="355px" indicator-position="outside" @change="handleChangeCarousel">
                 <el-carousel-item v-for="item in tpxwList" :key="item">
-                  <img :src="item.brief_image" :title="hotCarouselTitle" style="width: 100%; height: 100%" @click="openNews('/BriefShow',item)" />
+                  <img :src="item.brief_image" :title="hotCarouselTitle" style="width: 100%; height: 100%"
+                    @click="openNews('/BriefShow', item)" />
                 </el-carousel-item>
               </el-carousel>
               <div class="carousel-title">
@@ -54,14 +55,14 @@
                   :appreciateCount="hotvideoitem.appreciate_count" />
                 <div>
                   <!-- TODO 替换title -->
-                  <div class="truncate-text">{{hotvideoitem.video_title}}</div>
+                  <div class="truncate-text">{{ hotvideoitem.video_title }}</div>
                   <div class="sub-title redColor">
-                    <span class="mr5 truncate-text">{{hotvideoitem.award}}</span>
+                    <span class="mr5 truncate-text">{{ hotvideoitem.award }}</span>
                     <!-- <span class="mr2">波力</span> -->
                     <span class="mr2">｜</span>
-                    <span class="author">{{hotvideoitem.teacher}}</span>
+                    <span class="author">{{ hotvideoitem.teacher }}</span>
                   </div>
-                  <div class="truncate-text">{{hotvideoitem.video_year}}年度</div>
+                  <div class="truncate-text">{{ hotvideoitem.video_year }}年度</div>
                 </div>
               </div>
             </div>
@@ -80,9 +81,9 @@
       <div class="portal-system-item portal-system-item1" @click="JumpToExternalSystem(externalSystemFormQJS.data)">
         <span>北京高校青年教师教学基本功比赛管理系统</span>
         <h2>
-          {{externalSystemFormQJS.data.open_status}} <!--暂未开放系统入口-->
-          <svg t="1645886669360" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
-            xmlns="http://www.w3.org/2000/svg" p-id="16268" width="22" height="22">
+          {{ externalSystemFormQJS.data.open_status }} <!--暂未开放系统入口-->
+          <svg t="1645886669360" class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="16268" width="22" height="22">
             <path
               d="M512 1024c-8.533333 0-17.066667-4.266667-21.333333-8.533333-4.266667 0-128-76.8-448-76.8-25.6 0-42.666667-17.066667-42.666667-42.666667L0 42.666667c0-25.6 17.066667-42.666667 42.666667-42.666667 273.066667 0 418.133333 55.466667 469.333333 81.066667C563.2 55.466667 708.266667 0 981.333333 0c25.6 0 42.666667 17.066667 42.666667 42.666667l0 853.333333c0 25.6-17.066667 42.666667-42.666667 42.666667-320 0-443.733333 76.8-448 76.8C529.066667 1019.733333 520.533333 1024 512 1024zM85.333333 853.333333c247.466667 4.266667 375.466667 55.466667 426.666667 81.066667 51.2-25.6 179.2-72.533333 426.666667-81.066667L938.666667 85.333333c-290.133333 8.533333-401.066667 76.8-405.333333 76.8-12.8 8.533333-34.133333 8.533333-46.933333 0 0 0-115.2-72.533333-401.066667-76.8L85.333333 853.333333z"
               p-id="16269" fill="#ffffff" />
@@ -124,11 +125,11 @@
       </div>
       <div class="portal-system-item portal-system-item2" @click="JumpToExternalSystem(externalSystemFormQGS.data)">
         <span>北京市高校青年教师管理岗比赛系统</span>
-        <h2><br/></h2>
+        <h2><br /></h2>
         <h2>
-          {{externalSystemFormQGS.data.open_status}}<!-- 暂未开放系统入口 -->
-          <svg t="1645887690692" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
-            xmlns="http://www.w3.org/2000/svg" p-id="25514" width="22" height="22">
+          {{ externalSystemFormQGS.data.open_status }}<!-- 暂未开放系统入口 -->
+          <svg t="1645887690692" class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="25514" width="22" height="22">
             <path
               d="M128 789.333333V213.333333a128 128 0 0 1 128-128h597.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v768a42.666667 42.666667 0 0 1-42.666667 42.666667H277.333333A149.333333 149.333333 0 0 1 128 789.333333zM810.666667 853.333333v-128H277.333333a64 64 0 0 0 0 128H810.666667zM426.666667 170.666667H256a42.666667 42.666667 0 0 0-42.666667 42.666666v441.045334A148.736 148.736 0 0 1 277.333333 640H810.666667V170.666667h-85.333334v341.333333l-149.333333-85.333333-149.333333 85.333333V170.666667z"
               p-id="25515" fill="#ffffff" />
@@ -138,9 +139,9 @@
       <div class="portal-system-item portal-system-item3 poi" @click="JumpToExternalSystem(externalSystemFormSDBY.data)">
         <span>北京市师德榜样（先锋）推荐系列活动管理系统</span>
         <h2>
-          {{externalSystemFormSDBY.data.open_status}}<!-- 系统入口 -->
-          <svg t="1645887835978" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
-            xmlns="http://www.w3.org/2000/svg" p-id="26058" width="22" height="22">
+          {{ externalSystemFormSDBY.data.open_status }}<!-- 系统入口 -->
+          <svg t="1645887835978" class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="26058" width="22" height="22">
             <path
               d="M512 634.603243c-19.64973 0-38.745946-4.621838-53.773838-13.007567L48.515459 392.164324C26.485622 379.904 13.837838 360.198919 13.837838 338.196757c0-22.057514 12.647784-41.762595 34.705297-54.078271l409.683027-229.348324c29.972757-16.799135 77.491892-16.826811 107.575352 0l409.710702 229.348324c22.029838 12.343351 34.649946 32.048432 34.649946 54.105946 0 22.029838-12.647784 41.707243-34.677621 54.022919l-409.710703 229.348325c-15.000216 8.413405-34.096432 13.035243-53.773838 13.035243zM116.099459 338.141405l381.426163 213.545514c2.490811 1.383784 7.915243 2.767568 14.474378 2.767567 7.500108 0 12.647784-1.743568 14.474378-2.767567l381.453838-213.545514-381.426162-213.517837c-2.490811-1.383784-7.942919-2.767568-14.502054-2.767568-7.472432 0-12.620108 1.715892-14.446703 2.767568L116.099459 338.141405z m396.038919 589.602595c-169.292108 0-341.18573-53.967568-348.879567-157.197838a39.465514 39.465514 0 0 1-0.553514-6.642162V459.250162c0-22.140541 17.989189-40.074378 40.157406-40.074378a40.12973 40.12973 0 0 1 40.157405 40.074378V759.143784c0.166054 1.411459 0.276757 2.87827 0.276757 4.345081 0.332108 29.668324 102.649081 84.134054 268.813838 84.134054 166.192432 0 268.48173-54.46573 268.786162-84.134054l0.055351-1.632865V459.222486c0-22.140541 17.989189-40.074378 40.157406-40.074378 22.195892 0 40.157405 17.961514 40.157405 40.074378v304.70919c0 1.051676-0.027676 2.075676-0.110703 3.127351-4.040649 105.499676-177.871568 160.684973-349.045621 160.684973z m452.082163-104.198919a40.12973 40.12973 0 0 1-40.12973-40.074378V465.394162c0-22.140541 17.961514-40.074378 40.12973-40.074378 22.195892 0 40.157405 17.933838 40.157405 40.074378v318.076541c0 22.140541-17.989189 40.074378-40.12973 40.074378z"
               p-id="26059" data-spm-anchor-id="a313x.7781069.0.i25" class="selected" fill="#ffffff" />
@@ -149,9 +150,9 @@
       </div>
       <div class="portal-system-item portal-system-item4" @click="JumpToExternalSystem(externalSystemFormZYZ.data)">
         <span>北京市高校志愿者服务</span>
-        <h2><br/></h2>
+        <h2><br /></h2>
         <h2>
-          {{externalSystemFormZYZ.data.open_status}}<!-- 暂未开放 -->
+          {{ externalSystemFormZYZ.data.open_status }}<!-- 暂未开放 -->
           <svg t="1665021605222" class="svg-icon" viewBox="0 0 1219 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
             p-id="6919" width="22" height="22">
             <path
@@ -246,18 +247,18 @@
               <div class="video-item poi" v-for="(ele, i) in item.content.slice(0, 15)" :key="i"
                 @click.enter="showVideo(ele)">
                 <video-item :src="ele.video_facede" :videoId="ele.video_id" :viewCount="ele.view_count"
-                  :appreciateCount="ele.appreciate_count" :tip="ele.video_title"/>
+                  :appreciateCount="ele.appreciate_count" :tip="ele.video_title" />
                 <div>
                   <!-- TODO 替换title -->
                   <div>
-                    <span class="mr5">{{ele.video_title}}</span>
+                    <span class="mr5">{{ ele.video_title }}</span>
                   </div>
                   <div class="redColor">
-                    <span class="mr5">{{ele.award}}</span>
+                    <span class="mr5">{{ ele.award }}</span>
                     <span class="mr2">｜</span>
-                    <span>{{ele.teacher}}</span>
+                    <span>{{ ele.teacher }}</span>
                   </div>
-                  <div>{{ele.video_year}}年度</div>
+                  <div>{{ ele.video_year }}年度</div>
                 </div>
               </div>
             </el-row>
@@ -285,17 +286,14 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('/portalBriefList','tzgg')">更多 ></el-button>
+              <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'tzgg')">更多 ></el-button>
             </div>
             <el-table :data="tzggList" :show-header="false" class="p10" height="205" @row-click="showBrief"
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
                   <div v-tooltip-auto-show>
-                    <el-tooltip
-                      :content="scope.row.brief_title "
-                      placement="top-start"
-                    >
+                    <el-tooltip :content="scope.row.brief_title" placement="top-start">
                       <div class="poi text-ellipsis">{{ scope.row.brief_title }}</div>
                     </el-tooltip>
                   </div>
@@ -319,7 +317,7 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('/portalBriefList','zcfg')">更多 ></el-button>
+              <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'zcfg')">更多 ></el-button>
             </div>
             <el-table :data="zcfgList" :show-header="false" class="p10" height="205" empty-text="暂无数据"
               @row-click="showBrief">
@@ -327,10 +325,7 @@
               <el-table-column prop="brief_title">
                 <template #default="scope">
                   <div v-tooltip-auto-show>
-                    <el-tooltip
-                      :content="scope.row.brief_title "
-                      placement="top-start"
-                    >
+                    <el-tooltip :content="scope.row.brief_title" placement="top-start">
                       <div class="poi text-ellipsis">{{ scope.row.brief_title }}</div>
                     </el-tooltip>
                   </div>
@@ -350,26 +345,26 @@
               <span class="f20">高校动态</span>
               <sup class="f20">
                 <el-icon class="title-icon ml5">
-                  <svg t="1645936733359" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" p-id="42752" width="24" height="24">
+                  <svg t="1677502118006" class="icon" viewBox="0 0 1184 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="2432" width="24" height="24">
                     <path
-                      d="M562.2 164v696c0 27.5-22.3 49.7-49.7 49.7h-29.3c-13-0.1-25.5-5.2-34.8-14.4L257.9 704.9c-27.9-28-65.9-43.7-105.4-43.8-23.2 0-45.5-9.2-61.9-25.6C74.2 619.1 65 596.9 65 573.6V450.4c0-48.3 39.2-87.5 87.5-87.5 39.5 0 77.5-15.8 105.4-43.8l190.4-190.4c9.3-9.2 21.8-14.4 34.8-14.4h29.3c27.5 0 49.8 22.2 49.8 49.7z m298.3 86c-4.8-4.8-11.1-7.8-17.9-8.4-6.9-0.2-13.6 2.5-18.4 7.5l-35.3 35.3c-8.8 9.5-8.8 24.3 0 33.8 95.5 111.6 95.5 276.2 0 387.8-8.8 9.5-8.8 24.3 0 33.8l35.3 35.3c4.8 4.9 11.5 7.6 18.4 7.5 6.8-0.5 13.2-3.5 17.9-8.5C991.8 624 991.8 400 860.5 250zM703.4 382.7c-7.2-0.3-14.2 2.4-19.4 7.5L648.7 426c-8.5 8.3-9.9 21.4-3.5 31.3 21.9 33.2 21.9 76.2 0 109.4-6.5 9.9-5 23 3.5 31.3l35.3 35.8c5.2 4.9 12.2 7.4 19.4 7 7.2-0.5 13.8-3.9 18.4-9.4 53-70.7 53-167.9 0-238.6-4.7-5.7-11.2-9.2-18.4-10.1z m0 0"
-                      fill="#de460c" p-id="42753" />
+                      d="M558.115972 9.004965c16.223326-5.947354 33.513817-9.952225 50.888243-8.573302 19.928431 1.438876 38.50192 9.748384 55.612553 19.580702 59.821265 28.573677 120.278033 55.792412 180.662857 83.179017 88.74267 40.228571 177.68918 80.013489 265.808338 121.620983 18.849274 8.849087 37.758501 18.033911 54.401498 30.696019 7.554098 6.019297 15.55185 12.937892 18.129836 22.638314 2.110351 7.901827-2.805808 15.503888-8.561311 20.468009-12.302389 10.755597-27.698361 16.978735-40.876066 26.463326 0 76.272412-0.047963 152.532834 0.023982 228.805246 13.705293 15.995504 27.470539 31.967026 41.103887 48.034473-28.657611 34.820796-57.243279 69.689555-85.984824 104.438407-28.957377-33.75363-57.818829-67.579204-86.932084-101.188946 19.592693-21.415269 39.832881-42.254988 59.569461-63.550351-0.035972-60.145012 0-120.302014-0.023981-180.447026-112.520094 54.365527-225.447869 107.9037-337.788103 162.652927-20.635878 10.060141-40.96 20.731803-61.451991 31.067729-22.230632 10.81555-46.559625 18.477564-71.500141 18.105855-25.300234-0.155878-49.725152-8.261546-72.651241-18.357658-110.613583-48.094426-221.167213-96.404684-329.934239-148.575926-42.47082-20.539953-84.821733-41.403653-125.92562-64.569555-16.87082-9.844309-33.789602-20.084309-47.878595-33.76562C7.338267 300.37733 0.467635 291.192506 0 280.305012v-0.587541c0.515597-12.158501 9.448618-21.595129 18.453583-28.741546 17.566276-13.597377 38.082248-22.590351 58.274473-31.511382 142.172927-62.830913 285.077283-124.007119 427.346136-186.646182 17.878033-8.213583 35.540234-17.026698 54.04178-23.813396z"
+                      p-id="2433" fill="#de460c"></path>
+                    <path
+                      d="M710.301077 627.661639c69.389789-36.127775 137.256768-75.133302 207.25808-110.074004-0.023981 120.433911 0.083934 240.867822-0.059953 361.289742-20.539953 23.633536-44.37733 44.257424-69.77349 62.495176-58.478314 41.979204-127.280562 69.953349-198.876627 78.610585-89.090398 10.491803-181.154473-5.407775-261.551663-45.216674-42.027166-20.8637-81.176581-47.78267-114.858267-80.505106-4.940141-4.976112-9.928244-9.940234-14.436721-15.312037-0.647494-15.539859-0.095925-31.199625-0.275785-46.787447 0.011991-96.848337-0.011991-193.684684 0.011991-290.533022 69.665574 32.842342 141.993068 59.497518 213.493208 87.963279 20.719813 7.997752 41.043934 17.218548 62.555129 22.998033 27.182763 7.530117 55.648525 11.199251 83.838501 8.885058 20.647869-1.71466 41.175831-6.930585 59.509508-16.714941 10.743607-6.295082 22.19466-11.247213 33.166089-17.098642z"
+                      p-id="2434" fill="#de460c"></path>
                   </svg>
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('/portalTrendList','trend')">更多 ></el-button>
+              <el-button type="text" class="more-btn" @click="jump('/portalTrendList', 'trend')">更多 ></el-button>
             </div>
             <el-table :data="trendList" :show-header="false" class="p10" height="205" @row-click="showTrend"
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
                   <div v-tooltip-auto-show>
-                    <el-tooltip
-                      :content="scope.row.trend_title "
-                      placement="top-start"
-                    >
+                    <el-tooltip :content="scope.row.trend_title" placement="top-start">
                       <div class="poi text-ellipsis">{{ scope.row.trend_title }}</div>
                     </el-tooltip>
                   </div>
@@ -394,9 +389,9 @@ import PortalFooter from "../components/PortalFooter.vue";
 import TopToolBar from "../components/TopToolBar.vue";
 import VideoItem from "../components/VideoItem.vue";
 import OuterIp from "../components/outerNetIp.vue";
-import { getVideoList, getBriefList,getExternalSystemList,getTrendBaseList } from "../api/serviceApi";
+import { getVideoList, getBriefList, getExternalSystemList, getTrendBaseList } from "../api/serviceApi";
 import { Document, MessageBox } from "@element-plus/icons-vue";
-import {ElMessageBox} from "element-plus";
+import { ElMessageBox } from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 export default {
   components: {
@@ -423,7 +418,7 @@ export default {
       });
       window.open(href.href, "_blank");
     },
-    showTrend(row){
+    showTrend(row) {
       const href = this.$router.resolve({
         path: "/TrendShow",
         query: { trendId: row.trend_id },
@@ -452,42 +447,42 @@ export default {
     let zcfgList = ref([]); //政策法规模型列表
     let trendList = ref([]);//高校动态模型列表
     //外部系统数据模型
-    const initExternalSystemFormDataQJS={
-        external_id: null,
-        external_name: "",
-        external_url: "",
-        is_open: 0,
-        open_status:"",
+    const initExternalSystemFormDataQJS = {
+      external_id: null,
+      external_name: "",
+      external_url: "",
+      is_open: 0,
+      open_status: "",
     };
     let externalSystemFormQJS = reactive({
-        data: JSON.parse(JSON.stringify(initExternalSystemFormDataQJS)),
+      data: JSON.parse(JSON.stringify(initExternalSystemFormDataQJS)),
     });
-    const initExternalSystemFormDataQGS={
-        external_id: null,
-        external_name: "",
-        external_url: "",
-        is_open: 0,
+    const initExternalSystemFormDataQGS = {
+      external_id: null,
+      external_name: "",
+      external_url: "",
+      is_open: 0,
     };
     let externalSystemFormQGS = reactive({
-        data: JSON.parse(JSON.stringify(initExternalSystemFormDataQGS)),
+      data: JSON.parse(JSON.stringify(initExternalSystemFormDataQGS)),
     });
-    const initExternalSystemFormDataSDBY={
-        external_id: null,
-        external_name: "",
-        external_url: "",
-        is_open: 0,
+    const initExternalSystemFormDataSDBY = {
+      external_id: null,
+      external_name: "",
+      external_url: "",
+      is_open: 0,
     };
     let externalSystemFormSDBY = reactive({
-        data: JSON.parse(JSON.stringify(initExternalSystemFormDataSDBY)),
+      data: JSON.parse(JSON.stringify(initExternalSystemFormDataSDBY)),
     });
-    const initExternalSystemFormDataZYZ={
-        external_id: null,
-        external_name: "",
-        external_url: "",
-        is_open: 0,
+    const initExternalSystemFormDataZYZ = {
+      external_id: null,
+      external_name: "",
+      external_url: "",
+      is_open: 0,
     };
     let externalSystemFormZYZ = reactive({
-        data: JSON.parse(JSON.stringify(initExternalSystemFormDataZYZ)),
+      data: JSON.parse(JSON.stringify(initExternalSystemFormDataZYZ)),
     });
     let selectedVideoTab = ref("qjs")
     const handleTabClick = (tab, event) => {
@@ -533,13 +528,13 @@ export default {
       // debugger
       window.open(href.href, "_blank");
     };
-    const JumpToExternalSystem=(data)=>{
-      if(data.is_open==0){
+    const JumpToExternalSystem = (data) => {
+      if (data.is_open == 0) {
         ElMessageBox.alert("系统暂未开放");
-      }else{
+      } else {
         const href = router.resolve({
           path: data.external_url,
-          query: { },
+          query: {},
         });
         // debugger
         window.open(href.href, "_blank");
@@ -596,7 +591,7 @@ export default {
             videoType: "0201", //青教赛视频
             videoState: "0401", //已发布
             topN: 15,
-            orderBy:"portal",
+            orderBy: "portal",
           },
         });
         getVideoList(query).then((res) => {
@@ -692,7 +687,7 @@ export default {
           }
         });
       },
-      getTrendList(){
+      getTrendList() {
         //高校动态
         let query = reactive({
           params: {
@@ -714,17 +709,17 @@ export default {
         });
       },
       getVideoList() { },
-      getAllExternalSystemList(){
-        getExternalSystemList().then((res)=>{
-            let allExternalSystemList=JSON.parse(res.data.ExternalSystemList);
-            externalSystemFormQJS.data=allExternalSystemList[0];
-            externalSystemFormQJS.data.open_status=externalSystemFormQJS.data.is_open==0?"暂未开放":"系统入口";
-            externalSystemFormQGS.data=allExternalSystemList[1];
-            externalSystemFormQGS.data.open_status=externalSystemFormQGS.data.is_open==0?"暂未开放":"系统入口";
-            externalSystemFormSDBY.data=allExternalSystemList[2];
-            externalSystemFormSDBY.data.open_status=externalSystemFormSDBY.data.is_open==0?"暂未开放":"系统入口";
-            externalSystemFormZYZ.data=allExternalSystemList[3];
-            externalSystemFormZYZ.data.open_status=externalSystemFormZYZ.data.is_open==0?"暂未开放":"系统入口";
+      getAllExternalSystemList() {
+        getExternalSystemList().then((res) => {
+          let allExternalSystemList = JSON.parse(res.data.ExternalSystemList);
+          externalSystemFormQJS.data = allExternalSystemList[0];
+          externalSystemFormQJS.data.open_status = externalSystemFormQJS.data.is_open == 0 ? "暂未开放" : "系统入口";
+          externalSystemFormQGS.data = allExternalSystemList[1];
+          externalSystemFormQGS.data.open_status = externalSystemFormQGS.data.is_open == 0 ? "暂未开放" : "系统入口";
+          externalSystemFormSDBY.data = allExternalSystemList[2];
+          externalSystemFormSDBY.data.open_status = externalSystemFormSDBY.data.is_open == 0 ? "暂未开放" : "系统入口";
+          externalSystemFormZYZ.data = allExternalSystemList[3];
+          externalSystemFormZYZ.data.open_status = externalSystemFormZYZ.data.is_open == 0 ? "暂未开放" : "系统入口";
         });
       },
       dateFormat(date) {
@@ -773,8 +768,8 @@ export default {
     };
 
     // 获取的外网IP
-    const outerIp = computed(() =>{
-      return window.returnCitySN ? window.returnCitySN['cip']: "";
+    const outerIp = computed(() => {
+      return window.returnCitySN ? window.returnCitySN['cip'] : "";
     });
 
     onMounted(() => {
@@ -795,7 +790,7 @@ export default {
       userName,
       realName,
       userSchool,
-      
+
       initExternalSystemFormDataQJS,
       externalSystemFormQJS,
       initExternalSystemFormDataQGS,
@@ -984,8 +979,31 @@ export default {
   color: #fff;
   background: #08a991;
   border-bottom: none;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 
+.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::before,
+.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 2px;
+  position: absolute;
+  bottom: 0;
+  background: radial-gradient(
+    2px at 2px 0px,
+    transparent 2px,
+    #08a991 2px
+  );
+}
+.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::before {
+  left: calc(-1 * 2px);
+  transform: scaleX(-1);
+}
+.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::after {
+  right: calc(-1 * 2px); 
+}
 .more-btn {
   color: #5f6061;
 }
@@ -1026,7 +1044,6 @@ export default {
 
 .portal-notice {
   background: #faeae2;
-  margin-bottom: 30px;
 }
 
 .portal-notice-content {
