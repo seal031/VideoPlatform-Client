@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">教育工会工作平台</div>
+            <div class="ms-title">北京市教育工会智慧工作平台</div>
             <el-form :model="loginModel.data" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="user_name">
                     <el-input v-model="loginModel.data.user_name" placeholder="请输入用户名">
@@ -102,6 +102,7 @@ export default {
                     localStorage.setItem("user_name", user.user_name);
                     localStorage.setItem("real_name", user.real_name);
                     localStorage.setItem("user_school", user.user_school);
+                    localStorage.setItem("last_visit_time",new Date().getTime());
                     router.push("/portal");
                     // const href = router.resolve({
                     //     path: '/portal',

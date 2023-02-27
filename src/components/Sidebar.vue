@@ -45,33 +45,7 @@ export default {
         let realName = ref("");
         let userSchool = "";
 
-        const items = [
-            {
-                icon: "el-icon-lx-camera",
-                index: "/VideoList",
-                title: "视频资源管理",
-            },
-            {
-                icon: "el-icon-lx-cascades",
-                index: "/ColumnList",
-                title: "内容发布管理",
-            },
-            {
-                icon: "el-icon-lx-lock",
-                index: "/UserList",
-                title: "用户权限管理",
-            },
-            {
-                icon: "el-icon-lx-calendar",
-                index: "/LogList",
-                title: "系统日志管理",
-            },
-            {
-                icon: "el-icon-lx-home",
-                index: "/ExternalSystemList",
-                title: "系统开放配置",
-            },
-        ];
+        let items=ref([]);
 
         const writeLogs=((log_content,log_detail)=>{
             let params={
@@ -83,11 +57,53 @@ export default {
                 }
             }
             writeLog(params).then((res)=>{
-                
             })
         })
         onMounted(() => {
             getSession();
+            if(userRole=="0101"){
+                items.value = [
+                    {
+                        icon: "el-icon-lx-camera",
+                        index: "/VideoList",
+                        title: "视频资源管理",
+                    },
+                    {
+                        icon: "el-icon-lx-cascades",
+                        index: "/ColumnList",
+                        title: "内容发布管理",
+                    },
+                    {
+                        icon: "el-icon-lx-home",
+                        index: "/TrendList",
+                        title: "高校动态管理",
+                    },
+                    {
+                        icon: "el-icon-lx-lock",
+                        index: "/UserList",
+                        title: "用户权限管理",
+                    },
+                    {
+                        icon: "el-icon-lx-calendar",
+                        index: "/LogList",
+                        title: "系统日志管理",
+                    },
+                    {
+                        icon: "el-icon-lx-home",
+                        index: "/ExternalSystemList",
+                        title: "系统开放配置",
+                    },
+                ];
+            }
+            if(userRole=="0102"){
+                items.value=[
+                    {
+                        icon: "el-icon-lx-home",
+                        index: "/TrendList",
+                        title: "高校动态管理",
+                    },
+                ]
+            }
         });
         
         const getSession = () => {
@@ -123,6 +139,9 @@ export default {
                     break;
                 case "/ExternalSystemList":
                     writeLogs("访问系统开放配置","访问系统开放配置");
+                    break;
+                case "/TrendList":
+                    writeLogs("访问高校动态管理","访问高校动态管理");
                     break;
                 default:
                     break;

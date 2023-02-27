@@ -119,11 +119,11 @@
       </el-table-column>
       <el-table-column prop="video_year" label="时间" width="90">
       </el-table-column>
-      <el-table-column prop="video_group" label="组别" width="80">
+      <el-table-column prop="video_group" label="组别">
       </el-table-column>
       <el-table-column prop="video_class" label="类别" width="80">
       </el-table-column>
-      <el-table-column prop="award" label="获奖情况" width="160">
+      <el-table-column prop="award" label="获奖情况" width="100">
       </el-table-column>
       <el-table-column prop="teacher" label="教师" width="80">
       </el-table-column>

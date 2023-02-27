@@ -2,7 +2,7 @@
   <div class="carousel-wrap">
     <el-carousel trigger="click" height="300px">
       <el-carousel-item v-for="item in briefList" :key="item">
-        <img :src="item.brief_image" style="height:100%;width:100%;" alt="图片丢失了" :title="item.title" />
+        <img :src="item.brief_image" style="height:100%;width:100%;" alt="图片丢失了" :title="item.title" @click="handleShow(item)"/>
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -12,6 +12,17 @@
 import { getBriefList, getBriefBaseList } from "../api/serviceApi";
 import { onMounted, ref, reactive, getCurrentInstance } from "vue";
 export default {
+  methods: {
+    //预览
+    handleShow(row) {
+      // 页面跳转
+      const href = this.$router.resolve({
+        path: "/BriefShow",
+        query: { briefId: row.brief_id },
+      });
+      window.open(href.href, "_blank");
+    },
+  },
   setup() {
     let briefList = ref([]); //主页滚动模型列表
     let briefQuery = reactive({
@@ -23,31 +34,31 @@ export default {
         topN: 5,
       },
     });
-    const getImageUrl = (name) => {
-      return new URL(`http://47.93.84.178:8080/assets/top/${name}`, import.meta.url).href;
-    };
-    const imgList = [
-      {
-        name: "lj",
-        src: getImageUrl("1.jpg"),
-        title: "",
-      },
-      {
-        name: "logo",
-        src: getImageUrl("2.jpg"),
-        title: "",
-      },
-      {
-        name: "bg",
-        src: getImageUrl("3.jpg"),
-        title: "",
-      },
-      {
-        name: "sadmas",
-        src: getImageUrl("4.jpg"),
-        title: "",
-      },
-    ];
+    // const getImageUrl = (name) => {
+    //   return new URL(`http://47.93.84.178:8080/assets/top/${name}`, import.meta.url).href;
+    // };
+    // const imgList = [
+    //   {
+    //     name: "lj",
+    //     src: getImageUrl("1.jpg"),
+    //     title: "",
+    //   },
+    //   {
+    //     name: "logo",
+    //     src: getImageUrl("2.jpg"),
+    //     title: "",
+    //   },
+    //   {
+    //     name: "bg",
+    //     src: getImageUrl("3.jpg"),
+    //     title: "",
+    //   },
+    //   {
+    //     name: "sadmas",
+    //     src: getImageUrl("4.jpg"),
+    //     title: "",
+    //   },
+    // ];
     const getBrief=()=>{
       getBriefList(briefQuery).then((res) => {
         if (res.resultCode == "200") {
@@ -56,12 +67,13 @@ export default {
         }
       });
     };
+    
     onMounted(()=>{
       getBrief();
     });
     return {
-      getImageUrl,
-      imgList,
+      // getImageUrl,
+      // imgList,
       briefQuery,
       getBrief,
       briefList,

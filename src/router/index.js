@@ -1,7 +1,9 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import { ElMessageBox } from "element-plus";
 import Home from "../views/Home.vue";
 import Portal from "../views/Portal.vue"
 import Brief from "../views/ColumnShow.vue"
+import Trend from "../views/TrendShow.vue"
 import Video from "../views/VideoShow.vue"
 import BriefList from "../views/PortalColumnList.vue"
 import VideoList from "../views/PortalVideoList.vue"
@@ -13,7 +15,7 @@ const routes = [
         path: '/portal',
         name: 'portal',
         meta:{
-            title:'首页-教育工会工作平台'
+            title:'首页-北京市教育工会智慧工作平台'
         },
         component: Portal,
     },
@@ -33,6 +35,14 @@ const routes = [
             // title:'通知公告'
         },
         component: Brief,
+    },
+    {
+        path: "/TrendShow",
+        name: "TrendShow",
+        meta:{
+            // title:'通知公告'
+        },
+        component: Trend,
     },
     {
         path: "/portalVideoList",
@@ -137,6 +147,20 @@ const routes = [
                 permission: false
             },
             component: () => import("../views/ExternalSystemList.vue")
+        }, {
+            path: "/TrendList",
+            name: "TrendList",
+            meta: {
+                title: '高校动态管理'
+            },
+            component: () => import("../views/TrendList.vue")
+        }, {
+            path: "/TrendAdd",
+            name: "TrendAdd",
+            meta: {
+                title: '添加高校动态'
+            },
+            component: () => import("../views/TrendAdd.vue")
         }
         ]
     }, {
@@ -155,9 +179,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title || '教育工会工作平台网站';
+    document.title = to.meta.title || '北京市教育工会智慧工作平台网站';
     const user_name = localStorage.getItem('user_name');
     const user_role= localStorage.getItem('user_role');
+    let last_visit_time=localStorage.getItem('last_visit_time');
+    let mins=parseInt(new Date().getTime() - last_visit_time) / 1000 / 60;
+    console.log(user_name);
+    console.log('上次交互时间'+last_visit_time);
+    console.log('当前时间'+new Date().getTime());
+    console.log('交互间隔'+mins);
     if (!user_name && to.path !== '/login') {
         next('/login');
     } 
@@ -167,11 +197,16 @@ router.beforeEach((to, from, next) => {
     //         ? next()
     //         : next('/403');
     // } 
-    else if(user_role!="0101"&&(to.path=='/VideoList'||to.path=='/ColumnList'||to.path=='/UserList'))
+    else if(mins>15 && to.path !== '/login'){//登陆超时，15分钟
+        ElMessageBox.alert("账号登陆超时，请重新登陆");
+        next('/login');
+    }
+    else if((user_role!="0101"&&user_role!="0102")&&(to.path=='/VideoList'||to.path=='/ColumnList'||to.path=='/UserList'||to.path=='/TrendList'))
     {
         next('/portal')
     }
     else {
+        localStorage.setItem("last_visit_time",new Date().getTime());
         next();
     }
 });

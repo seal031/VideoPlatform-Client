@@ -77,7 +77,7 @@
     <el-divider class="portal-divider"></el-divider>
     <!-- TODO 系统名称、点击跳转 -->
     <div class="portal-system">
-      <div class="portal-system-item portal-system-item1">
+      <div class="portal-system-item portal-system-item1" @click="JumpToExternalSystem(externalSystemFormQJS.data)">
         <span>北京高校青年教师教学基本功比赛管理系统</span>
         <h2>
           {{externalSystemFormQJS.data.open_status}} <!--暂未开放系统入口-->
@@ -122,11 +122,11 @@
           </svg>
         </h2>
       </div>
-      <div class="portal-system-item portal-system-item2">
+      <div class="portal-system-item portal-system-item2" @click="JumpToExternalSystem(externalSystemFormQGS.data)">
         <span>北京市高校青年教师管理岗比赛系统</span>
         <h2><br/></h2>
         <h2>
-          暂未开放<!-- 系统入口 -->
+          {{externalSystemFormQGS.data.open_status}}<!-- 暂未开放系统入口 -->
           <svg t="1645887690692" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="25514" width="22" height="22">
             <path
@@ -135,10 +135,10 @@
           </svg>
         </h2>
       </div>
-      <div class="portal-system-item portal-system-item3 poi">
+      <div class="portal-system-item portal-system-item3 poi" @click="JumpToExternalSystem(externalSystemFormSDBY.data)">
         <span>北京市师德榜样（先锋）推荐系列活动管理系统</span>
         <h2>
-          系统入口
+          {{externalSystemFormSDBY.data.open_status}}<!-- 系统入口 -->
           <svg t="1645887835978" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="26058" width="22" height="22">
             <path
@@ -147,11 +147,11 @@
           </svg>
         </h2>
       </div>
-      <div class="portal-system-item portal-system-item4">
+      <div class="portal-system-item portal-system-item4" @click="JumpToExternalSystem(externalSystemFormZYZ.data)">
         <span>北京市高校志愿者服务</span>
         <h2><br/></h2>
         <h2>
-          暂未开放<!-- 志愿者23人 -->
+          {{externalSystemFormZYZ.data.open_status}}<!-- 暂未开放 -->
           <svg t="1665021605222" class="svg-icon" viewBox="0 0 1219 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
             p-id="6919" width="22" height="22">
             <path
@@ -243,7 +243,7 @@
           </template>
           <div v-if="item.content && item.content.length > 0">
             <el-row class="video-items">
-              <div class="video-item poi" v-for="(ele, i) in item.content.slice(0, 12)" :key="i"
+              <div class="video-item poi" v-for="(ele, i) in item.content.slice(0, 15)" :key="i"
                 @click.enter="showVideo(ele)">
                 <video-item :src="ele.video_facede" :videoId="ele.video_id" :viewCount="ele.view_count"
                   :appreciateCount="ele.appreciate_count" :tip="ele.video_title"/>
@@ -356,7 +356,8 @@ import TopToolBar from "../components/TopToolBar.vue";
 import VideoItem from "../components/VideoItem.vue";
 import OuterIp from "../components/outerNetIp.vue";
 import { getVideoList, getBriefList,getExternalSystemList } from "../api/serviceApi";
-import { Document } from "@element-plus/icons-vue";
+import { Document, MessageBox } from "@element-plus/icons-vue";
+import {ElMessageBox} from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 export default {
   components: {
@@ -485,6 +486,18 @@ export default {
       // debugger
       window.open(href.href, "_blank");
     };
+    const JumpToExternalSystem=(data)=>{
+      if(data.is_open==0){
+        ElMessageBox.alert("系统暂未开放");
+      }else{
+        const href = router.resolve({
+          path: data.external_url,
+          query: { },
+        });
+        // debugger
+        window.open(href.href, "_blank");
+      }
+    };
     const openNews = (path, news) => {
       const href = router.resolve({
         path: path,
@@ -535,12 +548,13 @@ export default {
             user_school: userSchool,
             videoType: "0201", //青教赛视频
             videoState: "0401", //已发布
-            topN: 10,
+            topN: 15,
             orderBy:"portal",
           },
         });
         getVideoList(query).then((res) => {
           if (res.resultCode == "200") {
+            debugger;
             qjsVideoList.value = JSON.parse(res.data.videoList);
             videoTabs.value[0].content = qjsVideoList;
           }
@@ -638,11 +652,11 @@ export default {
             externalSystemFormQJS.data=allExternalSystemList[0];
             externalSystemFormQJS.data.open_status=externalSystemFormQJS.data.is_open==0?"暂未开放":"系统入口";
             externalSystemFormQGS.data=allExternalSystemList[1];
-            // externalSystemFormQGS.data.is_open=externalSystemFormQGS.data.is_open==0?false:true;
+            externalSystemFormQGS.data.open_status=externalSystemFormQGS.data.is_open==0?"暂未开放":"系统入口";
             externalSystemFormSDBY.data=allExternalSystemList[2];
-            // externalSystemFormSDBY.data.is_open=externalSystemFormSDBY.data.is_open==0?false:true;
+            externalSystemFormSDBY.data.open_status=externalSystemFormSDBY.data.is_open==0?"暂未开放":"系统入口";
             externalSystemFormZYZ.data=allExternalSystemList[3];
-            // externalSystemFormZYZ.data.is_open=externalSystemFormZYZ.data.is_open==0?false:true;
+            externalSystemFormZYZ.data.open_status=externalSystemFormZYZ.data.is_open==0?"暂未开放":"系统入口";
         });
       },
       dateFormat(date) {
@@ -734,6 +748,7 @@ export default {
       getBriefList,
       jump,
       jumpVideo,
+      JumpToExternalSystem,
       openNews,
       tpxwList,
       qjsVideoList,

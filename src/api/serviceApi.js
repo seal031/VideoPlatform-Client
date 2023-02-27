@@ -135,6 +135,28 @@ export function delBrief(params){
     return axios.post('/Brief/DelBrief',{},params);
 }
 //////////////////////内容管理 END/////////////////
+export function getTrendList(params){
+    return axios.get('/Trend/GetTrendList',params);
+}
+export function getTrendBaseList(params){
+    return axios.get('/Trend/GetTrendBaseList',params);
+}
+export function getTrendById(params){
+    return axios.get('/Trend/GetTrendById',params);
+}
+export function addTrend(params){
+    return axios.post('/Trend/AddTrend',params);
+}
+export function delTrend(params){
+    return axios.post('/Trend/DelTrend',{},params);
+}
+export function getExamineByTrendId(params){
+    return axios.get('/Trend/GetExamineByTrendId',params);
+}
+export function AddExamineRecord(params){
+    return axios.post('/Trend/AddExamineRecord',params);
+}
+//////////////////////高校动态 END/////////////////
 export function login(params){
     return axios.post('/GlobalCode/login',params);
 }

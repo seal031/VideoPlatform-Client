@@ -22,22 +22,6 @@
             </el-input>
           </el-form-item>
           <el-form-item class="pcth100 menu" style="width: 250px;">
-            <!--<div v-if="!loginBtnVisible">
-              <el-dropdown split-button type="primary" size="small" @command="handleDropdown">
-                当前用户：{{ realName }}
-                <template #dropdown>
-                  <el-dropdown-menu>
-                     <el-dropdown-item command="myspace"
-                      >我的空间</el-dropdown-item
-                    >
-                    <el-dropdown-item command="manage"
-                      >后台管理</el-dropdown-item
-                    > 
-                    <el-dropdown-item command="logout">退出</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>-->
             <div class="top-login-btn poi" @click="dialogFormVisible = true" v-if="loginBtnVisible">
               <el-icon>
                 <Avatar />
@@ -178,11 +162,20 @@ export default {
       window.open(href.href, "_blank");
     };
     const JumpToManage = () => {
-      const href = router.resolve({
-        path: '/VideoList',
-        query: {},
-      });
-      window.open(href.href, "_blank");
+      if(userRole=="0101"){
+        const href = router.resolve({
+          path: '/VideoList',
+          query: {},
+        });
+        window.open(href.href, "_blank");
+      };
+      if(userRole=="0102"){
+        const href = router.resolve({
+          path: '/TrendList',
+          query: {},
+        });
+        window.open(href.href, "_blank");
+      };
     };
     const searchHandle = () => {
       debugger
@@ -216,7 +209,7 @@ export default {
             dialogFormVisible.value = false;
             dialogChangePwdVisible.value = false;
             loginBtnVisible.value = false;
-            manageBtnVisible.value = userRole == "0101";
+            manageBtnVisible.value = (userRole == "0101"||userRole=="0102");
             // methods.callFather();
             ctx.emit("getSession");
           } else {
@@ -315,13 +308,8 @@ export default {
       userName.value = localStorage.getItem("user_name");
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
-      console.log("顶端" + userId);
-      console.log("顶端" + userRole);
-      console.log("顶端" + userName.value);
-      console.log("顶端" + realName.value);
-      console.log("顶端" + userSchool);
       loginBtnVisible.value = userId == null || userId == "" || userId == undefined || userId == "null";
-      manageBtnVisible.value = userRole == "0101";
+      manageBtnVisible.value = (userRole == "0101"||userRole == "0102");
     };
     init();//在setup中执行，先于watch
 

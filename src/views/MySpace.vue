@@ -63,7 +63,7 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane  v-if="userRole=='0103'">
         <template #label>
           <span><i class="el-icon-date"></i>我的视频</span>
           <!-- &#12288;&#12288;&#12288;&#12288;&#12288;&#12288; -->
@@ -116,7 +116,7 @@
         </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane  v-if="userRole=='0102'">
         <template #label>
           <span :icon="Star"
             ><i class="el-icon-date"></i>
@@ -171,6 +171,58 @@
         </div>
         </div>
       </el-tab-pane>
+
+      <el-tab-pane v-if="userRole=='0103'">
+        <template #label>
+          <span :icon="Star"><i class="el-icon-date"></i>
+            我的成绩</span>
+        </template>
+        <div class="video-result">
+        <div class="tr mb10">
+        </div>
+        <div>
+          <template v-if="wdcjList && wdcjList.length > 0 ">
+            <el-table :data="wdcjList" stripe border style="width: 100%;height: 100%;" lazy>
+              <el-table-column prop="teacher" label="姓名" width="100" />
+              <el-table-column prop="video_title" label="参赛作品" />
+              <el-table-column prop="create_time" label="时间" width="180" />
+              <el-table-column prop="video_type" label="活动名称" width="180" />
+              <el-table-column prop="video_class" label="分类" width="100" />
+              <el-table-column prop="video_group" label="分组" width="100" />
+              <el-table-column prop="award" label="奖项" width="100" />
+            </el-table>
+          </template>
+          <template v-else-if="wdcjList">暂无成绩</template>
+          <template v-else>视频列表加载中...</template>
+        </div>
+        </div>
+      </el-tab-pane>
+      
+      <el-tab-pane v-if="userRole=='0102'">
+        <template #label>
+          <span :icon="Star"><i class="el-icon-date"></i>
+            本校成绩</span>
+        </template>
+        <div class="video-result">
+        <div class="tr mb10">
+        </div>
+        <div>
+          <template v-if="bxcjList && bxcjList.length > 0 &&userRole=='0102'">
+            <el-table :data="bxcjList" stripe border style="width: 100%;height: 100%;" lazy>
+              <el-table-column prop="teacher" label="姓名" width="100" />
+              <el-table-column prop="video_title" label="参赛作品" />
+              <el-table-column prop="create_time" label="时间" width="180" :formatter="methods.dateFormat"/>
+              <el-table-column prop="video_type" label="活动名称" width="180" />
+              <el-table-column prop="video_class" label="分类" width="100" />
+              <el-table-column prop="video_group" label="分组" width="100" />
+              <el-table-column prop="award" label="奖项" width="100" />
+            </el-table>
+          </template>
+          <template v-else-if="bxcjList">暂无成绩</template>
+          <template v-else>视频列表加载中...</template>
+        </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
 
     <portal-footer></portal-footer>
@@ -206,6 +258,8 @@ export default {
     let wdscList = ref([]); //我的收藏模型列表
     let wdspList = ref([]); //我的视频模型列表
     let bxspList = ref([]); //本校视频模型列表
+    let wdcjList=ref([]);//我的成绩视频模型列表
+    let bxcjList=ref([]);//本校成绩视频模型列表
     let wdscTotalCount = ref(0);
     let wdspTotalCount = ref(0);
     let bxspTotalCount = ref(0);
@@ -241,6 +295,28 @@ export default {
         part:"myschool",
       },
     });
+    let wdcjQuery=reactive({//本人成绩
+      params:{
+        videoState:"0401",
+        pageIndex:1,
+        pagesize:10000,
+        userId:"",
+        user_school:"",
+        userRole:"",
+        part:"my"
+      },
+    });
+    let bxcjQuery=reactive({//本校成绩
+      params:{
+        videoState:"0401",
+        pageIndex:1,
+        pagesize:10000,
+        userId:"",
+        user_school:"",
+        userRole:"",
+        part:"myschool"
+      },
+    });
 
     const methods = {
       dateFormat(date) {
@@ -272,6 +348,21 @@ export default {
         }
       });
     };
+    const bindWdcjList=()=>{
+      getVideoList(wdcjQuery).then((res) => {
+        if (res.resultCode == "200") {
+          debugger;
+          wdcjList.value = JSON.parse(res.data.videoList);
+        }
+      });
+    };
+    const bindBxcjList=()=>{
+      getVideoList(bxcjQuery).then((res) => {
+        if (res.resultCode == "200") {
+          bxcjList.value = JSON.parse(res.data.videoList);
+        }
+      });
+    };
     const showVideo = () => {};
     const getSession = () => {
       userId = localStorage.getItem("user_id");
@@ -280,7 +371,7 @@ export default {
       realName.value = localStorage.getItem("real_name");
       userSchool = localStorage.getItem("user_school");
     };
-    
+    getSession();
     // 跳转
     const jump = (v) => {
       debugger
@@ -300,9 +391,16 @@ export default {
       wdspQuery.params.userRole=userRole;
       bxspQuery.params.user_school=userSchool;
       bxspQuery.params.userRole=userRole;
+      wdcjQuery.params.userId=userId;
+      wdcjQuery.params.user_school=userSchool;
+      wdcjQuery.params.userRole=userRole;
+      bxcjQuery.params.user_school=userSchool;
+      bxcjQuery.params.userRole=userRole;
       bindWdscList();
       bindWdspList();
       bindBxspList();
+      bindWdcjList();
+      bindBxcjList();
     });
     return {
       Star,
@@ -318,16 +416,22 @@ export default {
       wdscList,
       wdspList,
       bxspList,
+      wdcjList,
+      bxcjList,
       wdscTotalCount,
       wdspTotalCount,
       bxspTotalCount,
       wdscQuery,
       wdspQuery,
       bxspQuery,
+      wdcjQuery,
+      bxcjQuery,
       methods,
       bindWdscList,
       bindWdspList,
       bindBxspList,
+      bindWdcjList,
+      bindBxcjList,
       showVideo,
       getSession,
       jump,

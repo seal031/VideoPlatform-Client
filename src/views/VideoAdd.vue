@@ -90,7 +90,7 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="8">
+                <el-col :span="6">
                   <el-form-item label="视频分类" prop="video_type">
                     <el-select v-model="videoForm.data.video_type" placeholder="请选择" clearable @change="videoTypeChange">
                       <el-option v-for="(item, c) in videoTypeList" :key="c" :label="item.code_name"
@@ -98,7 +98,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="6">
                   <el-form-item label="时间" prop="video_year">
                     <!-- <el-date-picker v-model="videoForm.data.video_year" format="YYYY" value-format="YYYY" type="year"
                       placeholder="选择时间" style="width: 100%"></el-date-picker> -->
@@ -108,7 +108,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="6">
                   <el-form-item label="组别" prop="video_group" v-if="videoSelectedType=='0201'">
                     <el-select v-model="videoForm.data.video_group" placeholder="请选择" clearable>
                       <el-option v-for="(item, c) in videoGroupList" :key="c" :label="item.code_name"
@@ -116,9 +116,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
+                <el-col :span="6">
                   <el-form-item label="类别" prop="video_class">
                     <el-select v-model="videoForm.data.video_class" placeholder="请选择" clearable>
                       <el-option v-for="(item, c) in videoClassList" :key="c" :label="item.code_name"
@@ -126,7 +124,9 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+              </el-row>
+              <el-row>
+                <el-col :span="24">
                   <el-form-item label="获奖情况" prop="award">
                     <el-input v-model="videoForm.data.award"></el-input>
                   </el-form-item>
@@ -152,7 +152,12 @@
                 <el-input type="textarea" rows="3" v-model="videoForm.data.video_brief"></el-input>
               </el-form-item>
               <el-row>
-                <el-col :span="12">
+                <el-col :span="4">
+                  <el-form-item label="首页显示" prop="on_portal">
+                    <el-switch v-model="videoForm.data.on_portal"></el-switch>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
                   <el-form-item label="视频开放" prop="public_type">
                     <el-select v-model="videoForm.data.public_type" placeholder="请选择" @change="publicChange">
                       <el-option v-for="(item, c) in publicTypeList" :key="c" :label="item.code_name"
@@ -160,7 +165,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                   <el-form-item label="开放对象" prop="public_school" v-show="showPublicObject">
                     <el-select v-model="videoForm.data.public_school" placeholder="请选择" clearable multiple collapse-tags collapse-tags-tooltip style="width: 100%">
                       <el-option v-for="(item, c) in schoolList" :key="c" :label="item.school_name"
@@ -307,6 +312,7 @@ export default {
       video_facede: "",
       uploader: "",
       aliyun_videoId: "",
+      on_portal:0,
     };
     const videoForm = reactive({
       data: JSON.parse(JSON.stringify(initVideoFormData)),

@@ -3,7 +3,7 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-lx-calendar"></i> 内容发布管理
+          <i class="el-icon-lx-calendar"></i> 高校动态管理
         </el-breadcrumb-item>
         <el-breadcrumb-item>内容列表</el-breadcrumb-item>
       </el-breadcrumb>
@@ -20,29 +20,29 @@
         </el-row>
         <el-divider></el-divider>
         <el-row>
-        <el-col :span="4">
+        <!-- <el-col :span="4">
           <el-form-item>
             内容分类
             <el-select
-              v-model="query.params.briefType"
+              v-model="query.params.trendType"
               clearable
               placeholder="请选择"
               class="handle-select mr10"
             >
               <el-option
-                v-for="(item, c) in briefTypeList"
+                v-for="(item, c) in trendTypeList"
                 :key="c"
                 :label="item.code_name"
                 :value="item.code_id"
               ></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="4">
           <el-form-item>
             内容状态
             <el-select
-              v-model="query.params.briefState"
+              v-model="query.params.trendState"
               clearable
               placeholder="请选择"
               class="handle-select mr10"
@@ -79,15 +79,15 @@
       </div>
       <div style="width: 100%; height: 100%">
         <el-table
-          :data="briefFormList"
+          :data="trendFormList"
           border
           style="width: 100%; height: 100%"
         >
-          <el-table-column prop="brief_title" label="内容标题">
+          <el-table-column prop="trend_title" label="内容标题">
           </el-table-column>
-          <el-table-column prop="brief_type" label="内容分类" width="120">
+          <el-table-column prop="trend_type" label="内容分类" width="120">
           </el-table-column>
-          <el-table-column prop="brief_state" label="状态" width="120">
+          <el-table-column prop="trend_state" label="状态" width="120">
           </el-table-column>
           <el-table-column
             prop="create_time"
@@ -95,19 +95,23 @@
             width="200"
             :formatter="dateFormat"
           ></el-table-column>
-          <el-table-column fixed="right" label="操作" width="150">
+          <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
+              <el-button v-if="examineButtonVisible" @click="handleExamine(scope.row)" type="text" size="small"
+                >审批</el-button
+              >
               <el-button @click="handleShow(scope.row)" type="text" size="small"
                 >预览</el-button
               >
-              <el-button @click="handleEdit(scope.row)" type="text" size="small"
+              <el-button v-if="(scope.row.trend_state=='草稿'||scope.row.trend_state=='驳回')&&editButtonVisible" 
+              @click="handleEdit(scope.row)" type="text" size="small"
                 >编辑</el-button
               >
-              <el-button @click="handleDel(scope.row)" type="text" size="small"
-                >删除</el-button
+              <el-button  @click="handleShowLog(scope.row)" type="text" size="small"
+                >操作记录</el-button
               >
-              <el-button @click="handleShowLog(scope.row)" type="text" size="small"
-                >操作日志</el-button
+              <el-button v-if="scope.row.trend_state=='草稿'" @click="handleDel(scope.row)" type="text" size="small"
+                >删除</el-button
               >
             </template>
           </el-table-column>
@@ -133,41 +137,54 @@
     @close="handleClose"
     :destroy-on-close="true"
   >
-    <column-add :briefId="brief_id" @dialogclose="handleClose"></column-add>
+    <trend-add :trendId="trend_id" @dialogclose="handleClose"></trend-add>
   </el-dialog>
 
-  <!-- <el-dialog
-    v-model="logDialogVisible"
-    title="操作日志"
+  <el-dialog
+    v-model="examineDialogVisible"
+    title="审批"
     width="80%"
+    height="80%"
+    top="20px"
+    @close="handleCloseExamine"
+    :destroy-on-close="true"
+  >
+    <trend-examine :trendId="trend_id" @dialogclose="handleCloseExamine"></trend-examine>
+  </el-dialog>
+
+  <el-dialog
+    v-model="trednExamineLogDialogVisible"
+    title="操作日志"
+    width="60%"
     top="20px"
     @close="handleCloseLog"
     :destroy-on-close="true"
   >
-    <brief-log :briefId="brief_id" @dialogclose="handleCloseLog"></brief-log>
-  </el-dialog> -->
+    <trend-examine-log :trendId="trend_id" @dialogclose="handleCloseLog"></trend-examine-log>
+  </el-dialog>
 </template>
 
 <script>
-  import moment from "moment";
+import moment from "moment";
 import { Search, Plus, Cellphone, Delete } from "@element-plus/icons-vue";
 import { getCurrentInstance } from "vue";
 import { ref, reactive, onMounted } from "@vue/runtime-core";
-import { getBriefBaseList, getColumnType, delBrief } from "../api/serviceApi";
+import { getTrendBaseList, getColumnType, delTrend } from "../api/serviceApi";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter, useRoute } from "vue-router";
-import ColumnAdd from ".//ColumnAdd.vue";
+import TrendAdd from ".//TrendAdd.vue";
 import TrendExamineLog from ".//TrendExamineLog.vue";
+import TrendExamine from ".//Examine.vue";
 
 export default {
-  components: { ColumnAdd },
+  components: { TrendAdd,TrendExamineLog,TrendExamine },
   methods: {
     //预览
     handleShow(row) {
       // 页面跳转
       const href = this.$router.resolve({
-        path: "/BriefShow",
-        query: { briefId: row.brief_id },
+        path: "/TrendShow",
+        query: { trendId: row.trend_id },
       });
       window.open(href.href, "_blank");
     },
@@ -179,11 +196,15 @@ export default {
     let realName = ref("");
     let userSchool = "";
     let delBtnText=ref("");
+    const editButtonVisible = ref(false);//是否显示编辑按钮
+    const examineButtonVisible=ref(false);//是否显示审批按钮
 
     let query = reactive({
       params: {
-        briefType: "",
-        briefState: "",
+        trendType: "",
+        trendState: "",
+        trendStateList:"",
+        creater:"",
         keyword: "",
         pageIndex: 1,
         pageSize: 10,
@@ -198,30 +219,47 @@ export default {
         code_name: "草稿",
         code_id: "0402",
       },
+      {
+        code_name: "待审核",
+        code_id: "0403",
+      },
+      {
+        code_name: "驳回",
+        code_id: "0404",
+      },
     ];
     //下拉数据模型列表
-    let briefTypeList = ref([]);
+    let trendTypeList = ref([]);
     //table模型
-    let briefFormList = ref([]);
+    let trendFormList = ref([]);
     const pageTotal = ref(0);
     //数据模型
-    const briefForm = reactive({
-      brief_id: "",
-      brief_title: "",
-      brief_content: "",
-      brief_type: "",
-      brief_state: "",
+    const trendForm = reactive({
+      trend_id: "",
+      trend_title: "",
+      trend_content: "",
+      trend_type: "",
+      trend_state: "",
     });
     const dateFormat=(date) =>{
         return moment(date.create_time).format("YYYY-MM-DD");
       };
     const methods = {
       //加载列表
-      getBriefList() {
-        getBriefBaseList(query).then((res) => {
+      getTrendList() {
+        if(userRole=="0101"){
+          query.params.creater="";//管理员展示页面时，creater为空，查询所有的
+          query.params.trendStateList="0403";
+        }else{
+          query.params.creater=userId;
+          query.params.trendStateList="0401,0402,0403,0404";
+        }
+        getTrendBaseList(query).then((res) => {
           console.log(res);
+          console.log(userId);
+          console.log(userRole);
           if (res.resultCode == "200") {
-            briefFormList.value = JSON.parse(res.data.BriefList);
+            trendFormList.value = JSON.parse(res.data.TrendList);
             pageTotal.value = res.data.totalCount || 50;
           } else {
             ElMessage({
@@ -235,7 +273,7 @@ export default {
       getColumnTypeList() {
         getColumnType().then((res) => {
           if (res.resultCode == "200") {
-            briefTypeList.value = res.data;
+            trendTypeList.value = res.data;
           } else {
             ElMessage({
               message: "获取数据失败：" + res.message,
@@ -254,22 +292,34 @@ export default {
       userSchool = localStorage.getItem("user_school");
     };
     const handleAdd=()=>{
-      brief_id.value=undefined
+      trend_id.value=undefined
       dialogVisible.value = true;
     };
 
     onMounted(() => {
       getSession();
       methods.getColumnTypeList();
-      methods.getBriefList();
+      methods.getTrendList();
+      editButtonVisible.value=userRole=='0102';
+      examineButtonVisible.value=userRole=='0101';
     });
-    const dialogVisible = ref(false);
-    const logDialogVisible=ref(false);
-    const brief_id = ref("");
+    const dialogVisible = ref(false);//是否显示编辑模态框
+    const trednExamineLogDialogVisible=ref(false);//是否显示操作日志模态框
+    const examineDialogVisible=ref(false);//是否显示审批模态框
+    const trend_id = ref("");
 
+    const handleExamine=(row)=>{
+      trend_id.value = row.trend_id;
+      examineDialogVisible.value = true;
+    };
     const handleEdit = (row)=>{
-      brief_id.value = row.brief_id;
+      trend_id.value = row.trend_id;
       dialogVisible.value = true;
+    };
+    const handleShowLog=(row)=>{
+      //展示审批日志
+      trend_id.value = row.trend_id;
+      trednExamineLogDialogVisible.value=true;
     };
     const handleDel = (row)=>{
       ElMessageBox.confirm("确定要删除吗？", "提示", {
@@ -280,17 +330,16 @@ export default {
         .then(() => {
           let params = {
             params: {
-              brief_id: row.brief_id,
-              brief_title: row.brief_title,
+              trend_id: row.trend_id,
+              trend_title: row.trend_title,
               admin_id: userId,
               admin_ip: "127.0.0.1",
             },
           };
-          delBrief(params)
+          delTrend(params)
             .then((res) => {
               if (res.resultCode == "200") {
                 ElMessage.success("删除成功");
-                // this.methods.getBriefList();
                 handleSearch();
               } else {
                 ElMessage({
@@ -307,29 +356,26 @@ export default {
           debugger;
         });
     };
-
-    const handleShowLog=(row)=>{
-      brief_id.value = row.brief_id;
-      logDialogVisible.value=true;
-    };
     
     const handleSearch=()=> {
-      methods.getBriefList();
+      methods.getTrendList();
     };
     
     // 分页导航
     const handlePageChange = (val) => {
       query.params.pageIndex = val;
-      methods.getBriefList();
+      methods.getTrendList();
     };
     
     const handleClose = ()=>{
-      brief_id.value = "";
+      trend_id.value = "";
       dialogVisible.value=false;
       handleSearch();
     };
     const handleCloseLog=()=>{
-      logDialogVisible.value=false;
+      trend_id.value = "";
+      trednExamineLogDialogVisible.value=false;
+      handleSearch();
     };
 
     return {
@@ -350,21 +396,25 @@ export default {
       userId,
       userRole,
       pageTotal,
+      editButtonVisible,
+      examineButtonVisible,
       query,
-      briefTypeList,
+      trendTypeList,
       stateTypeList,
-      briefForm,
-      briefFormList,
+      trendForm,
+      trendFormList,
       methods,
       getSession,
 
       dialogVisible,
-      logDialogVisible,
-      brief_id,
+      trednExamineLogDialogVisible,
+      examineDialogVisible,
+      trend_id,
       handleAdd,
       handleEdit,
-      handleDel,
       handleShowLog,
+      handleExamine,
+      handleDel,
       handleClose,
       handleCloseLog,
       handleSearch,

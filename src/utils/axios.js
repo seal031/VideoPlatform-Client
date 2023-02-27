@@ -79,7 +79,12 @@ service.interceptors.response.use(res => {
 
     // 关闭进度条
     NProgress.done()
-
+    // let userId = localStorage.getItem("user_id");
+    // console.log('根接口user_id为'+userId);
+    // if(userId !=undefined){
+    //     console.log('更新了访问时间');
+    //     localStorage.setItem("last_visit_time",new Date().getTime());
+    // }
     return res.data
 })
 

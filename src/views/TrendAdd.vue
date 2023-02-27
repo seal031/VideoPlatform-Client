@@ -1,28 +1,19 @@
 ﻿<template slot-scope="scope">
   <div>
-    <!-- <div class="crumbs"> -->
-      <!-- <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <i class="el-icon-lx-calendar"></i> 内容管理
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>添加内容</el-breadcrumb-item>
-      </el-breadcrumb> -->
-    <!-- </div> -->
-    <!-- <el-container> -->
     <el-aside width="100%">
       <div class="container">
         <!-- <div class="form-box"> -->
         <el-form
           ref="formRef"
           :rules="rules"
-          :model="briefForm.data"
+          :model="trendForm.data"
           label-width="120px"
         >
           <el-row>
             <el-col :span="6">
-              <el-form-item label="内容分类" prop="brief_type">
+              <el-form-item label="内容分类" prop="trend_type">
                 <el-select
-                  v-model="briefForm.data.brief_type"
+                  v-model="trendForm.data.trend_type"
                   value-key="code_id"
                   placeholder="请选择"
                   popper-class="detailDialog_select-popper"
@@ -36,8 +27,20 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-form-item label="封面图片" v-show="briefForm.data.brief_type=='0503'||briefForm.data.brief_type=='0504'">
+          </el-row>
+          <el-row>
+            <el-col :span="18">
+              <el-form-item label="内容标题" prop="trend_title">
+                <el-input
+                  v-model="trendForm.data.trend_title"
+                  placeholder="请输入内容标题"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <!-- <el-row>
+            <el-col :span="18">
+              <el-form-item label="封面图片">
                 <el-upload
                   action="http://47.93.84.178:14474/Upload/Image"
                   list-type="picture-card"
@@ -48,10 +51,10 @@
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                 >
-                  <template v-if="briefForm.data.brief_image">
+                  <template v-if="trendForm.data.trend_image">
                     <ul class="el-upload-list el-upload-list--picture-card">
                       <li class="el-upload-list__item is-success" tabindex="0">
-                        <img class="el-upload-list__item-thumbnail" :src="briefForm.data.brief_image" alt="">
+                        <img class="el-upload-list__item-thumbnail" :src="trendForm.data.trend_image" alt="">
                         <span class="el-upload-list__item-actions">
                           <span
                             class="el-upload-list__item-preview"
@@ -77,39 +80,17 @@
                 </el-dialog>
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="内容标题" prop="brief_title">
-                <el-input
-                  v-model="briefForm.data.brief_title"
-                  placeholder="请输入内容标题"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="发布时间" prop="brief_title">
-                <el-date-picker v-model="briefForm.data.brief_title" type="date"  placeholder="请选择日期"/>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="18">
-              
-            </el-col>
-          </el-row>
+          </el-row> -->
           <el-row>
             <el-col :span="24">
-              <el-form-item label="内容详情" prop="brief_content">
+              <el-form-item label="内容详情" prop="trend_content">
                 <rt-editor2
-                  v-model="briefForm.data.brief_content"
+                  v-model="trendForm.data.trend_content"
                 ></rt-editor2>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col :span="24">
               <el-form-item label="附件">
                 <el-upload
@@ -128,14 +109,6 @@
                 </el-upload>
               </el-form-item>
             </el-col>
-          </el-row>
-          <!-- <el-row>
-            <el-col>
-              <el-form-item>
-                <el-button type="primary" @click="onSubmit">发布内容</el-button>
-                <el-button type="primary" @click="onDraft">存为草稿</el-button>
-              </el-form-item>
-            </el-col>
           </el-row> -->
         </el-form>
         <!-- </div> -->
@@ -146,7 +119,7 @@
   <el-row>
     <el-col :span="10"></el-col>
     <el-col :span="4">
-      <el-button type="primary" @click="onSubmit">发布</el-button>
+      <el-button type="primary" @click="onSubmit">提交审核</el-button>
       <el-button type="primary" @click="onDraft">暂存</el-button>
     </el-col>
     <el-col :span="10"></el-col>
@@ -155,7 +128,7 @@
 
 <script>
 import { ref, reactive, onMounted,watch } from "vue";
-import { addBrief, getBriefById, getColumnType } from "../api/serviceApi";
+import { addTrend, getTrendById, getColumnType,AddExamineRecord } from "../api/serviceApi";
 // import rtEditor from "../components/RtEditor.vue";
 import RtEditor2 from "../components/RtEditor2.vue";
 import { Plus, ZoomIn, Download, Delete } from "@element-plus/icons-vue";
@@ -173,7 +146,7 @@ export default {
     RtEditor2,
   },
   props:{
-    briefId:{
+    trendId:{
       type: String ,
       default:""
     },
@@ -190,36 +163,44 @@ export default {
     let realName = ref("");
     let userSchool = "";
 
-    let briefId = props.briefId;
+    let trendId = props.trendId;
     let dialogVisible=props.dialogVisible;
     let isReadonly = false;
     let annexList=[];//附件名称列表
     //下拉模型
-    let columnTypeList = ref([]);
+    // let columnTypeList = ref([]);
+    let columnTypeList=[
+      {
+        code_name: "高校动态",
+        code_id: "0505",
+      }
+    ];
     let filelist=ref([]);
     //数据模型
-    const initbriefFormData={
-      brief_id: null,
-      brief_title: "",
-      brief_content: "",
-      brief_type: "",
-      brief_state: "",
-      brief_image: "",
+    const inittrendFormData={
+      trend_id: null,
+      trend_title: "",
+      trend_content: "",
+      trend_type: "",
+      trend_state: "",
+      trend_image: "",
       operate_admin: null,
+      creater:"",
+      trend_school:"",
     }
-    const briefForm = reactive({
-      data: JSON.parse(JSON.stringify(initbriefFormData)),
+    const trendForm = reactive({
+      data: JSON.parse(JSON.stringify(inittrendFormData)),
     });
 
     //校验规则
     const rules = {
-      brief_title: [
+      trend_title: [
         { required: true, message: "请输入内容标题", trigger: "blur" },
       ],
-      brief_content: [
+      trend_content: [
         { required: true, message: "请输入内容详情", trigger: "blur" },
       ],
-      brief_type: [
+      trend_type: [
         { required: true, message: "请选择内容分类", trigger: "blur" },
       ],
     };
@@ -230,7 +211,7 @@ export default {
     const disabled = ref(true);
     const imageUrl = ref("");
     const handleAvatarSuccess = (res, file) => {
-      briefForm.data.brief_image = "http://47.93.84.178:14474/Images/" + res.data.newFileName;
+      trendForm.data.trend_image = "http://47.93.84.178:14474/Images/" + res.data.newFileName;
       imageUrl.value="http://47.93.84.178:14474/Images/" + res.data.newFileName;
     };
     const beforeAvatarUpload = (file) => {
@@ -246,10 +227,10 @@ export default {
       return isJPG && isLt2M;
     };
     const handleRemove = () => {
-      briefForm.data.brief_image = "";
+      trendForm.data.trend_image = "";
     };
     const handlePictureCardPreview = () => {
-      dialogImageUrl.value = briefForm.data.brief_image;
+      dialogImageUrl.value = trendForm.data.trend_image;
       imageVisible.value = true;
     };
 
@@ -288,17 +269,16 @@ export default {
     //   console.log(file);
     // };
     const getWangEditorValue = (str) => {
-      briefForm.data.brief_content = str;
+      trendForm.data.trend_content = str;
     };
     // 提交
     const onSubmit = () => {
-      briefForm.data.brief_state = "0401";
-      briefForm.data.admin_id = userId;
-      briefForm.data.admin_ip = "localhost";
-      briefForm.data.brief_image = imageUrl.value;
-      briefForm.data.annex=annexList.join(',');
-      console.log(briefForm.data);
-      addBrief(briefForm.data).then((res) => {
+      trendForm.data.trend_state = "0403";
+      trendForm.data.admin_id = userId;
+      trendForm.data.admin_ip = "localhost";
+      trendForm.data.trend_school=userSchool;
+      trendForm.data.creater = userId;
+      addTrend(trendForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
             message: "操作成功.",
@@ -316,13 +296,14 @@ export default {
       });
     };
     const onDraft = () => {
-      briefForm.data.brief_state = "0402";
-      briefForm.data.admin_id = userId;
-      briefForm.data.admin_ip = "localhost";
-      briefForm.data.brief_image = imageUrl.value;
-      briefForm.data.annex=annexList.join(',');
-      console.log(briefForm.data);
-      addBrief(briefForm.data).then((res) => {
+      trendForm.data.trend_state = "0402";
+      trendForm.data.admin_id = userId;
+      trendForm.data.admin_ip = "localhost";
+      trendForm.data.creater = userId;
+      trendForm.data.trend_image = imageUrl.value;
+      trendForm.data.annex=annexList.join(',');
+      console.log(trendForm.data);
+      addTrend(trendForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
             message: "操作成功.",
@@ -347,39 +328,39 @@ export default {
       userSchool = localStorage.getItem("user_school");
     };
     
-    const bindBrief=(briefId)=>{
-      if (briefId != undefined) {
+    const bindTrend=(trendId)=>{
+      if (trendId != undefined) {
           let params = {
             params: {
-              brief_id: briefId,
+              trend_id: trendId,
             },
           };
-          getBriefById(params).then((res) => {
-            briefForm.data = JSON.parse(res.data);
-            console.log(briefForm.data)
+          getTrendById(params).then((res) => {
+            trendForm.data = JSON.parse(res.data);
+            console.log(trendForm.data)
             filelist.value.push({
               'name':'temp.jpg',
-              'url':briefForm.data.brief_image
+              'url':trendForm.data.trend_image
             })
           });
         }
     };
     onMounted(() => {
       getSession();
-      bindBrief();
-      getColumnType().then((res) => {
-        columnTypeList.value = res.data;
-      });
+      bindTrend();
+      // getColumnType().then((res) => {
+      //   columnTypeList.value = res.data;
+      // });
     });
 
     watch(
-      () => props.briefId,
+      () => props.trendId,
       (val) => {
         if (val) {
-          bindBrief(val);
+          bindTrend(val);
         } else {
           // 清空表单
-          briefForm.data = JSON.parse(JSON.stringify(initbriefFormData));
+          trendForm.data = JSON.parse(JSON.stringify(inittrendFormData));
         }
       },
       { immediate: true }
@@ -392,13 +373,13 @@ export default {
       realName,
       userSchool,
 
-      bindBrief,
+      bindTrend,
       getSession,
-      briefId,
+      trendId,
       formRef,
       columnTypeList,
       editor,
-      briefForm,
+      trendForm,
       filelist,
       rules,
       imageVisible,
