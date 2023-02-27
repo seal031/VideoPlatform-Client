@@ -278,7 +278,9 @@ export default {
       trendForm.data.admin_ip = "localhost";
       trendForm.data.trend_school=userSchool;
       trendForm.data.creater = userId;
+      // trendForm.data.
       addTrend(trendForm.data).then((res) => {
+        debugger
         if ((res.resultCode = "200")) {
           ElMessage({
             message: "操作成功.",

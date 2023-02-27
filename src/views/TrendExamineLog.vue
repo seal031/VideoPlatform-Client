@@ -78,7 +78,7 @@ export default {
             getExamineRecord(trendId);
         });   
         const dateFormat=(date)=>{
-            return moment(date.operate_time).format("YYYY-MM-DD hh:mm:ss");
+            return moment(date.examine_time).format("YYYY-MM-DD HH:mm:ss");
         };
         const methods = {
             getParams() {

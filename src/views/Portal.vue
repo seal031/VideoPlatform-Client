@@ -342,6 +342,45 @@
         </el-row>
       </div>
     </div>
+    <div class="portal-notice pb20">
+      <div class="portal-notice-content">
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <div class="mt20 mb20 rel">
+              <span class="f20">高校动态</span>
+              <sup class="f20">
+                <el-icon class="title-icon ml5">
+                  <svg t="1645936733359" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="42752" width="24" height="24">
+                    <path
+                      d="M562.2 164v696c0 27.5-22.3 49.7-49.7 49.7h-29.3c-13-0.1-25.5-5.2-34.8-14.4L257.9 704.9c-27.9-28-65.9-43.7-105.4-43.8-23.2 0-45.5-9.2-61.9-25.6C74.2 619.1 65 596.9 65 573.6V450.4c0-48.3 39.2-87.5 87.5-87.5 39.5 0 77.5-15.8 105.4-43.8l190.4-190.4c9.3-9.2 21.8-14.4 34.8-14.4h29.3c27.5 0 49.8 22.2 49.8 49.7z m298.3 86c-4.8-4.8-11.1-7.8-17.9-8.4-6.9-0.2-13.6 2.5-18.4 7.5l-35.3 35.3c-8.8 9.5-8.8 24.3 0 33.8 95.5 111.6 95.5 276.2 0 387.8-8.8 9.5-8.8 24.3 0 33.8l35.3 35.3c4.8 4.9 11.5 7.6 18.4 7.5 6.8-0.5 13.2-3.5 17.9-8.5C991.8 624 991.8 400 860.5 250zM703.4 382.7c-7.2-0.3-14.2 2.4-19.4 7.5L648.7 426c-8.5 8.3-9.9 21.4-3.5 31.3 21.9 33.2 21.9 76.2 0 109.4-6.5 9.9-5 23 3.5 31.3l35.3 35.8c5.2 4.9 12.2 7.4 19.4 7 7.2-0.5 13.8-3.9 18.4-9.4 53-70.7 53-167.9 0-238.6-4.7-5.7-11.2-9.2-18.4-10.1z m0 0"
+                      fill="#de460c" p-id="42753" />
+                  </svg>
+                </el-icon>
+              </sup>
+              <!-- TODO 点击更多跳转 -->
+              <el-button type="text" class="more-btn" @click="jump('/portalTrendList','trend')">更多 ></el-button>
+            </div>
+            <el-table :data="trendList" :show-header="false" class="p10" height="205" @row-click="showTrend"
+              empty-text="暂无数据">
+              <el-table-column prop="brief_title">
+                <template #default="scope">
+                  <div v-tooltip-auto-show>
+                    <el-tooltip
+                      :content="scope.row.trend_title "
+                      placement="top-start"
+                    >
+                      <div class="poi text-ellipsis">{{ scope.row.trend_title }}</div>
+                    </el-tooltip>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="create_time" label width="130" :formatter="methods.dateFormat"></el-table-column>
+            </el-table>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
 
     <portal-footer></portal-footer>
   </div>
@@ -355,7 +394,7 @@ import PortalFooter from "../components/PortalFooter.vue";
 import TopToolBar from "../components/TopToolBar.vue";
 import VideoItem from "../components/VideoItem.vue";
 import OuterIp from "../components/outerNetIp.vue";
-import { getVideoList, getBriefList,getExternalSystemList } from "../api/serviceApi";
+import { getVideoList, getBriefList,getExternalSystemList,getTrendBaseList } from "../api/serviceApi";
 import { Document, MessageBox } from "@element-plus/icons-vue";
 import {ElMessageBox} from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
@@ -384,6 +423,13 @@ export default {
       });
       window.open(href.href, "_blank");
     },
+    showTrend(row){
+      const href = this.$router.resolve({
+        path: "/TrendShow",
+        query: { trendId: row.trend_id },
+      });
+      window.open(href.href, "_blank");
+    }
   },
   setup() {
     const router = useRouter();
@@ -404,6 +450,7 @@ export default {
     let hotVideoList = ref([]); //热门视频模型列表
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
+    let trendList = ref([]);//高校动态模型列表
     //外部系统数据模型
     const initExternalSystemFormDataQJS={
         external_id: null,
@@ -645,6 +692,27 @@ export default {
           }
         });
       },
+      getTrendList(){
+        //高校动态
+        let query = reactive({
+          params: {
+            trendStateList: "0401", //已发布
+            topN: 5,
+          },
+        });
+        getTrendBaseList(query).then((res) => {
+          if (res.resultCode == "200") {
+            trendList.value = JSON.parse(res.data.TrendList);
+            pageTotal.value = res.data.totalCount || 50;
+          } else {
+            ElMessage({
+              message: "获取数据失败：" + res.message,
+              grouping: true,
+              type: "error",
+            });
+          }
+        });
+      },
       getVideoList() { },
       getAllExternalSystemList(){
         getExternalSystemList().then((res)=>{
@@ -714,6 +782,7 @@ export default {
       methods.getTpxwList();
       methods.getTzggList();
       methods.getZcfgList();
+      methods.getTrendList();
       methods.getVideoList();
       methods.getHotVideoList();
       methods.getQjsVideoList();
@@ -761,6 +830,7 @@ export default {
       getSession,
       tzggList,
       zcfgList,
+      trendList,
     };
   },
 };

@@ -132,12 +132,12 @@ export default {
             writeLogs("查看了"+breadcrumb.value+"《"+trendForm.data.trend_title+"》","查看了"+breadcrumb.value+"《"+trendForm.data.trend_title+"》");
             //绑定附件
             debugger
-            var annexStrList=trendForm.data.annex.split(',').filter(i=>i && i.trim());
-            annexStrList.forEach(element => {
+            // var annexStrList=trendForm.data.annex.split(',').filter(i=>i && i.trim());
+            // annexStrList.forEach(element => {
               // annexObjList[element]="http://47.93.84.178:14474/Files/"+element;
-              annexObjList.value.push({'key':element,'value':"http://47.93.84.178:14474/Files/"+element});
-            });
-            console.log(annexObjList.value.length)
+              // annexObjList.value.push({'key':element,'value':"http://47.93.84.178:14474/Files/"+element});
+            // });
+            // console.log(annexObjList.value.length)
             //绑定新闻内容
             content.value = marked(trendForm.data.trend_content, {
               breaks: true,

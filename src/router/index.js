@@ -6,6 +6,7 @@ import Brief from "../views/ColumnShow.vue"
 import Trend from "../views/TrendShow.vue"
 import Video from "../views/VideoShow.vue"
 import BriefList from "../views/PortalColumnList.vue"
+import TrendList from "../views/PortalTrendList.vue"
 import VideoList from "../views/PortalVideoList.vue"
 import MySpace from "../views/MySpace.vue"
 import SearchResult from "../views/SearchResult.vue"
@@ -35,6 +36,14 @@ const routes = [
             // title:'通知公告'
         },
         component: Brief,
+    },
+    {
+        path:"/portalTrendList",
+        name:"portalTrendList",
+        meta:{
+            title:"高校动态"
+        },
+        component:TrendList,
     },
     {
         path: "/TrendShow",
