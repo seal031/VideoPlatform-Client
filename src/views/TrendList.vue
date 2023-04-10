@@ -11,14 +11,14 @@
     <div class="container">
       <div class="handle-box">
         <el-form>
-        <el-row>
+        <el-row  v-if="addButtonVisible">
           <el-col :span="24">
-            <el-button type="primary" :icon="Plus" @click="handleAdd()"
+            <el-button type="primary" :icon="Plus" @click="handleAdd()" v-if="addButtonVisible"
               >新增</el-button
             >
           </el-col>
         </el-row>
-        <el-divider></el-divider>
+        <el-divider  v-if="addButtonVisible"></el-divider>
         <el-row>
         <!-- <el-col :span="4">
           <el-form-item>
@@ -85,19 +85,23 @@
         >
           <el-table-column prop="trend_title" label="内容标题">
           </el-table-column>
-          <el-table-column prop="trend_type" label="内容分类" width="120">
+          <el-table-column prop="trend_type" label="内容分类" width="100">
           </el-table-column>
-          <el-table-column prop="trend_state" label="状态" width="120">
+          <el-table-column prop="trend_state" label="状态" width="80">
+          </el-table-column>
+          <el-table-column prop="creater" label="用户名" width="120">
+          </el-table-column>
+          <el-table-column prop="trend_school" label="学校" width="120">
           </el-table-column>
           <el-table-column
             prop="create_time"
-            label="发布时间"
-            width="200"
+            label="创建时间"
+            width="160"
             :formatter="dateFormat"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
-              <el-button v-if="examineButtonVisible" @click="handleExamine(scope.row)" type="text" size="small"
+              <el-button v-if="examineButtonVisible&&scope.row.trend_state=='待审核'" @click="handleExamine(scope.row)" type="text" size="small"
                 >审批</el-button
               >
               <el-button @click="handleShow(scope.row)" type="text" size="small"
@@ -189,13 +193,14 @@ export default {
       window.open(href.href, "_blank");
     },
   },
-  setup() {
+  setup(props,content) {
     let userId = "";
     let userRole = "";
     let userName = "";
     let realName = ref("");
     let userSchool = "";
     let delBtnText=ref("");
+    const addButtonVisible=ref(true);//是否显示新增按钮
     const editButtonVisible = ref(false);//是否显示编辑按钮
     const examineButtonVisible=ref(false);//是否显示审批按钮
 
@@ -242,14 +247,14 @@ export default {
       trend_state: "",
     });
     const dateFormat=(date) =>{
-        return moment(date.create_time).format("YYYY-MM-DD");
+        return moment(date.create_time).format("YYYY-MM-DD HH:mm:ss");
       };
     const methods = {
       //加载列表
       getTrendList() {
         if(userRole=="0101"){
-          query.params.creater="";//管理员展示页面时，creater为空，查询所有的
-          query.params.trendStateList="0403";
+          query.params.creater="";//管理员展示页面时，creater为空，查询所有人的的
+          query.params.trendStateList="0401,0403,0404";
         }else{
           query.params.creater=userId;
           query.params.trendStateList="0401,0402,0403,0404";
@@ -300,6 +305,7 @@ export default {
       getSession();
       methods.getColumnTypeList();
       methods.getTrendList();
+      addButtonVisible.value=userRole!='0101';
       editButtonVisible.value=userRole=='0102';
       examineButtonVisible.value=userRole=='0101';
     });
@@ -377,6 +383,12 @@ export default {
       trednExamineLogDialogVisible.value=false;
       handleSearch();
     };
+    const handleCloseExamine=()=>{
+      console.log("123123123123")
+      trend_id.value = "";
+      examineDialogVisible.value=false;
+      handleSearch();
+    };
 
     return {
       Search,
@@ -396,6 +408,7 @@ export default {
       userId,
       userRole,
       pageTotal,
+      addButtonVisible,
       editButtonVisible,
       examineButtonVisible,
       query,
@@ -417,6 +430,7 @@ export default {
       handleDel,
       handleClose,
       handleCloseLog,
+      handleCloseExamine,
       handleSearch,
       handlePageChange,
     };

@@ -369,6 +369,7 @@ export default {
       bindBrief();
       getColumnType().then((res) => {
         columnTypeList.value = res.data;
+        columnTypeList.value.splice(4);//不取高校动态及以后的
       });
     });
 

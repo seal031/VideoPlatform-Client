@@ -12,7 +12,7 @@
       <el-aside width="100%">
         <div class="container">
           <div>
-            <el-form ref="formRef" :rules="rules" :model="videoForm.data" label-width="80px">
+            <el-form ref="formRef" :model="videoForm.data" label-width="80px"><!-- :rules="rules"  -->
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="视频" prop="video_url">
@@ -109,7 +109,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item label="组别" prop="video_group" v-if="videoSelectedType=='0201'">
+                  <el-form-item label="组别" prop="video_group" v-if="(videoSelectedType=='0201'||videoSelectedType=='0202')">
                     <el-select v-model="videoForm.data.video_group" placeholder="请选择" clearable>
                       <el-option v-for="(item, c) in videoGroupList" :key="c" :label="item.code_name"
                         :value="item.code_name"></el-option>
@@ -117,7 +117,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item label="类别" prop="video_class">
+                  <el-form-item label="类别" prop="video_class" v-if="(videoSelectedType!='0202')">
                     <el-select v-model="videoForm.data.video_class" placeholder="请选择" clearable>
                       <el-option v-for="(item, c) in videoClassList" :key="c" :label="item.code_name"
                         :value="item.code_name"></el-option>
@@ -154,7 +154,7 @@
               <el-row>
                 <el-col :span="4">
                   <el-form-item label="首页显示" prop="on_portal">
-                    <el-switch v-model="videoForm.data.on_portal"></el-switch>
+                    <el-switch v-model="videoForm.data.on_portal"  active-value="1" inactive-value="0"></el-switch>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -507,6 +507,9 @@ export default {
     const videoTypeChange=(item)=>{
       videoSelectedType.value=item;
       if(item=="0201"){//青教赛
+        delete videoForm.data.video_year;
+        delete videoForm.data.video_group;
+        delete videoForm.data.video_class;
         getVideoJieCi().then((res)=>{
           if(res.resultCode=="200"){
             console.log(res.data);
@@ -520,6 +523,9 @@ export default {
         });
       }
       else if(item=="0202"){//青管赛
+        delete videoForm.data.video_year;
+        delete videoForm.data.video_group;
+        delete videoForm.data.video_class;
         getVideoJieCi().then((res)=>{
           if(res.resultCode=="200"){
             videoYearList.value=res.data;
@@ -531,8 +537,11 @@ export default {
           }
         });
       }else if(item=="0203"){//师德榜样
-        videoClassList.value=['高校','普教'];
-        videoYearList.value=['2021年','2022年','2023年'];
+        delete videoForm.data.video_year;
+        delete videoForm.data.video_group;
+        delete videoForm.data.video_class;
+        videoClassList.value=[{code_name:"高校"},{code_name:"普教"}];
+        videoYearList.value=[{code_name:"2021年"},{code_name:"2022年"},{code_name:"2023年"}];
       }else{
 
       }

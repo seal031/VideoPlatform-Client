@@ -14,18 +14,45 @@
         <div class="width1000">
           <el-form-item>
             <span class="label">年度</span>
-            <!-- TODO videoYear 动态渲染 -->
             <el-radio-group
               v-model="query.params.videoYear"
               @change="videoYearChange"
             >
-              <el-radio-button label="2021"></el-radio-button>
-              <el-radio-button label="2022"></el-radio-button>
+              <!-- <el-radio-button label="第十一届"></el-radio-button>
+              <el-radio-button label="第十二届"></el-radio-button> -->
+              <el-radio-button v-for="vyl in videoYearList" :label="vyl.name" :key="vyl.name"></el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <el-form-item>
+          <el-form-item v-if="showVideoClass">
+            <span class="label">科目</span>
+            <!-- <el-radio-group
+              v-model="query.params.videoClass"
+              @change="videoClassChange"
+            >
+              <el-radio-button label="工科类"></el-radio-button>
+              <el-radio-button label="理科类"></el-radio-button>
+              <el-radio-button label="文科类"></el-radio-button>
+              <el-radio-button label="医科类"></el-radio-button>
+            </el-radio-group> -->
+            <el-radio-group
+            v-model="query.params.videoClass"
+            @change="videoClassChange"
+            >
+              <el-radio-button v-for="vcl in videoClassList" :label="vcl.name" :key="vcl.name"></el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if="showVideoGroup">
+            <span class="label">组别</span>
+            <el-radio-group
+              v-model="query.params.videoGroup"
+              @change="videoGroupChange"
+            >
+              <el-radio-button label="A组"></el-radio-button>
+              <el-radio-button label="B组"></el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <!-- <el-form-item>
             <span class="label">视频分类</span>
-            <!-- TODO videoTypeName 动态渲染 -->
             <el-radio-group
               v-model="tabText"
               @change="videoTypeChange"
@@ -35,26 +62,11 @@
               <el-radio-button label="师德榜样"></el-radio-button>
               <el-radio-button label="云课堂"></el-radio-button>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
         </div>
       </el-form>
 
       <div class="video-result">
-        <div>
-          <!-- TODO 点击切换 -->
-          <!-- <el-radio-group
-            v-model="query.params.videoState"
-            @change="videoStateChange"
-          >
-            <el-radio-button
-              v-for="item in videoStates"
-              :key="item.value"
-              :label="item.value"
-              >{{ item.label }}</el-radio-button
-            >
-          </el-radio-group> -->
-        </div>
-
         <div class="tr mb10">
           <el-pagination
             @current-change="handleCurrentChange"
@@ -93,13 +105,13 @@
                     <span>{{ele.teacher}}</span>
                   </div>
                   <div>
-                    {{ele.video_year}}年度
+                    {{ele.video_year}}
                   </div>
                 </div>
               </div>
             </el-row>
           </template>
-          <template v-else-if="tableData">暂无视频</template>
+          <template v-else-if="tableData">视频资源正在审核中……</template>
           <template v-else>视频列表加载中...</template>
         </div>
       </div>
@@ -140,10 +152,12 @@ export default {
       params: {
         videoType: "",
         videoTypeName: "",
-        videoYear: null,
+        videoYear: "",//null,
         keyword: "",
         publicType: "",
         videoState: "0401",
+        videoGroup:"",
+        videoClass:"",
         pageIndex: 1,
         pageSize: 20,
         userId:userId,
@@ -159,7 +173,15 @@ export default {
       { value: "02", label: "关注" },
       { value: "03", label: "转发" },
     ];
+    const videoGroupList=ref([]);
+
+    const showVideoGroup=ref(true);
+    const showVideoClass=ref(true);
+    let videoYearList=ref([]);//年度选项
+    let videoClassList=ref([]);//类别选项
+
     const getVideo = () => {
+      debugger
       query.params.userId=userId;
       query.params.user_school=userSchool;
       query.params.userRole=userRole;
@@ -171,7 +193,6 @@ export default {
       });
     };
     const getSession = () => {
-      debugger
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
       userName = localStorage.getItem("user_name");
@@ -180,7 +201,6 @@ export default {
     };
     // 跳转
     const jump = (v) => {
-      debugger
       const href = router.resolve({
         path: '/VideoShow',
         query: { videoId:v.video_id},
@@ -213,11 +233,20 @@ export default {
       getVideo();
     };
     const videoYearChange = (value) => {
-      query.params.videoYear = parseInt(value);
+      query.params.videoYear = value;//parseInt(value);
       getVideo();
     };
     const videoStateChange = (value) => {
       query.params.videoState = value;
+      getVideo();
+    };
+    const videoGroupChange=(value)=>{
+      query.params.videoGroup = value;
+      getVideo();
+    };
+    const videoClassChange=(value)=>{
+      debugger
+      query.params.videoClass = value;
       getVideo();
     };
     const handleCurrentChange=(val) =>{
@@ -232,18 +261,55 @@ export default {
           case "qjs":
             tabText.value = "青教赛";
             query.params.videoType = "0201";
+            showVideoGroup.value=true;
+            showVideoClass.value=true;
+            videoClassList.value=[
+              {value:'理科类',name:'理科类'},
+              {value:'工科类',name:'工科类'},
+              {value:'文科类',name:'文科类'},
+              {value:'医科类',name:'医科类'},
+            ];
+            videoYearList.value=[
+              {value:'第十一届',name:'第十一届'},
+              {value:'第十二届',name:'第十二届'},
+            ];
             break;
           case "qgs":
             tabText.value = "青管赛";
             query.params.videoType = "0202";
+            showVideoGroup.value=true;
+            showVideoClass.value=false;
+            videoClassList.value=[
+              {value:'理科类',name:'理科类'},
+              {value:'工科类',name:'工科类'},
+              {value:'文科类',name:'文科类'},
+              {value:'医科类',name:'医科类'},
+            ];
+            videoYearList.value=[
+              {value:'第十一届',name:'第十一届'},
+              {value:'第十二届',name:'第十二届'},
+            ];
             break;
           case "sdby":
             tabText.value = "师德榜样";
             query.params.videoType = "0203";
+            showVideoGroup.value=false;
+            showVideoClass.value=true;
+            videoClassList.value=[
+              {value:'高校',name:'高校'},
+              {value:'普教',name:'普教'},
+            ];
+            videoYearList.value=[
+              {value:'2021年',name:'2021年'},
+              {value:'2022年',name:'2022年'},
+              {value:'2023年',name:'2023年'},
+            ];
             break;
           case "ykt":
             tabText.value = "云课堂";
             query.params.videoType = "0204";
+            showVideoGroup.value=false;
+            showVideoClass.value=false;
             break;
         }
       },
@@ -257,6 +323,11 @@ export default {
       realName,
       userSchool,
 
+      showVideoGroup,
+      showVideoClass,
+      videoYearList,
+      videoClassList,
+
       videoStates,
       getCurrentInstance,
       userId,
@@ -268,6 +339,8 @@ export default {
       getVideo,
       videoTypeChange,
       videoYearChange,
+      videoGroupChange,
+      videoClassChange,
       videoStateChange,
       handleCurrentChange,
       getSession,
@@ -294,7 +367,7 @@ export default {
   left: 0;
 }
 .query-subjects .el-form-item {
-  height: 60px;
+  height: 45px;
   border-bottom: 1px solid #bbb;
   margin-bottom: 0;
 }
@@ -313,8 +386,8 @@ export default {
   background: var(--el-button-bg-color, transparent);
   border: none !important;
   border-radius: 0 !important;
-  height: 60px;
-  line-height: 60px;
+  height: 45px;
+  line-height: 45px;
   padding: 0 20px;
   font-size: 16px;
 }

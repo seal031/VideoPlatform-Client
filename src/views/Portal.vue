@@ -62,12 +62,12 @@
                     <span class="mr2">｜</span>
                     <span class="author">{{ hotvideoitem.teacher }}</span>
                   </div>
-                  <div class="truncate-text">{{ hotvideoitem.video_year }}年度</div>
+                  <div class="truncate-text">{{ hotvideoitem.video_year }}</div>
                 </div>
               </div>
             </div>
             <!-- 否则，标签只是被初始化了，但是没有数据 -->
-            <div v-else-if="hotVideoList">暂无视频</div>
+            <div v-else-if="hotVideoList">视频资源正在审核中……</div>
             <!-- 标签容器还没被初始化 -->
             <div v-else>视频列表加载中...</div>
           </div>
@@ -78,7 +78,7 @@
     <el-divider class="portal-divider"></el-divider>
     <!-- TODO 系统名称、点击跳转 -->
     <div class="portal-system">
-      <div class="portal-system-item portal-system-item1" @click="JumpToExternalSystem(externalSystemFormQJS.data)">
+      <div class="portal-system-item portal-system-item1 poi" @click="JumpToExternalSystem(externalSystemFormQJS.data)">
         <span>北京高校青年教师教学基本功比赛管理系统</span>
         <h2>
           {{ externalSystemFormQJS.data.open_status }} <!--暂未开放系统入口-->
@@ -123,7 +123,7 @@
           </svg>
         </h2>
       </div>
-      <div class="portal-system-item portal-system-item2" @click="JumpToExternalSystem(externalSystemFormQGS.data)">
+      <div class="portal-system-item portal-system-item2 poi" @click="JumpToExternalSystem(externalSystemFormQGS.data)">
         <span>北京市高校青年教师管理岗比赛系统</span>
         <h2><br /></h2>
         <h2>
@@ -148,7 +148,7 @@
           </svg>
         </h2>
       </div>
-      <div class="portal-system-item portal-system-item4" @click="JumpToExternalSystem(externalSystemFormZYZ.data)">
+      <div class="portal-system-item portal-system-item4 poi"  @click="JumpToExternalSystem(externalSystemFormZYZ.data)">
         <span>北京市高校志愿者服务</span>
         <h2><br /></h2>
         <h2>
@@ -258,12 +258,12 @@
                     <span class="mr2">｜</span>
                     <span>{{ ele.teacher }}</span>
                   </div>
-                  <div>{{ ele.video_year }}年度</div>
+                  <div>{{ ele.video_year }}</div>
                 </div>
               </div>
             </el-row>
           </div>
-          <div v-else-if="item.content">暂无视频</div>
+          <div v-else-if="item.content">视频资源正在审核中……</div>
           <div v-else>视频列表加载中...</div>
         </el-tab-pane>
       </el-tabs>
@@ -337,7 +337,7 @@
         </el-row>
       </div>
     </div>
-    <div class="portal-notice pb20">
+    <div class="portal-notice pb20" v-show="trendList&&trendList.length">
       <div class="portal-notice-content">
         <el-row :gutter="20">
           <el-col :span="24">
@@ -357,7 +357,7 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('/portalTrendList', 'trend')">更多 ></el-button>
+              <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'gxdt')">更多 ></el-button>
             </div>
             <el-table :data="trendList" :show-header="false" class="p10" height="205" @row-click="showTrend"
               empty-text="暂无数据">
@@ -530,14 +530,14 @@ export default {
     };
     const JumpToExternalSystem = (data) => {
       if (data.is_open == 0) {
-        ElMessageBox.alert("系统暂未开放");
+        //ElMessageBox.alert("系统暂未开放");
       } else {
         const href = router.resolve({
           path: data.external_url,
           query: {},
         });
         // debugger
-        window.open(href.href, "_blank");
+        window.open(data.external_url, "_blank");
       }
     };
     const openNews = (path, news) => {
@@ -698,7 +698,6 @@ export default {
         getTrendBaseList(query).then((res) => {
           if (res.resultCode == "200") {
             trendList.value = JSON.parse(res.data.TrendList);
-            pageTotal.value = res.data.totalCount || 50;
           } else {
             ElMessage({
               message: "获取数据失败：" + res.message,
@@ -979,8 +978,8 @@ export default {
   color: #fff;
   background: #08a991;
   border-bottom: none;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 .portal-videos :deep .el-tabs__header .el-tabs__item.is-active::before,

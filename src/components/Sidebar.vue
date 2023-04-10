@@ -74,7 +74,7 @@ export default {
                         title: "内容发布管理",
                     },
                     {
-                        icon: "el-icon-lx-home",
+                        icon: "el-icon-lx-edit",
                         index: "/TrendList",
                         title: "高校动态管理",
                     },
@@ -89,7 +89,7 @@ export default {
                         title: "系统日志管理",
                     },
                     {
-                        icon: "el-icon-lx-home",
+                        icon: "el-icon-lx-info",
                         index: "/ExternalSystemList",
                         title: "系统开放配置",
                     },

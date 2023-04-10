@@ -186,7 +186,7 @@ export default {
         getSchoolById(params).then((res) => {
           if (res.resultCode == "200") {
             SchoolForm.data = JSON.parse(res.data);
-            debugger
+            // debugger
             if(SchoolForm.data.administrator!=undefined){
               //获取管理员模型
               let paramsAdmin = {
@@ -207,7 +207,7 @@ export default {
     };
     const onSubmit=()=>{
       addSchool(SchoolForm.data).then((res)=>{
-        debugger
+        // debugger
         if(res.resultCode=="200"){
           SchoolId=res.data;//此处data返回学校id
           if(AdminForm.data.user_name!=""){
@@ -257,6 +257,9 @@ export default {
         getUserBySchoolId(params).then((res) => {
           if (res.resultCode == "200") {
             UserList.value = JSON.parse(res.data.UserList);
+            debugger
+            const tempList=UserList.value.filter(ref => ref.user_name !== AdminForm.data.user_name);
+            UserList.value=tempList;
           }
         });
       }

@@ -28,7 +28,7 @@
                         <el-form-item>
                             <el-input
                             v-model="externalSystemFormQJS.data.external_url"
-                            placeholder="请输入外部系统地址"
+                            placeholder="请输入带http://或https://的外部系统完整地址"
                             class="handle-input mr10"
                             ></el-input>
                         </el-form-item>
@@ -63,7 +63,7 @@
                         <el-form-item>
                             <el-input
                             v-model="externalSystemFormQGS.data.external_url"
-                            placeholder="请输入外部系统地址"
+                            placeholder="请输入带http://或https://的外部系统完整地址"
                             class="handle-input mr10"
                             ></el-input>
                         </el-form-item>
@@ -98,7 +98,7 @@
                         <el-form-item>
                             <el-input
                             v-model="externalSystemFormSDBY.data.external_url"
-                            placeholder="请输入外部系统地址"
+                            placeholder="请输入带http://或https://的外部系统完整地址"
                             class="handle-input mr10"
                             ></el-input>
                         </el-form-item>
@@ -133,7 +133,7 @@
                         <el-form-item>
                             <el-input
                             v-model="externalSystemFormZYZ.data.external_url"
-                            placeholder="请输入外部系统地址"
+                            placeholder="请输入带http://或https://的外部系统完整地址"
                             class="handle-input mr10"
                             ></el-input>
                         </el-form-item>
@@ -171,17 +171,25 @@
 
 <script>
 import { ref, reactive, onMounted, getCurrentInstance } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage, ElMessageBox, useRadio } from "element-plus";
 import {addExternalSystemList,getExternalSystemList} from "../api/serviceApi";
 export default {
     name: "externalSystemList",
     setup(){
+        let userId = "";
+        let userRole = "";
+        let userName = "";
+        let realName = ref("");
+        let userSchool = "";
+
         //数据模型
         const initExternalSystemFormDataQJS={
             external_id: null,
             external_name: "",
             external_url: "",
             is_open: false,
+            admin_id:"",
+            admin_ip:"",
         };
         let externalSystemFormQJS = reactive({
             data: JSON.parse(JSON.stringify(initExternalSystemFormDataQJS)),
@@ -191,6 +199,8 @@ export default {
             external_name: "",
             external_url: "",
             is_open: false,
+            admin_id:"",
+            admin_ip:"",
         };
         let externalSystemFormQGS = reactive({
             data: JSON.parse(JSON.stringify(initExternalSystemFormDataQGS)),
@@ -200,6 +210,8 @@ export default {
             external_name: "",
             external_url: "",
             is_open: false,
+            admin_id:"",
+            admin_ip:"",
         };
         let externalSystemFormSDBY = reactive({
             data: JSON.parse(JSON.stringify(initExternalSystemFormDataSDBY)),
@@ -209,6 +221,8 @@ export default {
             external_name: "",
             external_url: "",
             is_open: false,
+            admin_id:"",
+            admin_ip:"",
         };
         let externalSystemFormZYZ = reactive({
             data: JSON.parse(JSON.stringify(initExternalSystemFormDataZYZ)),
@@ -219,16 +233,40 @@ export default {
             externalSystemFormQGS.data.is_open=externalSystemFormQGS.data.is_open==false?0:1;
             externalSystemFormSDBY.data.is_open=externalSystemFormSDBY.data.is_open==false?0:1;
             externalSystemFormZYZ.data.is_open=externalSystemFormZYZ.data.is_open==false?0:1;
-            addExternalSystemList(externalSystemFormQJS.data).then((res)=>{});
+            externalSystemFormQJS.data.admin_id=userId;
+            externalSystemFormQGS.data.admin_id=userId;
+            externalSystemFormSDBY.data.admin_id=userId;
+            externalSystemFormZYZ.data.admin_id=userId;
+            addExternalSystemList(externalSystemFormQJS.data).then((res)=>{
+                if(res.resultCode=="200"){
+                    ElMessage.success("保存成功");
+                }
+                else{
+                    ElMessage.error("保存失败");
+                }
+            });
             addExternalSystemList(externalSystemFormQGS.data).then((res)=>{});
             addExternalSystemList(externalSystemFormSDBY.data).then((res)=>{});
             addExternalSystemList(externalSystemFormZYZ.data).then((res)=>{});
+            
+            externalSystemFormQJS.data.is_open=externalSystemFormQJS.data.is_open==0?false:true;
+            externalSystemFormQGS.data.is_open=externalSystemFormQGS.data.is_open==0?false:true;
+            externalSystemFormSDBY.data.is_open=externalSystemFormSDBY.data.is_open==0?false:true;
+            externalSystemFormZYZ.data.is_open=externalSystemFormZYZ.data.is_open==0?false:true;
         });
 
+        const getSession = () => {
+            userId = localStorage.getItem("user_id");
+            userRole = localStorage.getItem("user_role");
+            userName = localStorage.getItem("user_name");
+            realName.value = localStorage.getItem("real_name");
+            userSchool = localStorage.getItem("user_school");
+        };
+
         onMounted(() => {
+            getSession();
             getExternalSystemList().then((res)=>{
                 let allExternalSystemList=JSON.parse(res.data.ExternalSystemList);
-                debugger;
                 externalSystemFormQJS.data=allExternalSystemList[0];
                 externalSystemFormQJS.data.is_open=externalSystemFormQJS.data.is_open==0?false:true;
                 externalSystemFormQGS.data=allExternalSystemList[1];
@@ -241,6 +279,12 @@ export default {
         });
 
         return{
+            userId,
+            userRole,
+            userName,
+            realName,
+            userSchool,
+
             initExternalSystemFormDataQJS,
             externalSystemFormQJS,
             initExternalSystemFormDataQGS,
@@ -251,6 +295,8 @@ export default {
             externalSystemFormZYZ,
 
             SaveExternalSystemList,
+
+            getSession,
         };
     },
 }

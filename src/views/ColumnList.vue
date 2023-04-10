@@ -91,7 +91,7 @@
           </el-table-column>
           <el-table-column
             prop="create_time"
-            label="发布时间"
+            label="创建时间"
             width="200"
             :formatter="dateFormat"
           ></el-table-column>
@@ -106,9 +106,9 @@
               <el-button @click="handleDel(scope.row)" type="text" size="small"
                 >删除</el-button
               >
-              <el-button @click="handleShowLog(scope.row)" type="text" size="small"
+              <!-- <el-button @click="handleShowLog(scope.row)" type="text" size="small"
                 >操作日志</el-button
-              >
+              > -->
             </template>
           </el-table-column>
         </el-table>
@@ -236,6 +236,7 @@ export default {
         getColumnType().then((res) => {
           if (res.resultCode == "200") {
             briefTypeList.value = res.data;
+            briefTypeList.value.splice(4);//不取高校动态及以后的
           } else {
             ElMessage({
               message: "获取数据失败：" + res.message,

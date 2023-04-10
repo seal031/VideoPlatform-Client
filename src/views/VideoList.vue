@@ -89,7 +89,7 @@
         <el-col :span="4">
           <el-form-item>
             是否首页显示
-            <el-switch v-model="query.params.on_portal" />
+            <el-switch v-model="query.params.on_portal" active-value="1" inactive-value="0"/>
           </el-form-item>
         </el-col>
         <el-col :span="5">
@@ -113,25 +113,27 @@
     </el-form>
     </div>
     <el-table :data="tableData" stripe border style="width: 100%" lazy>
-      <el-table-column prop="video_title" label="视频标题" width="200">
+      <el-table-column prop="video_title" label="视频标题" width="150">
       </el-table-column>
-      <el-table-column prop="video_type" label="视频分类" width="120">
+      <el-table-column prop="video_type" label="视频分类" width="90">
       </el-table-column>
       <el-table-column prop="video_year" label="时间" width="90">
       </el-table-column>
-      <el-table-column prop="video_group" label="组别">
+      <el-table-column prop="video_group" label="组别" width="70">
       </el-table-column>
       <el-table-column prop="video_class" label="类别" width="80">
       </el-table-column>
-      <el-table-column prop="award" label="获奖情况" width="100">
+      <el-table-column prop="award" label="获奖情况" width="90">
       </el-table-column>
       <el-table-column prop="teacher" label="教师" width="80">
       </el-table-column>
-      <el-table-column prop="video_school" label="单位" width="180">
+      <el-table-column prop="video_school" label="单位" width="150">
       </el-table-column>
       <el-table-column prop="public_type" label="视频开放" width="90">
       </el-table-column>
       <el-table-column prop="video_state" label="视频状态" width="90">
+      </el-table-column>
+      <el-table-column prop="on_portal" label="首页显示" width="90" :formatter="OnPortalFormat">
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template #default="scope">
@@ -210,7 +212,7 @@ export default {
         keyword: "",
         publicType: "",
         videoState: "",
-        on_portal:false,
+        on_portal:0,
         pageIndex: 1,
         pageSize: 10,
       },
@@ -229,6 +231,9 @@ export default {
     ];
     const tableData = ref([]);
     const pageTotal = ref(0);
+    const OnPortalFormat=(v) =>{
+        return v.on_portal==1?"是":"否";
+      };
     onMounted(() => {
       getSession();
       getVideoType().then((res) => {
@@ -375,7 +380,9 @@ export default {
       dialogVisible,
       video_id,
       handleEdit,
-      handleClose
+      handleClose,
+
+      OnPortalFormat,
     };
   },
 };

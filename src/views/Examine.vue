@@ -22,8 +22,8 @@
               style="width: 100%"
             ></div>
           </div>
-        <el-divider class="portal-divider"></el-divider>
-        <div>
+        <el-divider class="portal-divider"  v-if="examineRecordList && examineRecordList.length>0"></el-divider>
+        <div v-if="examineRecordList && examineRecordList.length>0">
             <span>历史审核意见:</span>
             <template v-if="examineRecordList && examineRecordList.length>0">
               <div style="width: 100%; height: 100%">
@@ -38,9 +38,9 @@
                     width="200"
                     :formatter="methods.dateFormat"
                 ></el-table-column>
-                <el-table-column prop="examine_by" label="用户名">
+                <el-table-column prop="examine_by" label="用户名" width="200">
                 </el-table-column>
-                <el-table-column prop="examine_result" label="审核意见" width="200">
+                <el-table-column prop="examine_remark" label="审核意见">
                 </el-table-column>
                 </el-table>
               </div>  
@@ -245,8 +245,8 @@
         examineForm.data.examine_remark=examine_remark.value;
         examineForm.data.examine_by=userId;
         AddExamineRecord(examineForm.data).then((res)=>{
-          if(res.resuleCode=="200"){
-            ElMessage.info("审核成功");
+          if(res.resultCode=="200"){
+            ElMessage.success("审核成功");
           }
           else{
             ElMessage({
@@ -258,12 +258,13 @@
         });
       };
       const onRefuse=()=>{
-        examineForm.data.examine_state="0401";
+        examineForm.data.examine_state="0404";
         examineForm.data.examine_remark=examine_remark.value;
         examineForm.data.examine_by=userId;
         AddExamineRecord(examineForm.data).then((res)=>{
-          if(res.resuleCode=="200"){
-            ElMessage.info("审核成功");
+          debugger
+          if(res.resultCode=="200"){
+            ElMessage.success("驳回成功");
           }
           else{
             ElMessage({

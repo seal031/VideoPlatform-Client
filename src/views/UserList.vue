@@ -137,8 +137,6 @@ import {
   getSchoolList,
   getSchoolType,
   getSchoolCategoryType,
-  getUserBySchoolId,
-  addSchool,
   delSchool,
   resetPwd,
 } from "../api/serviceApi";

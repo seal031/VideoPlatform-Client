@@ -4,7 +4,7 @@
       <el-form class="pcth100">
         <el-row align="top" justify="space-between" class="pcth100">
           <div class="top-logo pcth100">
-            <el-image :src="getImageUrl('logo.png')" :fit="contain" ></el-image>
+            <el-image :src="getImageUrl('logo.png')" :fit="cover"  class="top-image"></el-image>
           </div>
           <el-form-item class="m0 pcth100">
             <el-input
@@ -21,7 +21,7 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item class="pcth100 menu" style="width: 250px;">
+          <el-form-item class="pcth100 menu" style="width: 300px;">
             <div class="top-login-btn poi" @click="dialogFormVisible = true" v-if="loginBtnVisible">
               <el-icon>
                 <Avatar />
@@ -390,6 +390,14 @@ export default {
 
 .top-content .top-logo {
   width: 250px;
+  height: 50px;
+}
+.top-content .top-image {
+  /* width: 250px;
+  height: 38px; */
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .top-content .top-input {

@@ -50,6 +50,20 @@
         </el-table-column>
       </el-table>
       </el-tab-pane>
+      <el-tab-pane label="高校动态" name="gxdt">
+      <div class="tr mt10">
+        <el-pagination @current-change="handleCurrentChangeGxdt" v-model:currentPage="gxdtQuery.params.pageIndex"
+          v-model:page-size="gxdtQuery.params.pageSize" layout="total, prev, pager, next" :total="gxdtTotalCount">
+        </el-pagination>
+      </div>
+        <el-table :data="gxdtList" style="width: 100%" :show-header="false" class="customer-table poi"
+        @row-click="showTrend">
+        <el-table-column prop="trend_title" label="">
+        </el-table-column>
+        <el-table-column prop="create_time" label="" width="150" :formatter="methods.dateFormat">
+        </el-table-column>
+      </el-table>
+      </el-tab-pane>
     </el-tabs>
     <portal-footer></portal-footer>
   </div>
@@ -59,7 +73,7 @@
 import moment from "moment";
 import TopToolBar from "../components/TopToolBar.vue";
 import PortalFooter from "../components/PortalFooter.vue";
-import { getBriefList, getBriefBaseList } from "../api/serviceApi";
+import { getBriefList, getBriefBaseList,getTrendList } from "../api/serviceApi";
 import { onMounted, ref, reactive, getCurrentInstance } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -69,6 +83,13 @@ export default {
       const href = this.$router.resolve({
         path: "/BriefShow",
         query: { briefId: row.brief_id },
+      });
+      window.open(href.href, "_blank");
+    },
+    showTrend(row){
+      const href = this.$router.resolve({
+        path: "/TrendShow",
+        query: { trendId: row.trend_id },
       });
       window.open(href.href, "_blank");
     },
@@ -89,9 +110,11 @@ export default {
     let tpxwList = ref([]); //图片新闻模型列表
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
+    let gxdtList=ref([]);//高校动态模型列表
     let tpxwTotalCount = ref(0); // 图片新闻总数
     let tzggTotalCount = ref(0); // 通知公告总数
     let zcfgTotalCount = ref(0); // 政策法规总数
+    let gxdtTotalCount=ref(0);//高校动态总数
     let tpxwQuery = reactive({
       params: {
         briefType: "0503", //图片新闻
@@ -119,6 +142,14 @@ export default {
         topN: 20,
       },
     });
+    let gxdtQuery = reactive({
+      params: {
+        trendStateList: "0401", //已发布
+        pageIndex: 1,
+        pageSize: 20,
+        topN: 20,
+      },
+    });
     let breadcrumb = ref(""); // 面包屑
 
     const methods = {
@@ -133,6 +164,9 @@ export default {
             break;
           case "zcfg":
             breadcrumb.value = "政策法规";
+            break;
+          case "gxdt":
+            breadcrumb.value = "高校动态";
             break;
         }
       },
@@ -163,6 +197,15 @@ export default {
           }
         });
       },
+      getGxdtList(){
+        //高校动态
+        getTrendList(gxdtQuery).then((res)=>{
+          if (res.resultCode == "200") {
+            gxdtList.value = JSON.parse(res.data.TrendList);
+            gxdtTotalCount.value = res.data.totalCount;
+          }
+        });
+      },
       dateFormat(date) {
         return moment(date.create_time).format("YYYY-MM-DD");
       },
@@ -182,6 +225,10 @@ export default {
       zcfgQuery.params.pageIndex = val;
       methods.getZcfgList();
     };
+    const handleCurrentChangeGxdt=(val)=>{
+      gxdtQuery.params.pageIndex=val;
+      methods.getGxdtList();
+    };
     const getSession = () => {
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
@@ -196,6 +243,7 @@ export default {
       methods.getTpxwList();
       methods.getTzggList();
       methods.getZcfgList();
+      methods.getGxdtList();
     });
 
     return {
@@ -212,16 +260,20 @@ export default {
       tpxwList,
       tzggList,
       zcfgList,
+      gxdtList,
       tpxwTotalCount,
       tzggTotalCount,
       zcfgTotalCount,
+      gxdtTotalCount,
       tpxwQuery,
       tzggQuery,
       zcfgQuery,
+      gxdtQuery,
       methods,
       handleCurrentChangeTpxw,
       handleCurrentChangeTzgg,
       handleCurrentChangeZcfg,
+      handleCurrentChangeGxdt,
       getSession,
     };
   },

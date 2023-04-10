@@ -20,7 +20,7 @@
             }} | {{videoForm.data.teacher}} </span>
             <span class="video_title redColor mr20"> {{SchoolForm.data.school_name}}  </span>
             <!-- <span>{{ dateFormat(videoForm.data.create_time) }}</span> -->
-            <span>{{ videoForm.data.video_year }}年度</span>
+            <span>{{ videoForm.data.video_year }}</span>
           </div>
           <div class="videoBg pr20">
             <!-- <vue3VideoPlay
@@ -199,7 +199,7 @@
                     <span class="author">{{ ele.teacher }}</span>
                   </div>
                   <div class=" sub-title">
-                    <span class="mr5">{{ ele.video_year }}年度</span>
+                    <span class="mr5">{{ ele.video_year }}</span>
                   </div>
                   <el-divider
                     class="portal-divider"
@@ -233,7 +233,7 @@
                 </div>
               </el-row>
             </div>
-            <div v-else-if="relativeVideoList">暂无视频</div>
+            <div v-else-if="relativeVideoList">视频资源正在审核中……</div>
             <div v-else>视频列表加载中...</div>
           </el-card>
         </el-col>

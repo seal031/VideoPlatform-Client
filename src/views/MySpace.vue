@@ -52,14 +52,14 @@
                       <span>{{ ele.teacher }}</span>
                     </div>
                     <div>
-                      {{ ele.video_year }}年度
+                      {{ ele.video_year }}
                     </div>
                   </div>
                 </div>
               </el-row>
             </template>
-            <template v-else-if="wdscList">暂无视频</template>
-            <template v-else>视频列表加载中...</template>
+            <template v-else-if="wdscList">暂无收藏</template>
+            <template v-else>暂无收藏</template>
           </div>
         </div>
       </el-tab-pane>
@@ -105,13 +105,13 @@
                     <span>{{ ele.teacher }}</span>
                   </div>
                   <div>
-                    {{ ele.video_year }}年度
+                    {{ ele.video_year }}
                   </div>
                 </div>
               </div>
             </el-row>
           </template>
-          <template v-else-if="wdspList">暂无视频</template>
+          <template v-else-if="wdspList">视频资源正在审核中……</template>
           <template v-else>视频列表加载中...</template>
         </div>
         </div>
@@ -160,13 +160,13 @@
                     <span>{{ ele.teacher }}</span>
                   </div>
                   <div>
-                    {{ ele.video_year }}年度
+                    {{ ele.video_year }}
                   </div>
                 </div>
               </div>
             </el-row>
           </template>
-          <template v-else-if="bxspList">暂无视频</template>
+          <template v-else-if="bxspList">视频资源正在审核中……</template>
           <template v-else>视频列表加载中...</template>
         </div>
         </div>

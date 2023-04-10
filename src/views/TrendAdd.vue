@@ -353,6 +353,7 @@ export default {
       // getColumnType().then((res) => {
       //   columnTypeList.value = res.data;
       // });
+      trendForm.data.trend_type=columnTypeList[0].code_id;
     });
 
     watch(

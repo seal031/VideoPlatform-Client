@@ -184,7 +184,7 @@
                         <span class="mr2">｜</span>
                         <span>{{ ele.teacher }}</span>
                       </div>
-                      <div>{{ ele.video_year }}年度</div>
+                      <div>{{ ele.video_year }}</div>
                     </div>
                   </div>
                 </el-row>
