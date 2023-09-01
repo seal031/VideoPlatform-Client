@@ -223,6 +223,62 @@
         </div>
         </div>
       </el-tab-pane>
+
+      <el-tab-pane  v-if="userRole=='0102'">
+        <template #label>
+          <span :icon="Star"
+            ><i class="el-icon-date"></i>
+            <!-- &#12288;&#12288;&#12288;&#12288;&#12288;&#12288; -->
+            他校视频</span>
+        </template>
+        <div class="video-result">
+        <div class="tr mb10">
+          <el-pagination
+            @current-change="handleCurrentChange"
+            v-model:currentPage="txspQuery.params.pageIndex"
+            v-model:page-size="txspQuery.params.pageSize"
+            layout="total, prev, pager, next"
+            :total="txspTotalCount"
+          >
+          </el-pagination>
+        </div>
+        <div>
+          <template v-if="txspList && txspList.length > 0">
+            <!-- TODO 点击跳转 -->
+            <el-row class="video-items">
+              <div
+                class="video-item"
+                v-for="(ele, i) in txspList"
+                :key="i"
+                @click.enter="jump(ele)"
+              >
+                <video-item
+                  :src="ele.video_facede"
+                  :tip="ele.video_title"
+                  :videoId="ele.video_id"
+                  :viewCount="ele.view_count"
+                  :appreciateCount="ele.appreciate_count"
+                  :collectionCount="ele.collection_count"
+                />
+                <div>
+                  <div><span class="mr5">{{ele.video_title}}</span></div>
+                  <div class="redColor">
+                    <span class="mr5">{{ ele.award }}</span>
+                    <span class="mr2">｜</span>
+                    <span>{{ ele.teacher }}</span>
+                  </div>
+                  <div>
+                    {{ ele.video_year }}
+                  </div>
+                </div>
+              </div>
+            </el-row>
+          </template>
+          <template v-else-if="bxspList">视频资源正在审核中……</template>
+          <template v-else>视频列表加载中...</template>
+        </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
 
     <portal-footer></portal-footer>
@@ -260,9 +316,11 @@ export default {
     let bxspList = ref([]); //本校视频模型列表
     let wdcjList=ref([]);//我的成绩视频模型列表
     let bxcjList=ref([]);//本校成绩视频模型列表
+    let txspList=ref([]);//他校视频模型列表
     let wdscTotalCount = ref(0);
     let wdspTotalCount = ref(0);
     let bxspTotalCount = ref(0);
+    let txspTotalCount=ref(0);
     let wdscQuery = reactive({
       params: {
         userId: "",
@@ -317,6 +375,17 @@ export default {
         part:"myschool"
       },
     });
+    let txspQuery = reactive({
+      params: {
+        // videoSchool: "",
+        videoState: "0401",
+        pageIndex: 1,
+        pageSize: 20,
+        user_school:"",
+        userRole:"",
+        part:"otherschool",
+      },
+    });
 
     const methods = {
       dateFormat(date) {
@@ -363,6 +432,14 @@ export default {
         }
       });
     };
+    const bindTxspList = () => {
+      getVideoList(txspQuery).then((res) => {
+        if (res.resultCode == "200") {
+          txspList.value = JSON.parse(res.data.videoList);
+          txspTotalCount.value = res.data.totalCount;
+        }
+      });
+    };
     const showVideo = () => {};
     const getSession = () => {
       userId = localStorage.getItem("user_id");
@@ -386,6 +463,7 @@ export default {
       getSession();
       wdscQuery.params.userId=userId;
       wdscQuery.params.userRole=userRole;
+      wdscQuery.params.user_school=userSchool;
       wdspQuery.params.userId=userId;
       wdspQuery.params.user_school=userSchool;
       wdspQuery.params.userRole=userRole;
@@ -396,11 +474,14 @@ export default {
       wdcjQuery.params.userRole=userRole;
       bxcjQuery.params.user_school=userSchool;
       bxcjQuery.params.userRole=userRole;
+      txspQuery.params.user_school=userSchool;
+      txspQuery.params.userRole=userRole;
       bindWdscList();
       bindWdspList();
       bindBxspList();
       bindWdcjList();
       bindBxcjList();
+      bindTxspList();
     });
     return {
       Star,
@@ -418,20 +499,24 @@ export default {
       bxspList,
       wdcjList,
       bxcjList,
+      txspList,
       wdscTotalCount,
       wdspTotalCount,
       bxspTotalCount,
+      txspTotalCount,
       wdscQuery,
       wdspQuery,
       bxspQuery,
       wdcjQuery,
       bxcjQuery,
+      txspQuery,
       methods,
       bindWdscList,
       bindWdspList,
       bindBxspList,
       bindWdcjList,
       bindBxcjList,
+      bindTxspList,
       showVideo,
       getSession,
       jump,

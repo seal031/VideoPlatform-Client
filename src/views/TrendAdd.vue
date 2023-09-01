@@ -171,7 +171,7 @@ export default {
     // let columnTypeList = ref([]);
     let columnTypeList=[
       {
-        code_name: "高校动态",
+        code_name: "基层动态",
         code_id: "0505",
       }
     ];

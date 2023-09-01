@@ -57,12 +57,12 @@
                   <!-- TODO 替换title -->
                   <div class="truncate-text">{{ hotvideoitem.video_title }}</div>
                   <div class="sub-title redColor">
-                    <span class="mr5 truncate-text">{{ hotvideoitem.award }}</span>
+                    <span class="author">{{ hotvideoitem.award }}</span>
                     <!-- <span class="mr2">波力</span> -->
                     <span class="mr2">｜</span>
-                    <span class="author">{{ hotvideoitem.teacher }}</span>
+                    <span class="mr5 truncate-text">{{ hotvideoitem.teacher }}</span>
                   </div>
-                  <div class="truncate-text">{{ hotvideoitem.video_year }}</div>
+                  <div class="truncate-text">{{ hotvideoitem.video_year }}{{hotvideoitem.video_type}}</div>
                 </div>
               </div>
             </div>
@@ -124,8 +124,8 @@
         </h2>
       </div>
       <div class="portal-system-item portal-system-item2 poi" @click="JumpToExternalSystem(externalSystemFormQGS.data)">
-        <span>北京市高校青年教师管理岗比赛系统</span>
-        <h2><br /></h2>
+        <span>北京市高校青年教师管理岗比赛管理系统</span>
+        <h2></h2>
         <h2>
           {{ externalSystemFormQGS.data.open_status }}<!-- 暂未开放系统入口 -->
           <svg t="1645887690692" class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -258,7 +258,7 @@
                     <span class="mr2">｜</span>
                     <span>{{ ele.teacher }}</span>
                   </div>
-                  <div>{{ ele.video_year }}</div>
+                  <div>{{ ele.video_year }}{{ele.video_type}}</div>
                 </div>
               </div>
             </el-row>
@@ -274,7 +274,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="mt20 mb20 rel">
-              <span class="f20">通知公告</span>
+              <span class="f20 poi"  @click="jump('/portalBriefList', 'tzgg')">通知公告</span>
               <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <svg t="1645936733359" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -286,7 +286,7 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'tzgg')">更多 ></el-button>
+              <!-- <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'tzgg')">更多 ></el-button> -->
             </div>
             <el-table :data="tzggList" :show-header="false" class="p10" height="205" @row-click="showBrief"
               empty-text="暂无数据">
@@ -305,7 +305,7 @@
 
           <el-col :span="12">
             <div class="mt20 mb20 rel">
-              <span class="f20">政策法规</span>
+              <span class="f20 poi"  @click="jump('/portalBriefList', 'zcfg')">政策法规</span>
               <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <svg t="1645936798330" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -317,7 +317,7 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'zcfg')">更多 ></el-button>
+              <!-- <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'zcfg')">更多 ></el-button> -->
             </div>
             <el-table :data="zcfgList" :show-header="false" class="p10" height="205" empty-text="暂无数据"
               @row-click="showBrief">
@@ -342,7 +342,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <div class="mt20 mb20 rel">
-              <span class="f20">高校动态</span>
+              <span class="f20 poi"  @click="jump('/portalBriefList', 'gxdt')">基层动态</span>
               <sup class="f20">
                 <el-icon class="title-icon ml5">
                   <svg t="1677502118006" class="icon" viewBox="0 0 1184 1024" version="1.1"
@@ -357,7 +357,7 @@
                 </el-icon>
               </sup>
               <!-- TODO 点击更多跳转 -->
-              <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'gxdt')">更多 ></el-button>
+              <!-- <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'gxdt')">更多 ></el-button> -->
             </div>
             <el-table :data="trendList" :show-header="false" class="p10" height="205" @row-click="showTrend"
               empty-text="暂无数据">
@@ -365,7 +365,7 @@
                 <template #default="scope">
                   <div v-tooltip-auto-show>
                     <el-tooltip :content="scope.row.trend_title" placement="top-start">
-                      <div class="poi text-ellipsis">{{ scope.row.trend_title }}</div>
+                      <div class="poi text-noEllipsis">{{ scope.row.trend_title }}</div>
                     </el-tooltip>
                   </div>
                 </template>
@@ -445,7 +445,7 @@ export default {
     let hotVideoList = ref([]); //热门视频模型列表
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
-    let trendList = ref([]);//高校动态模型列表
+    let trendList = ref([]);//基层动态模型列表
     //外部系统数据模型
     const initExternalSystemFormDataQJS = {
       external_id: null,
@@ -565,19 +565,20 @@ export default {
         });
       },
       getHotVideoList() {
+        // debugger
         //热门视频
         let query = reactive({
           params: {
             userId: userId,
             userRole: userRole,
-            // videoSchool: userSchool,  
+            user_school: userSchool,  
             orderBy: "hot",
             topN: 6,
           },
         });
         getVideoList(query).then((res) => {
-          if (res.resultCode == "200") {
             debugger;
+          if (res.resultCode == "200") {
             hotVideoList.value = JSON.parse(res.data.videoList);
           }
         });
@@ -596,7 +597,7 @@ export default {
         });
         getVideoList(query).then((res) => {
           if (res.resultCode == "200") {
-            debugger;
+            // debugger;
             qjsVideoList.value = JSON.parse(res.data.videoList);
             videoTabs.value[0].content = qjsVideoList;
           }
@@ -688,7 +689,7 @@ export default {
         });
       },
       getTrendList() {
-        //高校动态
+        //基层动态
         let query = reactive({
           params: {
             trendStateList: "0401", //已发布
@@ -712,13 +713,13 @@ export default {
         getExternalSystemList().then((res) => {
           let allExternalSystemList = JSON.parse(res.data.ExternalSystemList);
           externalSystemFormQJS.data = allExternalSystemList[0];
-          externalSystemFormQJS.data.open_status = externalSystemFormQJS.data.is_open == 0 ? "暂未开放" : "系统入口";
+          externalSystemFormQJS.data.open_status = externalSystemFormQJS.data.is_open == 0 ? "赛事活动期间开放" : "系统入口";
           externalSystemFormQGS.data = allExternalSystemList[1];
-          externalSystemFormQGS.data.open_status = externalSystemFormQGS.data.is_open == 0 ? "暂未开放" : "系统入口";
+          externalSystemFormQGS.data.open_status = externalSystemFormQGS.data.is_open == 0 ? "赛事活动期间开放" : "系统入口";
           externalSystemFormSDBY.data = allExternalSystemList[2];
-          externalSystemFormSDBY.data.open_status = externalSystemFormSDBY.data.is_open == 0 ? "暂未开放" : "系统入口";
+          externalSystemFormSDBY.data.open_status = externalSystemFormSDBY.data.is_open == 0 ? "赛事活动期间开放" : "系统入口";
           externalSystemFormZYZ.data = allExternalSystemList[3];
-          externalSystemFormZYZ.data.open_status = externalSystemFormZYZ.data.is_open == 0 ? "暂未开放" : "系统入口";
+          externalSystemFormZYZ.data.open_status = externalSystemFormZYZ.data.is_open == 0 ? "赛事活动期间开放" : "系统入口";
         });
       },
       dateFormat(date) {
@@ -737,7 +738,7 @@ export default {
         content: [],
       },
       {
-        title: "师德榜样优秀视频",
+        title: "榜样人物风采展示",
         name: "sdby",
         content: [],
       },
@@ -893,6 +894,7 @@ export default {
 
 .portal-hot .video-item .sub-title .author {
   white-space: nowrap;
+  /* overflow: hidden; */
 }
 
 .portal-divider {
@@ -1125,6 +1127,13 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 340px;
+  font-size: 15px;
+}
+.text-noEllipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 800px;
   font-size: 15px;
 }
 </style>

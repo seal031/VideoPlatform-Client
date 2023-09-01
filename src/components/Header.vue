@@ -5,7 +5,7 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="logo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;北京市教育工会智慧工作平台</div>
+        <div class="logo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;北京教育工会智慧平台</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 用户头像 -->

@@ -2,7 +2,7 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-lx-calendar"></i> 系统开放管理
+          <i class="el-icon-lx-calendar"></i> 系统开放配置
         </el-breadcrumb-item>
         <el-breadcrumb-item>系统开放参数配置</el-breadcrumb-item>
       </el-breadcrumb>

@@ -37,7 +37,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="封面图片" v-show="briefForm.data.brief_type=='0503'||briefForm.data.brief_type=='0504'">
+              <el-form-item label="封面图片" v-show="briefForm.data.brief_type=='0503'||briefForm.data.brief_type=='0504'||briefForm.data.brief_type=='0507'||briefForm.data.brief_type=='0508'">
                 <el-upload
                   action="http://47.93.84.178:14474/Upload/Image"
                   list-type="picture-card"
@@ -90,8 +90,8 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="发布时间" prop="brief_title">
-                <el-date-picker v-model="briefForm.data.brief_title" type="date"  placeholder="请选择日期"/>
+              <el-form-item label="发布时间" prop="create_time">
+                <el-date-picker v-model="briefForm.data.create_time" type="date"  placeholder="请选择日期"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -216,9 +216,10 @@ export default {
       brief_title: [
         { required: true, message: "请输入内容标题", trigger: "blur" },
       ],
-      brief_content: [
-        { required: true, message: "请输入内容详情", trigger: "blur" },
-      ],
+      //内容详情改为非必填
+      // brief_content: [
+      //   { required: true, message: "请输入内容详情", trigger: "blur" },
+      // ],
       brief_type: [
         { required: true, message: "请选择内容分类", trigger: "blur" },
       ],
@@ -369,7 +370,7 @@ export default {
       bindBrief();
       getColumnType().then((res) => {
         columnTypeList.value = res.data;
-        columnTypeList.value.splice(4);//不取高校动态及以后的
+        columnTypeList.value.splice(4,1);//不取基层动态
       });
     });
 

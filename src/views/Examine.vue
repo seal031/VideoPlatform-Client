@@ -102,7 +102,7 @@
     },
     components: {
     },
-    setup(props) {
+    setup(props,context) {
       let route = useRoute(); //可以在setup中使用route获取参数
       let userId = "";
       let userRole = "";
@@ -173,7 +173,7 @@
                   breadcrumbParam.value = "zcfg";
                   break;
                 case "0505":
-                  breadcrumb.value = "高校动态";
+                  breadcrumb.value = "基层动态";
                   breadcrumbParam.value = "gxdt";
                   break;
               }
@@ -247,6 +247,7 @@
         AddExamineRecord(examineForm.data).then((res)=>{
           if(res.resultCode=="200"){
             ElMessage.success("审核成功");
+            context.emit('dialogclose');
           }
           else{
             ElMessage({
@@ -265,6 +266,7 @@
           debugger
           if(res.resultCode=="200"){
             ElMessage.success("驳回成功");
+            context.emit('dialogclose');
           }
           else{
             ElMessage({

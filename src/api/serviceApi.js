@@ -156,7 +156,7 @@ export function getExamineByTrendId(params){
 export function AddExamineRecord(params){
     return axios.post('/Trend/AddExamineRecord',params);
 }
-//////////////////////高校动态 END/////////////////
+//////////////////////基层动态 END/////////////////
 export function login(params){
     return axios.post('/GlobalCode/login',params);
 }

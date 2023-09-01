@@ -13,7 +13,8 @@
       <el-header>
         <h2>{{ trendForm.data.trend_title }}</h2>
         <p>
-          <span> 所属分类： {{ trendForm.data.trend_type_name }} </span>
+          <!-- <span> 所属分类： {{ trendForm.data.trend_type_name }} </span> -->
+          <span> 发布单位： {{ trendForm.data.school_name }} </span>
           <el-divider direction="vertical"></el-divider>
           <span>
             创建时间： {{ methods.dateFormat(trendForm.data.create_time) }}
@@ -88,6 +89,7 @@ export default {
         trend_image: "",
         operate_admin: null,
         create_time: null,
+        school_name:"",
       },
     });
     // 定义方法
@@ -123,7 +125,7 @@ export default {
                 breadcrumbParam.value = "zcfg";
                 break;
               case "0505":
-                breadcrumb.value = "高校动态";
+                breadcrumb.value = "基层动态";
                 breadcrumbParam.value = "gxdt";
                 break;
             }

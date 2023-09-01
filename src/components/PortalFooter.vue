@@ -8,7 +8,7 @@
       <span class="mr5">版权所有@2022</span>
     </div>
     <div>
-      <span class="mr5">本站及所有内容系北京市教育工会智库建设研究成果，仅供测试使用，</span>
+      <span class="mr5">本站及所有内容系北京教育工会智慧平台建设研究成果，仅供测试使用，</span>
       <!-- <span class="mr5">版权所有</span> -->
       <span class="mr5">复制必究</span>
       <!-- <span>京ICP备09068819号</span> -->

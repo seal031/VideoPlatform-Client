@@ -166,7 +166,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="开放对象" prop="public_school" v-show="showPublicObject">
+                  <el-form-item label="开放对象" prop="public_school" v-if=showPublicObject>
                     <el-select v-model="videoForm.data.public_school" placeholder="请选择" clearable multiple collapse-tags collapse-tags-tooltip style="width: 100%">
                       <el-option v-for="(item, c) in schoolList" :key="c" :label="item.school_name"
                         :value="item.school_id"></el-option>

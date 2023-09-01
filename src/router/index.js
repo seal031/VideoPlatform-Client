@@ -16,7 +16,7 @@ const routes = [
         path: '/portal',
         name: 'portal',
         meta:{
-            title:'首页-北京市教育工会智慧工作平台'
+            title:'首页-北京教育工会智慧平台'
         },
         component: Portal,
     },
@@ -41,7 +41,7 @@ const routes = [
         path:"/portalTrendList",
         name:"portalTrendList",
         meta:{
-            title:"高校动态"
+            title:"基层动态"
         },
         component:TrendList,
     },
@@ -160,14 +160,14 @@ const routes = [
             path: "/TrendList",
             name: "TrendList",
             meta: {
-                title: '高校动态管理'
+                title: '基层动态管理'
             },
             component: () => import("../views/TrendList.vue")
         }, {
             path: "/TrendAdd",
             name: "TrendAdd",
             meta: {
-                title: '添加高校动态'
+                title: '添加基层动态'
             },
             component: () => import("../views/TrendAdd.vue")
         }
@@ -188,7 +188,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title || '北京市教育工会智慧工作平台网站';
+    document.title = to.meta.title || '北京教育工会智慧平台网站';
     const user_name = localStorage.getItem('user_name');
     const user_role= localStorage.getItem('user_role');
     let last_visit_time=localStorage.getItem('last_visit_time');

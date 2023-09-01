@@ -89,11 +89,11 @@ export default {
     // let tpxwList = ref([]); //图片新闻模型列表
     // let tzggList = ref([]); //通知公告模型列表
     // let zcfgList = ref([]); //政策法规模型列表
-    let trendList = ref([]);//高校动态模型列表
+    let trendList = ref([]);//基层动态模型列表
     // let tpxwTotalCount = ref(0); // 图片新闻总数
     // let tzggTotalCount = ref(0); // 通知公告总数
     // let zcfgTotalCount = ref(0); // 政策法规总数
-    let trendTotalCount=ref(0);//高校动态总数
+    let trendTotalCount=ref(0);//基层动态总数
     // let tpxwQuery = reactive({
     //   params: {
     //     trendType: "0503", //图片新闻
@@ -146,7 +146,7 @@ export default {
             breadcrumb.value = "政策法规";
             break;
           case "trend":
-            breadcrumb.value = "高校动态";
+            breadcrumb.value = "基层动态";
             break;
         }
       },
@@ -178,7 +178,7 @@ export default {
       //   });
       // },
       getTrendList(){
-        //高校动态
+        //基层动态
         getTrendList(trendQuery).then((res) => {
           if (res.resultCode == "200") {
             trendList.value = JSON.parse(res.data.TrendList);

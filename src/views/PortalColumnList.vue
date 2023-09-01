@@ -50,7 +50,7 @@
         </el-table-column>
       </el-table>
       </el-tab-pane>
-      <el-tab-pane label="高校动态" name="gxdt">
+      <el-tab-pane label="基层动态" name="gxdt">
       <div class="tr mt10">
         <el-pagination @current-change="handleCurrentChangeGxdt" v-model:currentPage="gxdtQuery.params.pageIndex"
           v-model:page-size="gxdtQuery.params.pageSize" layout="total, prev, pager, next" :total="gxdtTotalCount">
@@ -110,11 +110,11 @@ export default {
     let tpxwList = ref([]); //图片新闻模型列表
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
-    let gxdtList=ref([]);//高校动态模型列表
+    let gxdtList=ref([]);//基层动态模型列表
     let tpxwTotalCount = ref(0); // 图片新闻总数
     let tzggTotalCount = ref(0); // 通知公告总数
     let zcfgTotalCount = ref(0); // 政策法规总数
-    let gxdtTotalCount=ref(0);//高校动态总数
+    let gxdtTotalCount=ref(0);//基层动态总数
     let tpxwQuery = reactive({
       params: {
         briefType: "0503", //图片新闻
@@ -166,7 +166,7 @@ export default {
             breadcrumb.value = "政策法规";
             break;
           case "gxdt":
-            breadcrumb.value = "高校动态";
+            breadcrumb.value = "基层动态";
             break;
         }
       },
@@ -198,7 +198,7 @@ export default {
         });
       },
       getGxdtList(){
-        //高校动态
+        //基层动态
         getTrendList(gxdtQuery).then((res)=>{
           if (res.resultCode == "200") {
             gxdtList.value = JSON.parse(res.data.TrendList);

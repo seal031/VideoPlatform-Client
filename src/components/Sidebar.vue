@@ -76,7 +76,7 @@ export default {
                     {
                         icon: "el-icon-lx-edit",
                         index: "/TrendList",
-                        title: "高校动态管理",
+                        title: "基层动态管理",
                     },
                     {
                         icon: "el-icon-lx-lock",
@@ -100,7 +100,7 @@ export default {
                     {
                         icon: "el-icon-lx-home",
                         index: "/TrendList",
-                        title: "高校动态管理",
+                        title: "基层动态管理",
                     },
                 ]
             }
@@ -141,7 +141,7 @@ export default {
                     writeLogs("访问系统开放配置","访问系统开放配置");
                     break;
                 case "/TrendList":
-                    writeLogs("访问高校动态管理","访问高校动态管理");
+                    writeLogs("访问基层动态管理","访问基层动态管理");
                     break;
                 default:
                     break;

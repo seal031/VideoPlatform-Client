@@ -13,7 +13,8 @@
       <el-header>
         <h2>{{ briefForm.data.brief_title }}</h2>
         <p>
-          <span> 所属分类： {{ briefForm.data.brief_type_name }} </span>
+          <!-- <span> 所属分类： {{ briefForm.data.brief_type_name }} </span> -->
+          <span> 发布单位：北京市教育工会 </span>
           <el-divider direction="vertical"></el-divider>
           <span>
             创建时间： {{ methods.dateFormat(briefForm.data.create_time) }}

@@ -213,7 +213,7 @@ export default {
       brief_state: "",
     });
     const dateFormat=(date) =>{
-        return moment(date.create_time).format("YYYY-MM-DD");
+        return moment(date.create_time).format("YYYY-MM-DD HH:mm:ss");
       };
     const methods = {
       //加载列表
@@ -236,7 +236,7 @@ export default {
         getColumnType().then((res) => {
           if (res.resultCode == "200") {
             briefTypeList.value = res.data;
-            briefTypeList.value.splice(4);//不取高校动态及以后的
+            briefTypeList.value.splice(4);//不取基层动态及以后的
           } else {
             ElMessage({
               message: "获取数据失败：" + res.message,
