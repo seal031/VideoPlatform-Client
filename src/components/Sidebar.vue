@@ -1,6 +1,6 @@
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" @select="handleSelect" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
+        <el-menu class="sidebar-el-menu" @select="handleSelect" :default-active="onRoutes" :collapse="false" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in items">
                 <template v-if="item.subs">
@@ -123,7 +123,7 @@ export default {
         const store = useStore();
         const collapse = computed(() => store.state.collapse);
         const handleSelect=((key,keypath)=>{
-            debugger
+            // debugger
             switch(key){
                 case "/VideoList":
                     writeLogs("访问视频资源管理","访问视频资源管理");

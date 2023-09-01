@@ -64,6 +64,20 @@
         </el-table-column>
       </el-table>
       </el-tab-pane>
+      <el-tab-pane label="北京教工" name="bjjg">
+      <div class="tr mt10">
+        <el-pagination @current-change="handleCurrentChangeBjjg" v-model:currentPage="bjjgQuery.params.pageIndex"
+          v-model:page-size="bjjgQuery.params.pageSize" layout="total, prev, pager, next" :total="bjjgTotalCount">
+        </el-pagination>
+      </div>
+        <el-table :data="bjjglist" style="width: 100%" :show-header="false" class="customer-table poi"
+        @row-click="showTrend">
+        <el-table-column prop="trend_title" label="">
+        </el-table-column>
+        <el-table-column prop="create_time" label="" width="150" :formatter="methods.dateFormat">
+        </el-table-column>
+      </el-table>
+      </el-tab-pane>
     </el-tabs>
     <portal-footer></portal-footer>
   </div>
@@ -111,10 +125,12 @@ export default {
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
     let gxdtList=ref([]);//基层动态模型列表
+    let bjjglist=ref([]);//北京教工模型列表
     let tpxwTotalCount = ref(0); // 图片新闻总数
     let tzggTotalCount = ref(0); // 通知公告总数
     let zcfgTotalCount = ref(0); // 政策法规总数
     let gxdtTotalCount=ref(0);//基层动态总数
+    let bjjgTotalCount=ref(0);//北京教工总数
     let tpxwQuery = reactive({
       params: {
         briefType: "0503", //图片新闻
@@ -144,6 +160,15 @@ export default {
     });
     let gxdtQuery = reactive({
       params: {
+        trendStateList: "0401", //已发布
+        pageIndex: 1,
+        pageSize: 20,
+        topN: 20,
+      },
+    });
+    let bjjgQuery=reactive({
+      params: {
+        briefType: "0506", //北京教工
         trendStateList: "0401", //已发布
         pageIndex: 1,
         pageSize: 20,
@@ -206,6 +231,15 @@ export default {
           }
         });
       },
+      getBjjgList(){
+        //北京教工
+        getTrendList(bjjgQuery).then((res)=>{
+          if (res.resultCode == "200") {
+            bjjglist.value = JSON.parse(res.data.TrendList);
+            bjjgTotalCount.value = res.data.totalCount;
+          }
+        });
+      },
       dateFormat(date) {
         return moment(date.create_time).format("YYYY-MM-DD");
       },
@@ -229,6 +263,10 @@ export default {
       gxdtQuery.params.pageIndex=val;
       methods.getGxdtList();
     };
+    const handleCurrentChangeBjjg=(val=>{
+      bjjgQuery.params.pageIndex=val;
+      methods.getBjjgList();
+    });
     const getSession = () => {
       userId = localStorage.getItem("user_id");
       userRole = localStorage.getItem("user_role");
@@ -244,6 +282,7 @@ export default {
       methods.getTzggList();
       methods.getZcfgList();
       methods.getGxdtList();
+      methods.getBjjgList();
     });
 
     return {
@@ -261,19 +300,23 @@ export default {
       tzggList,
       zcfgList,
       gxdtList,
+      bjjglist,
       tpxwTotalCount,
       tzggTotalCount,
       zcfgTotalCount,
       gxdtTotalCount,
+      bjjgTotalCount,
       tpxwQuery,
       tzggQuery,
       zcfgQuery,
       gxdtQuery,
+      bjjgQuery,
       methods,
       handleCurrentChangeTpxw,
       handleCurrentChangeTzgg,
       handleCurrentChangeZcfg,
       handleCurrentChangeGxdt,
+      handleCurrentChangeBjjg,
       getSession,
     };
   },
