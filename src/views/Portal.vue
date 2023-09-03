@@ -409,7 +409,7 @@
         </el-row>
       </div>
     </div>
-
+    <portal-advanced :data="advancedData"></portal-advanced>
     <portal-footer></portal-footer>
   </div>
 </template>
@@ -426,6 +426,7 @@ import { getVideoList, getBriefList, getExternalSystemList, getTrendBaseList } f
 import { Document, MessageBox } from "@element-plus/icons-vue";
 import { ElMessageBox } from "element-plus";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import PortalAdvanced from './subpages/PortalAdvanced.vue';
 export default {
   components: {
     portalHeader,
@@ -434,6 +435,7 @@ export default {
     VideoItem,
     Document,
     OuterIp,
+    PortalAdvanced,
   },
   methods: {
     showBrief(row) {
@@ -480,6 +482,21 @@ export default {
     let zcfgList = ref([]); //政策法规模型列表
     let bjjgList=ref([]);//北京教工模型列表
     let trendList = ref([]);//基层动态模型列表
+
+    const advancedData = reactive([
+      {
+        list: [
+          { src: 'https://images.dog.ceo/breeds/poodle-toy/n02113624_2305.jpg', videoId: '1221', tip: '我是短标题', eventTitle: '我是短eventTitle' },
+          { src: 'https://images.dog.ceo/breeds/mexicanhairless/n02113978_839.jpg', videoId: '1121', tip: '我是长标题我是长标题我是长标题我是长标题我是长标题', eventTitle: '我是长eventTitle我是长eventTitle我是长eventTitle我是长eventTitle' }
+        ]
+      }, 
+      {
+        list: [
+          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: 'ad5', tip: '我是短标题', eventTitle: '我是短eventTitle' },
+          { src: 'https://cdn2.thecatapi.com/images/ad5.jpg', videoId: 'a8d', tip: '我是长标题我是长标题我是长标题我是长标题我是长标题', eventTitle: '我是长eventTitle我是长eventTitle我是长eventTitle我是长eventTitle' }
+        ]
+      }
+    ])
     //外部系统数据模型
     const initExternalSystemFormDataQJS = {
       external_id: null,
@@ -611,7 +628,6 @@ export default {
           },
         });
         getVideoList(query).then((res) => {
-            debugger;
           if (res.resultCode == "200") {
             hotVideoList.value = JSON.parse(res.data.videoList);
           }
@@ -631,7 +647,6 @@ export default {
         });
         getVideoList(query).then((res) => {
           if (res.resultCode == "200") {
-            // debugger;
             qjsVideoList.value = JSON.parse(res.data.videoList);
             videoTabs.value[0].content = qjsVideoList;
           }
@@ -841,6 +856,8 @@ export default {
       realName,
       userSchool,
 
+      advancedData,
+
       initExternalSystemFormDataQJS,
       externalSystemFormQJS,
       initExternalSystemFormDataQGS,
@@ -883,308 +900,5 @@ export default {
 </script>
 
 <style scoped>
-.portal-wrap {
-  height: 100%;
-  overflow: auto;
-}
-
-.portal-hot {
-  width: 1000px;
-  margin: 10px auto;
-}
-
-.portal-hot .title-icon {
-  color: #de460c;
-}
-
-.portal-hot .carousel-title {
-  background-color: rgba(44, 38, 41, 0.4);
-  height: 50px;
-  line-height: 50px;
-  margin-top: -50px;
-  color: #fff;
-  font-size: 18px;
-  padding: 0 120px 0 0;
-  position: relative;
-  z-index: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.portal-hot .el-carousel {
-  --el-carousel-indicator-width: 10px;
-  --el-carousel-indicator-height: 10px;
-  --el-carousel-indicator-out-color: #fff;
-}
-
-.portal-hot :deep .el-carousel__indicators--outside {
-  bottom: 8px;
-  right: 30px;
-  left: auto;
-  position: absolute;
-}
-
-.portal-hot .video-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: -15px;
-  font-size: 13px;
-}
-
-.portal-hot .video-item {
-  /* 视频比是16:9 */
-  width: 150px;
-  margin-bottom: 35px;
-}
-
-.portal-hot .video-item .sub-title {
-  display: flex;
-}
-
-.portal-hot .video-item .sub-title .author {
-  white-space: nowrap;
-  /* overflow: hidden; */
-}
-
-.portal-divider {
-  width: 1120px;
-  margin: 22px auto;
-}
-
-.portal-system {
-  width: 1080px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.portal-system-item {
-  width: 256px;
-  height: 80px;
-  box-sizing: border-box;
-  padding-left: 20px;
-  border-top-right-radius: 10px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 14px;
-}
-
-.portal-system-item1 {
-  background: #03519b;
-}
-
-.portal-system-item2 {
-  background: #08a991;
-}
-
-.portal-system-item3 {
-  background: #2491b8;
-}
-
-.portal-system-item4 {
-  background: #f07b68;
-}
-
-.portal-system-item h2 {
-  letter-spacing: 4px;
-  font-size: 18px;
-}
-
-.portal-system-item .svg-icon {
-  margin-bottom: -4px;
-  margin-left: 4px;
-}
-
-.portal-videos {
-  background: #08a991;
-  margin-bottom: 40px;
-}
-
-.portal-videos :deep .el-tabs__header {
-  border-bottom: none;
-  background: #edeeef;
-  margin-bottom: 5px;
-}
-
-.portal-videos :deep .el-tabs--card>.el-tabs__header .el-tabs__nav {
-  min-width: 1080px;
-  left: 50%;
-  transform: translateX(-50%) !important;
-  border: none;
-}
-
-.portal-videos :deep .el-tabs__header .el-tabs__item {
-  height: 70px;
-  line-height: 90px;
-  font-size: 24px;
-  color: #5f6061;
-  padding: 0 40px;
-  border: none;
-}
-
-.portal-videos :deep .el-tabs__header .el-tabs__item.is-active {
-  color: #fff;
-  background: #08a991;
-  border-bottom: none;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-
-.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::before,
-.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::after {
-  content: "";
-  display: block;
-  height: 2px;
-  width: 2px;
-  position: absolute;
-  bottom: 0;
-  background: radial-gradient(
-    2px at 2px 0px,
-    transparent 2px,
-    #08a991 2px
-  );
-}
-.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::before {
-  left: calc(-1 * 2px);
-  transform: scaleX(-1);
-}
-.portal-videos :deep .el-tabs__header .el-tabs__item.is-active::after {
-  right: calc(-1 * 2px); 
-}
-.more-btn {
-  color: #5f6061;
-}
-
-.portal-videos .more-btn {
-  position: absolute;
-  right: -70px;
-  top: 32px;
-}
-
-.portal-videos :deep .el-tabs__content {
-  width: 1080px;
-  margin: 0 auto;
-  position: relative;
-  background: #fff;
-  min-height: 100px;
-}
-
-.portal-videos .video-items {
-  margin: 20px 20px -20px;
-}
-
-.portal-videos .video-item {
-  /* 视频比是16:9 */
-  width: 200px;
-  margin-bottom: 35px;
-  margin-right: 10px;
-  font-size: 13px;
-}
-
-.portal-videos .video-item:nth-child(5n) {
-  margin-right: 0;
-}
-
-.redColor {
-  color: #de460c;
-}
-
-.portal-notice {
-  background: #faeae2;
-}
-
-.portal-notice-content {
-  width: 1000px;
-  margin: 0 auto;
-}
-
-.portal-notice-content .more-btn {
-  position: absolute;
-  right: 0;
-  bottom: -20px;
-}
-
-.portal-notice-content .customer-table {
-  --el-table-border: none;
-}
-
-.portal-notice-content .customer-table.el-table :deep .el-table__cell {
-  padding: 2px 0;
-}
-
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 14px;
-  opacity: 0.75;
-  line-height: 150px;
-  margin: 0;
-  text-align: center;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-
-.bg-purple {
-  background: #d5d5da;
-}
-
-.cnm {
-  margin-left: 100px;
-  margin-right: 100px;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.horizontal-center {
-  display: flex;
-  justify-content: center;
-}
-
-.vertical-center {
-  display: flex;
-  align-items: center;
-}
-
-.truncate-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 13px;
-}
-
-/* .line_file {
-  display: inline-block;
-  width: 20%;
-  height: 20%;
-} */
-/* text-align: center; */
-/* background-color: #d3d3d3; */
-.text-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 340px;
-  font-size: 15px;
-}
-.text-noEllipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 800px;
-  font-size: 15px;
-}
+@import url('../assets/css/portal.css');
 </style>

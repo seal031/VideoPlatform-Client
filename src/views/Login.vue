@@ -82,7 +82,6 @@ export default {
             return window.returnCitySN ? window.returnCitySN['cip']: "";
         });
         const submitLogin = () => {
-            debugger
             loginModel.data.admin_ip=outerIp.value;
             login(loginModel.data)
                 .then((res) => {
@@ -122,7 +121,6 @@ export default {
                 }
                 })
                 .catch((err) => {
-                    debugger;
                 });
             };
 

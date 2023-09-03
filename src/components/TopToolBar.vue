@@ -178,7 +178,6 @@ export default {
       };
     };
     const searchHandle = () => {
-      debugger
       const href = router.resolve({
         path: '/SearchResult',
         query: { keyword: keyword.value },
@@ -225,7 +224,6 @@ export default {
           }
         })
         .catch((err) => {
-          debugger;
         });
     };
     const submitChangePwd = () => {
@@ -293,7 +291,6 @@ export default {
     };
 
     onBeforeUpdate(() => {
-      debugger
       keyword.value = props.keyword;
     });
 

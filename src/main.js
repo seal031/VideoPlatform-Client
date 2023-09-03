@@ -10,7 +10,12 @@ import { ElMessage } from "element-plus";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import TooltipAutoShow from './components/TooltipAutoShow.js';
 
+//全局注册svg组件
+import SvgIcon from './components/SvgIcon.vue';
+
 const app = createApp(App)
+app.component('svg-icon', SvgIcon)
+
 //防止重复点击
 app.directive('preventReClick', (el, binding) => {
     function preventReClickFun(elValue, bindingValue) {
