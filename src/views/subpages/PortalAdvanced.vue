@@ -3,7 +3,7 @@
 		<div class="portal-notice-content">
 			<el-row :gutter="20">
 				<el-col :span="12" v-for="(item,index) in advancedList.data" :key="index">
-					<div class="mt20 mb20 rel">
+					<div class="mt20 mb20 rel" v-if="item.list.length > 0">
 						<span class="f20 poi" @click="jump(item.title)">{{item.title}}</span>
 						<sup class="f20">
 							<el-icon class="title-icon ml5">

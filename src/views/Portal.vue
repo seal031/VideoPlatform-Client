@@ -409,7 +409,7 @@
         </el-row>
       </div>
     </div>
-    <portal-advanced :data="advancedData"></portal-advanced>
+    <portal-advanced :data="advancedData" v-if="advancedData[0].list.length > 0 || advancedData[1].list.length > 0 "></portal-advanced>
     <portal-footer></portal-footer>
   </div>
 </template>
