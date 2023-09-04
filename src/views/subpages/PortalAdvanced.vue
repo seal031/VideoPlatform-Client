@@ -3,17 +3,19 @@
 		<div class="portal-notice-content">
 			<el-row :gutter="20">
 				<el-col :span="12" v-for="(item,index) in advancedList.data" :key="index">
-					<div class="mt20 mb20 rel" v-if="item.list.length > 0">
-						<span class="f20 poi" @click="jump(item.title)">{{item.title}}</span>
-						<sup class="f20">
-							<el-icon class="title-icon ml5">
-								<svg-icon :iconClass="item.title === '先进个人' ? 'person' : 'business'" style="color: #de460c"></svg-icon>
-							</el-icon>
-						</sup>
-					</div>
-					<div class="portal-advance-overview">
-						<div v-for="(itm, idx) in item.list" :key="idx" class="overview-detail" @click="showBrief(itm)">
-							<graphic-overview :data="itm"></graphic-overview>
+					<div v-if="item.list.length > 0">
+						<div class="mt20 mb20 rel">
+							<span class="f20 poi" @click="jump(item.title)">{{item.title}}</span>
+							<sup class="f20">
+								<el-icon class="title-icon ml5">
+									<svg-icon :iconClass="item.title === '先进个人' ? 'person' : 'business'" style="color: #de460c"></svg-icon>
+								</el-icon>
+							</sup>
+						</div>
+						<div class="portal-advance-overview">
+							<div v-for="(itm, idx) in item.list" :key="idx" class="overview-detail" @click="showBrief(itm)">
+								<graphic-overview :data="itm"></graphic-overview>
+							</div>
 						</div>
 					</div>
 				</el-col>
