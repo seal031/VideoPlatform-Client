@@ -62,7 +62,6 @@ export default {
     const getBrief=()=>{
       getBriefList(briefQuery).then((res) => {
         if (res.resultCode == "200") {
-          debugger
           briefList.value = JSON.parse(res.data.BriefList);
           // tpxwTotalCount.value = res.data.totalCount;
         }
