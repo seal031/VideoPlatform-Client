@@ -6,7 +6,7 @@
   
   .portal-hot {
     width: 1000px;
-    margin: 10px auto;
+    margin: 0 auto;
   }
   
   .portal-hot .title-icon {
@@ -54,6 +54,9 @@
     width: 150px;
     margin-bottom: 35px;
   }
+  .video-wrap .video-item:nth-child(n+3){
+    margin-bottom: 0px;
+  }
   
   .portal-hot .video-item .sub-title {
     display: flex;
@@ -66,7 +69,7 @@
   
   .portal-divider {
     width: 1120px;
-    margin: 22px auto;
+    margin: 20px auto;
   }
   
   .portal-system {
@@ -118,7 +121,6 @@
   
   .portal-videos {
     background: #08a991;
-    margin-bottom: 40px;
   }
   
   .portal-videos :deep .el-tabs__header {

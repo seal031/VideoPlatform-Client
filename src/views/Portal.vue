@@ -166,7 +166,7 @@
       </div>
     </div>
 
-    <div class="portal-videos mt30">
+    <div class="portal-videos mt20">
       <el-tabs v-model="videoTabActiveName" type="card" @tab-click="handleTabClick">
         <el-tab-pane v-for="(item, i) in videoTabs" :key="item.name" :name="item.name">
           <template #label>
@@ -269,7 +269,7 @@
       </el-tabs>
     </div>
 
-    <div class="portal-notice pb20">
+    <div class="portal-notice">
       <div class="portal-notice-content">
         <el-row :gutter="20">
           <el-col :span="12">
