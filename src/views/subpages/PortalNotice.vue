@@ -7,6 +7,7 @@
 </template>
 <script>
 import { ref, reactive, watch } from 'vue';
+import { useRouter } from "vue-router";
 import GraphicOverview from '../../components/GraphicOverview.vue';
 export default {
   name: "portal-advanced",
@@ -18,6 +19,7 @@ export default {
   },
   components: { GraphicOverview } ,
   setup(props) {
+    const router = useRouter();
     let advancedList = reactive({
       data: []
     })
@@ -25,7 +27,7 @@ export default {
       advancedList.data = val
     })
     const showBrief = (row) => {
-      const href = this.$router.resolve({
+      const href = router.resolve({
         path: "/BriefShow",
         query: { briefId: row.brief_id || ''},
       });

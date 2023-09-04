@@ -2,7 +2,7 @@
 	<div class="portal-advance pb20">
 		<div class="portal-notice-content">
 			<el-row :gutter="20">
-				<el-col :span="12" v-for="(item,index) in advancedList" :key="index">
+				<el-col :span="12" v-for="(item,index) in advancedList.data" :key="index">
 					<div class="mt20 mb20 rel">
 						<span class="f20 poi" @click="jump(item.title)">{{item.title}}</span>
 						<sup class="f20">
@@ -22,7 +22,7 @@
 	</div>
 </template>
 <script>
-import { computed, reactive } from 'vue';
+import { watch, reactive } from 'vue';
 import { useRouter } from "vue-router";
 import GraphicOverview from '../../components/GraphicOverview.vue';
 export default {
@@ -39,17 +39,17 @@ export default {
     const tabList = reactive([
 			{title: '先进个人'},{title: '先进单位'}
 		])
-    const advancedList =  computed(() => {
-      if(props.data.length > 0){
-        return tabList.map((item, index) => {
-					return {
-						title: item.title,
-						list: props.data[index].list
-					}
-				})
-      }
-      return []
-    });
+	let advancedList = reactive({
+      data: []
+    })
+	watch(() => props.data, (val) => {
+      advancedList.data = tabList.map((item, index) => {
+			return {
+				title: item.title,
+				list: props.data[index].list
+			}
+		})
+    })
     const jump = (title) => {
       const href = router.resolve({
         path: '/portalBriefList',

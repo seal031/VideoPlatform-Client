@@ -196,7 +196,7 @@ export default {
     });
     let bjjgQuery=reactive({
       params: {
-        briefType: "0507", // 北京教工
+        briefType: "0506", // 北京教工
         trendStateList: "0401", //已发布
         pageIndex: 1,
         pageSize: 20,
@@ -280,33 +280,32 @@ export default {
       },
       // 获取先进个人/单位
       getAdvanceList(){
-        // TODO----先进个人/单位briefType对应
-        const map = new Map().set('先进个人', '0507').set('先进单位', '0508')
-        const briefType = map.get(route.query.title)
-        const data = Object.assign(advanceQuery, { briefType })
-        const list = [
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '1221', tip: '我是短我是短标题我是短标题标题', eventTitle: '我是我是短eventTitle我是短eventTitle我是短eventTitle短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '122a', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '3413', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '1454', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '65534', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '43234', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '245342', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '765', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '674', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '87654', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '3431', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '6543', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: '41431', tip: '我是短标题', eventTitle: '我是短eventTitle' }
-        ]
-        advanceList.value = list;
-        advanceTotalCount.value = 13;
-        // getTrendList(data).then((res)=>{
-        //   if (res.resultCode == "200") {
-        //     advanceList.value = JSON.parse(res.data.TrendList);
-        //     advanceTotalCount.value = res.data.totalCount;
-        //   }
-        // });
+        const data = Object.assign(advanceQuery.params, {
+          briefType: route.query.title === '先进个人' ? '0507' : '0508'
+        })
+        // const list = [
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '1221', brief_title: '我是短我是短标题我是短标题标题', brief_title: '我是我是短brief_title我是短brief_title我是短brief_title短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '122a', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '3413', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '1454', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '65534', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '43234', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '245342', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '765', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '674', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '87654', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '3431', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '6543', brief_title: '我是短标题', brief_title: '我是短brief_title' },
+        //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '41431', brief_title: '我是短标题', brief_title: '我是短brief_title' }
+        // ]
+        getBriefList({
+          params: JSON.parse(JSON.stringify(data))
+        }).then((res)=>{
+          if (res.resultCode == "200") {
+            advanceList.value = JSON.parse(res.data.BriefList);
+            advanceTotalCount.value = res.data.totalCount;
+          }
+        });
       },
       dateFormat(date) {
         return moment(date.create_time).format("YYYY-MM-DD");
@@ -411,7 +410,7 @@ export default {
 .block {
   width: 1000px;
   margin: 0 auto;
-  min-height: calc(100% - 180px);
+  min-height: calc(100% - 220px);
 }
 
 :deep .el-tabs__header{

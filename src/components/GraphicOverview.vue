@@ -1,16 +1,16 @@
 <template>
   <el-image
-    :src="currentData.src"
+    :src="currentData.brief_image"
     fit="fill"
-    :itemid="currentData.videoId"
+    :itemid="currentData.brief_id"
     class="picture"
-    :title="currentData.tip"
+    :title="currentData.brief_title"
   >
     <template #placeholder>
       <div class="image-slot">Loading<span class="dot">...</span></div>
     </template>
   </el-image>
-  <div class="picture-info">{{ currentData.eventTitle }}</div>
+  <div class="picture-info">{{ currentData.brief_title }}</div>
 </template>
 
 <script>

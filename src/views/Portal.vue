@@ -482,21 +482,27 @@ export default {
     let zcfgList = ref([]); //政策法规模型列表
     let bjjgList=ref([]);//北京教工模型列表
     let trendList = ref([]);//基层动态模型列表
-
-    const advancedData = reactive([
-      {
-        list: [
-          { src: 'https://images.dog.ceo/breeds/poodle-toy/n02113624_2305.jpg', videoId: '1221', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://images.dog.ceo/breeds/mexicanhairless/n02113978_839.jpg', videoId: '1121', tip: '我是长标题我是长标题我是长标题我是长标题我是长标题', eventTitle: '我是长eventTitle我是长eventTitle我是长eventTitle我是长eventTitle' }
-        ]
-      }, 
-      {
-        list: [
-          { src: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', videoId: 'ad5', tip: '我是短标题', eventTitle: '我是短eventTitle' },
-          { src: 'https://cdn2.thecatapi.com/images/ad5.jpg', videoId: 'a8d', tip: '我是长标题我是长标题我是长标题我是长标题我是长标题', eventTitle: '我是长eventTitle我是长eventTitle我是长eventTitle我是长eventTitle' }
-        ]
-      }
-    ])
+    let advancedPerData = ref([]) // 先进个人
+    let advancedBusData = ref([]) // 先进单位
+// [
+    //   {
+    //     list: [
+    //       { brief_image: 'https://images.dog.ceo/breeds/poodle-toy/n02113624_2305.jpg', brief_id: '1221', brief_title: '我是短标题', brief_title: '我是短eventTitle' },
+    //       { brief_image: 'https://images.dog.ceo/breeds/mexicanhairless/n02113978_839.jpg', brief_id: '1121', brief_title: '我是长标题我是长标题我是长标题我是长标题我是长标题', brief_title: '我是长eventTitle我是长eventTitle我是长eventTitle我是长eventTitle' }
+    //     ]
+    //   }, 
+    //   {
+    //     list: [
+    //       { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: 'ad5', brief_title: '我是短标题', brief_title: '我是短eventTitle' },
+    //       { brief_image: 'https://cdn2.thecatapi.com/images/ad5.jpg', brief_id: 'a8d', brief_title: '我是长标题我是长标题我是长标题我是长标题我是长标题', brief_title: '我是长eventTitle我是长eventTitle我是长eventTitle我是长eventTitle' }
+    //     ]
+    //   }
+    // ]
+    const advancedData = computed(() => {
+      const objPer = { list: advancedPerData.value || [] }
+      const objBus = { list: advancedBusData.value || [] }
+      return [objPer, objBus]
+    })
     //外部系统数据模型
     const initExternalSystemFormDataQJS = {
       external_id: null,
@@ -772,6 +778,32 @@ export default {
           }
         });
       },
+      getAdvanceList() {
+        const queryPer = reactive({
+          params: {
+            briefType: "0507",  // 先进个人
+            briefState: "0401", //已发布
+            topN: 2,
+          },
+        });
+        const queryBus = reactive({
+          params: {
+            briefType: "0508",  // 先进单位
+            briefState: "0401", //已发布
+            topN: 2,
+          },
+        });
+        Promise.all([
+          getBriefList(queryPer),
+          getBriefList(queryBus)
+        ]).then((res) => {
+          if (res[0].resultCode == "200") {
+            advancedPerData.value = JSON.parse(res[0].data.BriefList);
+          }if(res[1].resultCode == "200"){
+            advancedBusData.value = JSON.parse(res[1].data.BriefList);
+          }
+        })
+      },
       getVideoList() { },
       getAllExternalSystemList() {
         getExternalSystemList().then((res) => {
@@ -844,6 +876,7 @@ export default {
       methods.getBjjgList();
       methods.getTrendList();
       methods.getVideoList();
+      methods.getAdvanceList();
       methods.getHotVideoList();
       methods.getQjsVideoList();
       methods.getAllExternalSystemList();
