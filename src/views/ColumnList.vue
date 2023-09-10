@@ -87,12 +87,18 @@
           </el-table-column>
           <el-table-column prop="brief_type" label="内容分类" width="120">
           </el-table-column>
-          <el-table-column prop="brief_state" label="状态" width="120">
+          <el-table-column prop="brief_state" label="状态" width="100">
           </el-table-column>
           <el-table-column
             prop="create_time"
             label="创建时间"
-            width="200"
+            width="180"
+            :formatter="dateFormat"
+          ></el-table-column>
+          <el-table-column
+            prop="public_time"
+            label="发布时间"
+            width="180"
             :formatter="dateFormat"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="150">

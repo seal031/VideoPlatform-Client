@@ -17,7 +17,7 @@
           <span> 发布单位：北京市教育工会 </span>
           <el-divider direction="vertical"></el-divider>
           <span>
-            创建时间： {{ methods.dateFormat(briefForm.data.create_time) }}
+            发布时间： {{ methods.dateFormat(briefForm.data.public_time) }}
           </span>
         </p>
       </el-header>
@@ -89,6 +89,7 @@ export default {
         brief_image: "",
         operate_admin: null,
         create_time: null,
+        public_time:null,
       },
     });
     // 定义方法

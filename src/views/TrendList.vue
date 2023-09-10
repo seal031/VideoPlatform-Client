@@ -97,7 +97,13 @@
             prop="create_time"
             label="创建时间"
             width="160"
-            :formatter="dateFormat"
+            :formatter="dateFormatCreateTime"
+          ></el-table-column>
+          <el-table-column
+            prop="public_time"
+            label="发布时间"
+            width="160"
+            :formatter="dateFormatPublicTime"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
@@ -246,8 +252,14 @@ export default {
       trend_type: "",
       trend_state: "",
     });
-    const dateFormat=(date) =>{
+    const dateFormatCreateTime=(date) =>{
         return moment(date.create_time).format("YYYY-MM-DD HH:mm:ss");
+      };
+    const dateFormatPublicTime=(date) =>{
+        if(date.trend_state=='已发布')
+          return moment(date.public_time).format("YYYY-MM-DD HH:mm:ss");
+        else
+          return '无';
       };
     const methods = {
       //加载列表
@@ -264,6 +276,7 @@ export default {
           console.log(userId);
           console.log(userRole);
           if (res.resultCode == "200") {
+            debugger
             trendFormList.value = JSON.parse(res.data.TrendList);
             pageTotal.value = res.data.totalCount || 50;
           } else {
@@ -403,7 +416,8 @@ export default {
       userSchool,
 
       moment,
-      dateFormat,
+      dateFormatCreateTime,
+      dateFormatPublicTime,
       getCurrentInstance,
       userId,
       userRole,

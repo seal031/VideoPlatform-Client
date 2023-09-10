@@ -90,8 +90,8 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="发布时间" prop="create_time">
-                <el-date-picker v-model="briefForm.data.create_time" type="date"  placeholder="请选择日期"/>
+              <el-form-item label="发布时间" prop="public_time">
+                <el-date-picker v-model="briefForm.data.public_time" type="date"  placeholder="请选择日期"/>
               </el-form-item>
             </el-col>
           </el-row>

@@ -194,6 +194,132 @@
             </div>
           </div>
         </el-tab-pane>
+        <el-tab-pane>
+          <template #label>
+            <span :icon="Star"
+              ><i class="el-icon-date"></i>北京教工({{ bjjgTotalCount }})</span
+            >
+          </template>
+          <div class="video-result">
+            <div class="tr mb10">
+              <el-pagination
+                @current-change="handleCurrentChangeBjjg"
+                v-model:currentPage="bjjgQuery.params.pageIndex"
+                v-model:page-size="bjjgQuery.params.pageSize"
+                layout="total, prev, pager, next"
+                :total="bjjgTotalCount"
+              >
+              </el-pagination>
+            </div>
+            <div>
+              <template v-if="bjjgList && bjjgList.length > 0">
+                <el-table
+                  :data="bjjgList"
+                  style="width: 100%"
+                  :show-header="false"
+                  class="customer-table poi"
+                  @row-click="jumpBrief"
+                >
+                  <el-table-column prop="brief_title" label="">
+                  </el-table-column>
+                  <el-table-column
+                    prop="create_time"
+                    label=""
+                    width="150"
+                    :formatter="methods.dateFormat"
+                  >
+                  </el-table-column>
+                </el-table>
+              </template>
+              <template v-else-if="bjjgList">无符合条件结果</template>
+              <template v-else>检索中...</template>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane>
+          <template #label>
+            <span :icon="Star"
+              ><i class="el-icon-date"></i>先进个人({{ xjgrTotalCount }})</span
+            >
+          </template>
+          <div class="video-result">
+            <div class="tr mb10">
+              <el-pagination
+                @current-change="handleCurrentChangeXjgr"
+                v-model:currentPage="xjgrQuery.params.pageIndex"
+                v-model:page-size="xjgrQuery.params.pageSize"
+                layout="total, prev, pager, next"
+                :total="xjgrTotalCount"
+              >
+              </el-pagination>
+            </div>
+            <div>
+              <template v-if="xjgrList && xjgrList.length > 0">
+                <el-table
+                  :data="xjgrList"
+                  style="width: 100%"
+                  :show-header="false"
+                  class="customer-table poi"
+                  @row-click="jumpBrief"
+                >
+                  <el-table-column prop="brief_title" label="">
+                  </el-table-column>
+                  <el-table-column
+                    prop="create_time"
+                    label=""
+                    width="150"
+                    :formatter="methods.dateFormat"
+                  >
+                  </el-table-column>
+                </el-table>
+              </template>
+              <template v-else-if="xjgrList">无符合条件结果</template>
+              <template v-else>检索中...</template>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane>
+          <template #label>
+            <span :icon="Star"
+              ><i class="el-icon-date"></i>先进单位({{ xjdwTotalCount }})</span
+            >
+          </template>
+          <div class="video-result">
+            <div class="tr mb10">
+              <el-pagination
+                @current-change="handleCurrentChangeXjdw"
+                v-model:currentPage="xjdwQuery.params.pageIndex"
+                v-model:page-size="xjdwQuery.params.pageSize"
+                layout="total, prev, pager, next"
+                :total="xjdwTotalCount"
+              >
+              </el-pagination>
+            </div>
+            <div>
+              <template v-if="xjdwList && xjdwList.length > 0">
+                <el-table
+                  :data="xjdwList"
+                  style="width: 100%"
+                  :show-header="false"
+                  class="customer-table poi"
+                  @row-click="jumpBrief"
+                >
+                  <el-table-column prop="brief_title" label="">
+                  </el-table-column>
+                  <el-table-column
+                    prop="create_time"
+                    label=""
+                    width="150"
+                    :formatter="methods.dateFormat"
+                  >
+                  </el-table-column>
+                </el-table>
+              </template>
+              <template v-else-if="xjdwList">无符合条件结果</template>
+              <template v-else>检索中...</template>
+            </div>
+          </div>
+        </el-tab-pane>
       </el-tabs>
 
       <portal-footer></portal-footer>
@@ -232,10 +358,16 @@ export default {
     let tzggList = ref([]); //通知公告模型列表
     let zcfgList = ref([]); //政策法规模型列表
     let videoList = ref([]); //视频列表
+    let bjjgList=ref([]);//北京教工模型列表
+    let xjgrList=ref([]);//先进个人模型列表
+    let xjdwList=ref([]);//先进单位模型列表
     let tpxwTotalCount = ref(0); // 图片新闻总数
     let tzggTotalCount = ref(0); // 通知公告总数
     let zcfgTotalCount = ref(0); // 政策法规总数
     let videoTotalCount = ref(0); //视频总数
+    let bjjgTotalCount=ref(0);//北京教工总数
+    let xjgrTotalCount=ref(0);//先进个人总数
+    let xjdwTotalCount=ref(0);//先进单位总数
     let allTotalCount = ref(""); //查询结果总数
     let tpxwQuery = reactive({
       params: {
@@ -279,6 +411,33 @@ export default {
         userRole: userRole,
       },
     });
+    let bjjgQuery = reactive({
+      params: {
+        briefType: "0506", //北京教工
+        briefState: "0401", //已发布
+        pageIndex: 1,
+        pageSize: 20,
+        topN: 20,
+      },
+    });
+    let xjgrQuery = reactive({
+      params: {
+        briefType: "0507", //先进个人
+        briefState: "0401", //已发布
+        pageIndex: 1,
+        pageSize: 20,
+        topN: 20,
+      },
+    });
+    let xjdwQuery = reactive({
+      params: {
+        briefType: "0508", //先进单位
+        briefState: "0401", //已发布
+        pageIndex: 1,
+        pageSize: 20,
+        topN: 20,
+      },
+    });
 
     const methods = {
       getParams() {
@@ -310,6 +469,30 @@ export default {
         if (res.resultCode == "200") {
           zcfgList.value = JSON.parse(res.data.BriefList);
           zcfgTotalCount.value = res.data.totalCount;
+        }
+      });
+    };
+    const bindBjjg = async () => {
+      await getBriefList(bjjgQuery).then((res) => {
+        if (res.resultCode == "200") {
+          bjjgList.value = JSON.parse(res.data.BriefList);
+          bjjgTotalCount.value = res.data.totalCount;
+        }
+      });
+    };
+    const bindXjgr = async () => {
+      await getBriefList(xjgrQuery).then((res) => {
+        if (res.resultCode == "200") {
+          xjgrList.value = JSON.parse(res.data.BriefList);
+          xjgrTotalCount.value = res.data.totalCount;
+        }
+      });
+    };
+    const bindXjdw = async () => {
+      await getBriefList(xjdwQuery).then((res) => {
+        if (res.resultCode == "200") {
+          xjdwList.value = JSON.parse(res.data.BriefList);
+          xjdwTotalCount.value = res.data.totalCount;
         }
       });
     };
@@ -347,6 +530,18 @@ export default {
       videoQuery.params.pageIndex = val;
       bindVideoList();
     };
+    const handleCurrentChangeBjjg = (val) => {
+      bjjgQuery.params.pageIndex = val;
+      bindBjjg();
+    };
+    const handleCurrentChangeXjgr = (val) => {
+      xjgrQuery.params.pageIndex = val;
+      bindXjgr();
+    };
+    const handleCurrentChangeXjdw = (val) => {
+      xjdwQuery.params.pageIndex = val;
+      bindXjdw();
+    };
 
     // 跳转
     const jumpVideo = (v) => {
@@ -375,16 +570,25 @@ export default {
       tzggQuery.params.keyword = keyword.value;
       tpxwQuery.params.keyword = keyword.value;
       zcfgQuery.params.keyword = keyword.value;
+      bjjgQuery.params.keyword=keyword.value;
+      xjgrQuery.params.keyword=keyword.value;
+      xjdwQuery.params.keyword=keyword.value;
       debugger;
       await bindTpxw();
       await bindTzgg();
       await bindZcfg();
       await bindVideoList();
+      await bindBjjg();
+      await bindXjgr();
+      await bindXjdw();
       allTotalCount.value =//a+b+c+d;
         tzggTotalCount.value +
         tpxwTotalCount.value +
         zcfgTotalCount.value +
-        videoTotalCount.value;
+        videoTotalCount.value+
+        bjjgTotalCount.value+
+        xjgrTotalCount.value+
+        xjdwTotalCount.value;
     });
     onUpdated(() => {
       // keyword.value = route.query.keyword;
@@ -407,15 +611,24 @@ export default {
       tzggList,
       tpxwList,
       zcfgList,
+      bjjgList,
+      xjgrList,
+      xjdwList,
       allTotalCount,
       tzggTotalCount,
       tpxwTotalCount,
       zcfgTotalCount,
       videoTotalCount,
+      bjjgTotalCount,
+      xjgrTotalCount,
+      xjdwTotalCount,
       tpxwQuery,
       tzggQuery,
       zcfgQuery,
       videoQuery,
+      bjjgQuery,
+      xjgrQuery,
+      xjdwQuery,
       handleCurrentChangeTpxw,
       handleCurrentChangeTzgg,
       handleCurrentChangeZcfg,
@@ -425,6 +638,9 @@ export default {
       bindTzgg,
       bindZcfg,
       bindVideoList,
+      bindBjjg,
+      bindXjgr,
+      bindXjdw,
       getSession,
       jumpVideo,
       jumpBrief,
