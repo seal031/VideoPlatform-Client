@@ -474,7 +474,7 @@ export default {
     let zcfgList = ref([]); //政策法规模型列表
     let bjjgList=ref([]);//北京教工模型列表
     let trendList = ref([]);//基层动态模型列表
-    let advancedPerData = ref([]) // 先进个人
+    let advancedPerData = ref([]) // 优秀个人
     let advancedBusData = ref([]) // 先进单位
 // [
     //   {
@@ -773,7 +773,7 @@ export default {
       getAdvanceList() {
         const queryPer = reactive({
           params: {
-            briefType: "0507",  // 先进个人
+            briefType: "0507",  // 优秀个人
             briefState: "0401", //已发布
             topN: 2,
           },

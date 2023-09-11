@@ -8,7 +8,7 @@
 							<span class="f20 poi" @click="jump(item.title)">{{item.title}}</span>
 							<sup class="f20">
 								<el-image
-								 	v-if="item.title === '先进个人'"
+								 	v-if="item.title === '优秀个人'"
 									:src="getImageUrl('person.jpg')"
 									fit="fill"
 									class="icon-picture ml5"
@@ -47,7 +47,7 @@ export default {
   setup(props) {
     const router = useRouter();
     const tabList = reactive([
-			{title: '先进个人'},{title: '先进单位'}
+			{title: '优秀个人'},{title: '先进单位'}
 		])
 	let advancedList = reactive({
       data: []

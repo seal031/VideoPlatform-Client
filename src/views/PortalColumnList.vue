@@ -151,13 +151,13 @@ export default {
     let zcfgList = ref([]); //政策法规模型列表
     let gxdtList=ref([]);//基层动态模型列表
     let bjjglist=ref([]);//北京教工模型列表
-    let advanceList = ref([]) // 先进个人/单位列表
+    let advanceList = ref([]) // 优秀个人/先进单位列表
     let tpxwTotalCount = ref(0); // 图片新闻总数
     let tzggTotalCount = ref(0); // 通知公告总数
     let zcfgTotalCount = ref(0); // 政策法规总数
     let gxdtTotalCount=ref(0);//基层动态总数
     let bjjgTotalCount=ref(0);//北京教工总数
-    let advanceTotalCount = ref(0); // 先进个人/单位总数
+    let advanceTotalCount = ref(0); // 优秀个人/先进单位总数
 
     let tpxwQuery = reactive({
       params: {
@@ -203,7 +203,7 @@ export default {
         topN: 20,
       },
     });
-    let advanceQuery=reactive({ // 先进个人/单位参数
+    let advanceQuery=reactive({ // 优秀个人/先进单位参数
       params: {
         trendStateList: "0401", //已发布
         pageIndex: 1,
@@ -278,10 +278,10 @@ export default {
           }
         });
       },
-      // 获取先进个人/单位
+      // 获取优秀个人/单位
       getAdvanceList(){
         const data = Object.assign(advanceQuery.params, {
-          briefType: route.query.title === '先进个人' ? '0507' : '0508'
+          briefType: route.query.title === '优秀个人' ? '0507' : '0508'
         })
         // const list = [
         //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '1221', brief_title: '我是短我是短标题我是短标题标题', brief_title: '我是我是短brief_title我是短brief_title我是短brief_title短brief_title' },
