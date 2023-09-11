@@ -24,7 +24,9 @@ export default {
 <style scoped>
 .portal-footer{
   text-align: center;
-  margin: 30px 0 60px;
+  margin: 30px 0 0px;
+  padding: 20px;
   color: #5f6061;
+  background-color: #cacaca;
 }
 </style>

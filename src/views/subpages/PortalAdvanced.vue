@@ -7,8 +7,15 @@
 						<div class="mt20 mb20 rel">
 							<span class="f20 poi" @click="jump(item.title)">{{item.title}}</span>
 							<sup class="f20">
-								<el-icon class="title-icon ml5">
-									<svg-icon :iconClass="item.title === '先进个人' ? 'person' : 'business'" style="color: #de460c"></svg-icon>
+								<el-image
+								 	v-if="item.title === '先进个人'"
+									:src="getImageUrl('person.jpg')"
+									fit="fill"
+									class="icon-picture ml5"
+								>
+								</el-image>
+								<el-icon class="title-icon ml5" v-if="item.title === '先进单位'">
+									<svg-icon iconClass="business" style="color: #de460c"></svg-icon>
 								</el-icon>
 							</sup>
 						</div>
@@ -27,6 +34,7 @@
 import { watch, reactive } from 'vue';
 import { useRouter } from "vue-router";
 import GraphicOverview from '../../components/GraphicOverview.vue';
+
 export default {
   name: "portal-advanced",
   props: {
@@ -44,6 +52,9 @@ export default {
 	let advancedList = reactive({
       data: []
     })
+	const getImageUrl = (name) => {
+      return new URL(`/src/assets/img/${name}`, import.meta.url).href;
+    }
 	watch(() => props.data, (val) => {
       advancedList.data = tabList.map((item, index) => {
 			return {
@@ -63,7 +74,7 @@ export default {
       window.open(href.href, "_blank");
     };
 	  const showBrief = (row) => {
-      const href = this.$router.resolve({
+      const href = router.resolve({
         path: "/BriefShow",
         query: { briefId: row.brief_id || ''},
       });
@@ -71,12 +82,16 @@ export default {
     }
 		return{
 			advancedList,
-      jump,
-      showBrief
+			jump,
+			showBrief,
+			getImageUrl
 		}
   },
 };
 </script>
 <style scoped>
 @import url('../../assets/css/portal.css');
+.icon-picture{
+	height: 20px;
+}
 </style>

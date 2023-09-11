@@ -50,15 +50,15 @@ export default {
     height: -moz-fit-content;
     height: fit-content;
 }
-.notice-detail:not(:nth-child(5n)) {
-    margin-right: 20px;
+.notice-detail:not(:nth-child(4n)) {
+    margin-right: 10px;
   }
 .notice-detail{
     flex: 1;
-    height: 190px;
-    width: calc((100% - 80px) / 5);
-    min-width: calc((100% - 80px) / 5);
-    max-width: calc((100% - 80px) / 5);
+    height: 205px;
+    width: calc((100% - 40px) / 4);
+    min-width: calc((100% - 40px) / 4);
+    max-width: calc((100% - 40px) / 4);
     cursor: pointer;
     margin-bottom: 20px;
 }

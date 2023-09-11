@@ -298,6 +298,8 @@ export default {
         //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '6543', brief_title: '我是短标题', brief_title: '我是短brief_title' },
         //   { brief_image: 'https://cdn2.thecatapi.com/images/MTc2OTU4Ng.jpg', brief_id: '41431', brief_title: '我是短标题', brief_title: '我是短brief_title' }
         // ]
+        // advanceList.value = list
+        // advanceTotalCount.value = 13
         getBriefList({
           params: JSON.parse(JSON.stringify(data))
         }).then((res)=>{

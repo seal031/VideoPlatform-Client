@@ -124,7 +124,6 @@ export default {
                 breadcrumb.value = "政策法规";
                 breadcrumbParam.value = "zcfg";
                 break;
-              // TODO---先进个人/单位参数
               case "0507":
                 breadcrumb.value = "先进个人";
                 breadcrumbParam.value = "advance";
