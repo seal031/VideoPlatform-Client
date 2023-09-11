@@ -125,7 +125,7 @@ export default {
                 breadcrumbParam.value = "zcfg";
                 break;
               case "0507":
-                breadcrumb.value = "先进个人";
+                breadcrumb.value = "优秀个人";
                 breadcrumbParam.value = "advance";
                 break;
               case "0508":
