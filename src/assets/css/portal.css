@@ -323,3 +323,16 @@
     max-width: calc((100% - 10px) / 2);
     cursor: pointer;
   }
+  .overview-detail-blank{
+    flex: 1;
+    height: 205px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+  :deep .el-table__empty-block{
+    width: 100% !important;
+  }
+  :deep .el-table__body-wrapper{
+    height: 100% !important;
+  }

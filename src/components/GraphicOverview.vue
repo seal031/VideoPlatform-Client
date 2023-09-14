@@ -10,11 +10,11 @@
       <div class="image-slot">Loading<span class="dot">...</span></div>
     </template>
     <template #error>
-      <div class="img-error">图片加载失败</div>
+      <div class="img-error" v-if="currentData.brief_id">图片加载失败</div>
+      <div class="img-error" v-else>暂无数据</div>
     </template>
-
   </el-image>
-  <div class="picture-info">{{ currentData.brief_title }}</div>
+  <div class="picture-info" v-if="currentData.brief_id">{{ currentData.brief_title }}</div>
 </template>
 
 <script>
