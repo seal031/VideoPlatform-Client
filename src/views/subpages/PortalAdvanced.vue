@@ -3,7 +3,7 @@
 		<div class="portal-notice-content">
 			<el-row :gutter="20">
 				<el-col :span="12" v-for="(item,index) in advancedList.data" :key="index">
-					<div v-if="item.list.length > 0">
+					<div>
 						<div class="mt20 mb20 rel">
 							<span class="f20 poi" @click="jump(item.title)">{{item.title}}</span>
 							<sup class="f20">
@@ -19,9 +19,14 @@
 								</el-icon>
 							</sup>
 						</div>
-						<div class="portal-advance-overview">
+						<div class="portal-advance-overview" v-if="item.list.length > 0">
 							<div v-for="(itm, idx) in item.list" :key="idx" class="overview-detail" @click="showBrief(itm)">
 								<graphic-overview :data="itm"></graphic-overview>
+							</div>
+						</div>
+						<div class="portal-advance-overview" v-else>
+							<div class="overview-detail-blank">
+								<graphic-overview :data="blankObj"></graphic-overview>
 							</div>
 						</div>
 					</div>
@@ -52,6 +57,7 @@ export default {
 	let advancedList = reactive({
       data: []
     })
+	const blankObj = reactive({})
 	const getImageUrl = (name) => {
       return new URL(`/src/assets/img/${name}`, import.meta.url).href;
     }
@@ -59,7 +65,7 @@ export default {
       advancedList.data = tabList.map((item, index) => {
 			return {
 				title: item.title,
-				list: props.data[index].list
+				list: props.data[index].list || []
 			}
 		})
     })
@@ -82,6 +88,7 @@ export default {
     }
 		return{
 			advancedList,
+			blankObj,
 			jump,
 			showBrief,
 			getImageUrl
