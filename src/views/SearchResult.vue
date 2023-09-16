@@ -242,7 +242,7 @@
               ><i class="el-icon-date"></i>先进个人({{ xjgrTotalCount }})</span
             >
           </template>
-          <div class="video-result">
+          <div>
             <div class="tr mb10">
               <el-pagination
                 @current-change="handleCurrentChangeXjgr"
@@ -254,7 +254,8 @@
               </el-pagination>
             </div>
             <div>
-              <template v-if="xjgrList && xjgrList.length > 0">
+              <portal-notice :data="xjgrList"></portal-notice>
+              <!-- <template v-if="xjgrList && xjgrList.length > 0">
                 <el-table
                   :data="xjgrList"
                   style="width: 100%"
@@ -274,7 +275,7 @@
                 </el-table>
               </template>
               <template v-else-if="xjgrList">无符合条件结果</template>
-              <template v-else>检索中...</template>
+              <template v-else>检索中...</template> -->
             </div>
           </div>
         </el-tab-pane>
@@ -296,7 +297,8 @@
               </el-pagination>
             </div>
             <div>
-              <template v-if="xjdwList && xjdwList.length > 0">
+              <portal-notice :data="xjdwList"></portal-notice>
+              <!-- <template v-if="xjdwList && xjdwList.length > 0">
                 <el-table
                   :data="xjdwList"
                   style="width: 100%"
@@ -316,7 +318,7 @@
                 </el-table>
               </template>
               <template v-else-if="xjdwList">无符合条件结果</template>
-              <template v-else>检索中...</template>
+              <template v-else>检索中...</template> -->
             </div>
           </div>
         </el-tab-pane>
@@ -337,12 +339,14 @@ import { getVideoList, getBriefList } from "../api/serviceApi";
 import { onMounted, ref, reactive } from "vue";
 import { getCurrentInstance, inject, onUpdated } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
+import PortalNotice from './subpages/PortalNotice.vue';
 
 export default {
   components: {
     TopToolBar,
     VideoItem,
     PortalFooter,
+    PortalNotice,
   },
   setup() {
     let route = useRoute(); //可以在setup中使用route获取参数
@@ -573,7 +577,7 @@ export default {
       bjjgQuery.params.keyword=keyword.value;
       xjgrQuery.params.keyword=keyword.value;
       xjdwQuery.params.keyword=keyword.value;
-      debugger;
+      // debugger;
       await bindTpxw();
       await bindTzgg();
       await bindZcfg();
@@ -633,6 +637,9 @@ export default {
       handleCurrentChangeTzgg,
       handleCurrentChangeZcfg,
       handleCurrentChangeVideo,
+      handleCurrentChangeBjjg,
+      handleCurrentChangeXjgr,
+      handleCurrentChangeXjdw,
       methods,
       bindTpxw,
       bindTzgg,

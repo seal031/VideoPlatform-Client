@@ -102,7 +102,7 @@
           <el-table-column
             prop="public_time"
             label="发布时间"
-            width="160"
+            width="120"
             :formatter="dateFormatPublicTime"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="200">
@@ -257,7 +257,7 @@ export default {
       };
     const dateFormatPublicTime=(date) =>{
         if(date.trend_state=='已发布')
-          return moment(date.public_time).format("YYYY-MM-DD HH:mm:ss");
+          return moment(date.public_time).format("YYYY-MM-DD");
         else
           return '无';
       };

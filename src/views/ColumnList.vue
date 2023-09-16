@@ -93,13 +93,13 @@
             prop="create_time"
             label="创建时间"
             width="180"
-            :formatter="dateFormat"
+            :formatter="dateFormatCreateTime"
           ></el-table-column>
           <el-table-column
             prop="public_time"
             label="发布时间"
-            width="180"
-            :formatter="dateFormat"
+            width="120"
+            :formatter="dateFormatPublicTime"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
@@ -218,8 +218,11 @@ export default {
       brief_type: "",
       brief_state: "",
     });
-    const dateFormat=(date) =>{
+    const dateFormatCreateTime=(date) =>{
         return moment(date.create_time).format("YYYY-MM-DD HH:mm:ss");
+      };
+    const dateFormatPublicTime=(date) =>{
+        return moment(date.create_time).format("YYYY-MM-DD");
       };
     const methods = {
       //加载列表
@@ -242,7 +245,7 @@ export default {
         getColumnType().then((res) => {
           if (res.resultCode == "200") {
             briefTypeList.value = res.data;
-            briefTypeList.value.splice(4);//不取基层动态及以后的
+            briefTypeList.value.splice(4,1);//不取基层动态及以后的
           } else {
             ElMessage({
               message: "获取数据失败：" + res.message,
@@ -352,7 +355,8 @@ export default {
       userSchool,
 
       moment,
-      dateFormat,
+      dateFormatCreateTime,
+      dateFormatPublicTime,
       getCurrentInstance,
       userId,
       userRole,
