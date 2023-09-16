@@ -173,7 +173,7 @@ export default {
     top: 70px;
     bottom: 0;
     overflow-y: scroll;
-    background-color: #dbedf3;
+    background-color: #314156;
     border: 2px;
 }
 .sidebar::-webkit-scrollbar {
@@ -181,7 +181,7 @@ export default {
 }
 .sidebar-el-menu:not(.el-menu--collapse) {
     width: 250px;
-    background-color: #dbedf3;
+    background-color: #314156;
 }
 .sidebar > ul {
     height: 100%;
