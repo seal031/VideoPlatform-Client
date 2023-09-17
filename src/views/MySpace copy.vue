@@ -1,6 +1,6 @@
 <template>
   <top-tool-bar></top-tool-bar>
-  <div class="portal-wrap">
+  <div class="portal-wrap wrapper-sticky">
     <el-tabs
       tab-position="left"
       style="height: 100%; weight: 400px"
@@ -239,7 +239,7 @@ export default {
 
 <style scoped>
 .portal-wrap {
-  height: 100%;
-  overflow: auto;
+  /* height: 100%;
+  overflow: auto; */
 }
 </style>

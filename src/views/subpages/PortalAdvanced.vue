@@ -1,5 +1,5 @@
 <template>
-	<div class="portal-advance pb20">
+	<div class="portal-advance">
 		<div class="portal-notice-content">
 			<el-row :gutter="20">
 				<el-col :span="12" v-for="(item,index) in advancedList.data" :key="index">

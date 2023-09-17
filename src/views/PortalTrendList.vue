@@ -1,6 +1,6 @@
 <template>
   <top-tool-bar></top-tool-bar>
-  <div class="block">
+  <div class="block wrapper-sticky">
     <el-breadcrumb separator=">" class="mt20 mb20">
       <el-breadcrumb-item :to="{ path: '/portal' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>{{breadcrumb}}</el-breadcrumb-item>

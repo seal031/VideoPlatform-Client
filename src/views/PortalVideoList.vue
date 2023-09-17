@@ -1,5 +1,5 @@
 <template>
-  <div class="videoList-wrap rel">
+  <div class="videoList-wrap rel wrapper-sticky">
     <top-tool-bar></top-tool-bar>
     <!-- <portal-header></portal-header> -->
     <div class="width1000">
@@ -116,7 +116,6 @@
         </div>
       </div>
     </div>
-
     <portal-footer></portal-footer>
   </div>
 </template>
@@ -181,7 +180,6 @@ export default {
     let videoClassList=ref([]);//类别选项
 
     const getVideo = () => {
-      debugger
       query.params.userId=userId;
       query.params.user_school=userSchool;
       query.params.userRole=userRole;
@@ -353,8 +351,8 @@ export default {
 
 <style scoped>
 .videoList-wrap {
-  height: 100%;
-  overflow: auto;
+  /* height: 100%;
+  overflow: auto; */
 }
 .width1000 {
   width: 1000px;

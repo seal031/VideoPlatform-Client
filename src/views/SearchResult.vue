@@ -1,5 +1,5 @@
 <template>
-  <div class="videoList-wrap rel">
+  <div class="videoList-wrap rel wrapper-sticky">
     <top-tool-bar :keyword="keyword"></top-tool-bar>
     <div class="portal-wrap width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
@@ -323,9 +323,8 @@
           </div>
         </el-tab-pane>
       </el-tabs>
-
-      <portal-footer></portal-footer>
     </div>
+    <portal-footer></portal-footer>
   </div>
 </template>
   
@@ -657,12 +656,12 @@ export default {
 </script>
 <style scoped>
 .portal-wrap {
-  height: 100%;
+  /* height: 100%; */
 }
 
 .videoList-wrap {
-  height: 100%;
-  overflow: auto;
+  /* height: 100%;
+  overflow: auto; */
 }
 
 .query-subjects {
