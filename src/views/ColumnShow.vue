@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="portal-wrap">
+  <div class="portal-wrap wrapper-sticky">
     <top-tool-bar></top-tool-bar>
     <div class="width1000">
       <el-breadcrumb separator=">" class="mt20 mb20">
@@ -230,8 +230,8 @@ export default {
   font-size: 20px;
 }
 .portal-wrap {
-  height: 100%;
-  overflow: auto;
+  /* height: 100%;
+  overflow: auto; */
 }
 .html-parent {
   text-align: left;

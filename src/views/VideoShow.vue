@@ -1,6 +1,6 @@
 <template>
 <div class="wrap">
-  <div class="video-show-wrap rel">
+  <div class="video-show-wrap rel wrapper-sticky">
     <top-tool-bar
     v-on:getSession="getSession"
     ></top-tool-bar>

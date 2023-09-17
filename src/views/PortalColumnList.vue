@@ -1,5 +1,5 @@
 <template>
-  <div class="overflowShow">
+  <div class="overflowShow wrapper-sticky">
     <top-tool-bar></top-tool-bar>
     <!--<div class="overflowShow">-->
     <div class="block">

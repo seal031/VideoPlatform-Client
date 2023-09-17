@@ -1,6 +1,6 @@
 <template>
   <outer-ip></outer-ip>
-  <div class="portal-wrap">
+  <div class="portal-wrap wrapper-sticky">
     <top-tool-bar></top-tool-bar>
     <portal-header></portal-header>
 
