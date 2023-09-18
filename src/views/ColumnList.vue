@@ -222,7 +222,7 @@ export default {
         return moment(date.create_time).format("YYYY-MM-DD HH:mm:ss");
       };
     const dateFormatPublicTime=(date) =>{
-        return moment(date.create_time).format("YYYY-MM-DD");
+        return moment(date.public_time).format("YYYY-MM-DD");
       };
     const methods = {
       //加载列表

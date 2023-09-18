@@ -161,6 +161,7 @@ import RtEditor2 from "../components/RtEditor2.vue";
 import { Plus, ZoomIn, Download, Delete } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useRoute, useRouter } from "vue-router";
+import { format } from "date-fns";
 import {UploadFile, ElUploadProgressEvent, ElFile,} from 'element-plus/es/components/upload/src/upload.type'
 
 export default {
@@ -206,6 +207,7 @@ export default {
       brief_state: "",
       brief_image: "",
       operate_admin: null,
+      public_time:null,
     }
     const briefForm = reactive({
       data: JSON.parse(JSON.stringify(initbriefFormData)),
@@ -298,6 +300,8 @@ export default {
       briefForm.data.admin_ip = "localhost";
       briefForm.data.brief_image = imageUrl.value;
       briefForm.data.annex=annexList.join(',');
+      briefForm.data.public_time=format(briefForm.data.public_time, "yyyy-MM-dd");
+      debugger;
       console.log(briefForm.data);
       addBrief(briefForm.data).then((res) => {
         if ((res.resultCode = "200")) {
@@ -322,7 +326,7 @@ export default {
       briefForm.data.admin_ip = "localhost";
       briefForm.data.brief_image = imageUrl.value;
       briefForm.data.annex=annexList.join(',');
-      console.log(briefForm.data);
+      debugger;
       addBrief(briefForm.data).then((res) => {
         if ((res.resultCode = "200")) {
           ElMessage({
@@ -357,7 +361,7 @@ export default {
           };
           getBriefById(params).then((res) => {
             briefForm.data = JSON.parse(res.data);
-            console.log(briefForm.data)
+            debugger;
             filelist.value.push({
               'name':'temp.jpg',
               'url':briefForm.data.brief_image
