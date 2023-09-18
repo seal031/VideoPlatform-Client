@@ -10,7 +10,7 @@
 								<el-image
 								 	v-if="item.title === '优秀个人'"
 									:src="getImageUrl('person.jpg')"
-									fit="fill"
+									:fit="cover"
 									class="icon-picture ml5"
 								>
 								</el-image>
@@ -59,7 +59,7 @@ export default {
     })
 	const blankObj = reactive({})
 	const getImageUrl = (name) => {
-      return new URL(`/src/assets/img/${name}`, import.meta.url).href;
+      return new URL(`http://47.93.84.178:8080/assets/img/${name}`, import.meta.url).href;
     }
 	watch(() => props.data, (val) => {
       advancedList.data = tabList.map((item, index) => {
