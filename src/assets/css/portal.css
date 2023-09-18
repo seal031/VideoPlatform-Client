@@ -336,3 +336,7 @@
   :deep .el-table__body-wrapper{
     height: 100% !important;
   }
+
+  :deep .fitRowHeight{
+    padding: 0px !important;
+  }

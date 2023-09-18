@@ -288,7 +288,7 @@
               <!-- TODO 点击更多跳转 -->
               <!-- <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'tzgg')">更多 ></el-button> -->
             </div>
-            <el-table :data="tzggList" :show-header="false" class="p10" height="205" @row-click="showBrief"
+            <el-table :data="tzggList" class="p10" :show-header="false" cell-class-name="fitRowHeight" :cell-style="fitRowHeight" height="205" @row-click="showBrief"
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
@@ -319,7 +319,7 @@
               <!-- TODO 点击更多跳转 -->
               <!-- <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'zcfg')">更多 ></el-button> -->
             </div>
-            <el-table :data="zcfgList" :show-header="false" class="p10" height="205" empty-text="暂无数据"
+            <el-table :data="zcfgList" :show-header="false" class="p10" cell-class-name="fitRowHeight" :cell-style="fitRowHeight" height="205" empty-text="暂无数据"
               @row-click="showBrief">
               <!-- <el-table-column type="index" width="30" /> -->
               <el-table-column prop="brief_title">
@@ -351,7 +351,7 @@
               <!-- TODO 点击更多跳转 -->
               <!-- <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'gxdt')">更多 ></el-button> -->
             </div>
-            <el-table :data="trendList" :show-header="false" class="p10" height="205" @row-click="showTrend"
+            <el-table :data="trendList" :show-header="false" cell-class-name="fitRowHeight" :cell-style="fitRowHeight" class="p10" height="205" @row-click="showTrend"
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
@@ -384,7 +384,7 @@
               <!-- TODO 点击更多跳转 -->
               <!-- <el-button type="text" class="more-btn" @click="jump('/portalBriefList', 'gxdt')">更多 ></el-button> -->
             </div>
-            <el-table :data="bjjgList" :show-header="false" class="p10" height="205" @row-click="showTrend"
+            <el-table :data="bjjgList" :show-header="false" class="p10" cell-class-name="fitRowHeight" :cell-style="fitRowHeight"  height="205" @row-click="showTrend"
               empty-text="暂无数据">
               <el-table-column prop="brief_title">
                 <template #default="scope">
@@ -430,6 +430,13 @@ export default {
     PortalAdvanced,
   },
   methods: {
+    fitRowHeight({row, rowIndwx}) {
+      let styleJson = {
+        height: '37px',
+        lineHeight: '37px'
+      }
+      return styleJson
+    },
     showBrief(row) {
       // const href = this.$router.replace({
       const href = this.$router.resolve({
