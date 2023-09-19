@@ -17,7 +17,8 @@
           <span> 发布单位： {{ trendForm.data.school_name }} </span>
           <el-divider direction="vertical"></el-divider>
           <span>
-            创建时间： {{ methods.dateFormat(trendForm.data.create_time) }}
+            <!-- 创建时间： {{ methods.dateFormat(trendForm.data.create_time) }} -->
+            发布时间： {{ methods.dateFormat(trendForm.data.public_time) }}
           </span>
         </p>
       </el-header>
@@ -89,6 +90,7 @@ export default {
         trend_image: "",
         operate_admin: null,
         create_time: null,
+        public_time:null,
         school_name:"",
       },
     });
@@ -108,7 +110,7 @@ export default {
             },
           };
           getTrendById(params).then((res) => {
-            // debugger;
+            debugger;
             trendForm.data = JSON.parse(res.data);
             //绑定面包屑
             switch (trendForm.data.trend_type) {
