@@ -432,8 +432,8 @@ export default {
   methods: {
     fitRowHeight({row, rowIndwx}) {
       let styleJson = {
-        height: '37px',
-        lineHeight: '37px'
+        height: '38px',
+        lineHeight: '38px'
       }
       return styleJson
     },
