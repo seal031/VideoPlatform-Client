@@ -10,8 +10,8 @@
       <div class="image-slot">Loading<span class="dot">...</span></div>
     </template>
     <template #error>
-      <div class="img-error" v-if="currentData.brief_id">图片加载失败</div>
-      <div class="img-error" v-else>暂无数据</div>
+      <div class="img-error" :class="addBac ? 'addBac' : ''" v-if="currentData.brief_id">图片加载失败</div>
+      <div class="img-error" :class="addBac ? 'addBac' : ''" v-else>暂无数据</div>
     </template>
   </el-image>
   <div class="picture-info" v-if="currentData.brief_id">{{ currentData.brief_title }}</div>
@@ -24,6 +24,10 @@ export default {
     data: {
         type: Object,
         default: () => {}
+    },
+    addBac: {
+      type: Boolean,
+      default: true
     }
   },
   components: {},
@@ -55,12 +59,14 @@ export default {
   white-space: nowrap;
   overflow: hidden;
 }
+.addBac{
+  background: var(--el-bg-color);
+}
 .img-error{
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  background: var(--el-bg-color);
   color: var(--el-text-color-placeholder);
   vertical-align: middle;
   height: 100%;

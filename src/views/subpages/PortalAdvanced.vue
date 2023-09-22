@@ -26,7 +26,7 @@
 						</div>
 						<div class="portal-advance-overview" v-else>
 							<div class="overview-detail-blank">
-								<graphic-overview :data="blankObj"></graphic-overview>
+								<graphic-overview :data="blankObj" :addBac="false"></graphic-overview>
 							</div>
 						</div>
 					</div>

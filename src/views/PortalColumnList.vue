@@ -205,7 +205,7 @@ export default {
     });
     let advanceQuery=reactive({ // 优秀个人/先进单位参数
       params: {
-        trendStateList: "0401", //已发布
+        briefState: "0401", //已发布
         pageIndex: 1,
         pageSize: 20,
         topN: 20,
