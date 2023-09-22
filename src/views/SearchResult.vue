@@ -239,7 +239,7 @@
         <el-tab-pane>
           <template #label>
             <span :icon="Star"
-              ><i class="el-icon-date"></i>先进个人({{ xjgrTotalCount }})</span
+              ><i class="el-icon-date"></i>优秀个人({{ xjgrTotalCount }})</span
             >
           </template>
           <div>
@@ -362,14 +362,14 @@ export default {
     let zcfgList = ref([]); //政策法规模型列表
     let videoList = ref([]); //视频列表
     let bjjgList=ref([]);//北京教工模型列表
-    let xjgrList=ref([]);//先进个人模型列表
+    let xjgrList=ref([]);//优秀个人模型列表
     let xjdwList=ref([]);//先进单位模型列表
     let tpxwTotalCount = ref(0); // 图片新闻总数
     let tzggTotalCount = ref(0); // 通知公告总数
     let zcfgTotalCount = ref(0); // 政策法规总数
     let videoTotalCount = ref(0); //视频总数
     let bjjgTotalCount=ref(0);//北京教工总数
-    let xjgrTotalCount=ref(0);//先进个人总数
+    let xjgrTotalCount=ref(0);//优秀个人总数
     let xjdwTotalCount=ref(0);//先进单位总数
     let allTotalCount = ref(""); //查询结果总数
     let tpxwQuery = reactive({
@@ -425,7 +425,7 @@ export default {
     });
     let xjgrQuery = reactive({
       params: {
-        briefType: "0507", //先进个人
+        briefType: "0507", //优秀个人
         briefState: "0401", //已发布
         pageIndex: 1,
         pageSize: 20,
