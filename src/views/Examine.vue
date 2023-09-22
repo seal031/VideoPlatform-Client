@@ -341,8 +341,8 @@
     font-size: 20px;
   }
   .portal-wrap {
-    <!-- height: 100%;
-    overflow: auto; -->
+    /* <!-- height: 100%;
+    overflow: auto; --> */
   }
   .html-parent {
     text-align: left;
