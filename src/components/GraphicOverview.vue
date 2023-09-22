@@ -60,7 +60,7 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 14px;
-  background: var(--el-bg-color);
+  /* background: var(--el-bg-color); */
   color: var(--el-text-color-placeholder);
   vertical-align: middle;
   height: 100%;
